@@ -1,1 +1,1 @@
-web: gunicorn project-b-17.wsgi
+web: gunicorn config.wsgi
