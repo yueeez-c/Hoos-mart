@@ -16,6 +16,10 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "shrouded-sea-15354-891c79e28258.hero
 
 # Application definition
 INSTALLED_APPS = [
+    "home.apps.HomeConfig",
+    "user.apps.UserConfig",
+    "crispy_forms",
+    'crispy_bootstrap4',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -90,3 +94,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Activate Django-Heroku settings
 django_heroku.settings(locals())
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+LOGIN_REDIRECT_URL = 'app-home'
+LOGIN_URL = 'login'
