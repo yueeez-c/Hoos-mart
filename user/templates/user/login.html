@@ -1,21 +1,36 @@
-{% extends "home/base.html"%}
-{%load crispy_forms_tags %}
-{%block content%}
-		<div class="content-section">
-			<form method ="POST">
-				{% csrf_token %}
-				<fieldset class="form-group">
-					<legend class="border-bottom mb-4">Log In</legend>
-					{{ form|crispy }}
-				</fieldset>
-				<div class="form-group">
-					<button class="btn btn-outline-info" type = "submit">Login</button>
-				</div>
-			</form>
-			<div class="border-top pt-3">
-				<small class="text-muted">
-					Need an account? <a class="ml-2"  href="{% url 'signup' %}"> Sign up now</a>
-				</small>
-			</div>
-		</div>
-{%endblock content%}
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
+{% load socialaccount %}  {# <-- needed for provider_login_url #}
+
+{% block content %}
+<div class="content-section">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Log In</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info btn-block" type="submit">Login</button>
+        </div>
+    </form>
+
+    <div class="text-center my-3">
+        <p class="text-muted mb-2">— or —</p>
+        <a href="{% provider_login_url 'google' %}" class="btn btn-danger btn-block">
+            <i class="fab fa-google"></i> Log in with Google
+        </a>
+    </div>
+
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Need an account?
+            <a class="ml-2" href="{% url 'signup' %}">Sign up now</a>
+        </small>
+    </div>
+</div>
+
+<!-- Optional: Font Awesome for the Google icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+{% endblock content %}
