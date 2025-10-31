@@ -16,9 +16,12 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "shrouded-sea-15354-891c79e28258.hero
 
 # Application definition
 INSTALLED_APPS = [
+    "daphne",
     "home.apps.HomeConfig",
     "user.apps.UserConfig",
+    "messaging.apps.MessagingConfig",
     "crispy_forms",
+    "channels",
     'crispy_bootstrap4',
     "django.contrib.admin",
     "django.contrib.auth",
@@ -27,6 +30,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
+ 
+ASGI_APPLICATION = 'config.asgi.application'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
