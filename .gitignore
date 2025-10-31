@@ -1,0 +1,9 @@
+# Python virtual environments
+venv/
+__pycache__/
+
+# Node & frontend build files (if you have any)
+node_modules/
+dist/
+build/
+
