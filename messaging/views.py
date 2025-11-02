@@ -7,12 +7,12 @@ from django.db.models import Q
 User = get_user_model()
 
 def login_required_view(request):
-    return render(request, "login_required.html")
+    return render(request, "messaging/login_required.html")
 
 @login_required
 def user_list(request):
     users = User.objects.exclude(id=request.user.id)
-    return render(request, "user_list.html", {"users": users})
+    return render(request, "messaging/user_list.html", {"users": users})
 
 @login_required
 def chat_view(request, other_user_id):
@@ -22,7 +22,7 @@ def chat_view(request, other_user_id):
     msgs = (Message.objects
             .filter(Q(sender=request.user, receiver=other) | Q(sender=other, receiver=request.user))
             .order_by("timestamp")[:100])
-    return render(request, "chat.html", {"other_user": other, "messages": msgs})
+    return render(request, "messaging/chat.html", {"other_user": other, "messages": msgs})
 
 @login_required
 def chat_entry(request):
