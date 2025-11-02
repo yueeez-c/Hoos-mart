@@ -30,7 +30,8 @@ urlpatterns = [
     path('profile/', user_views.profile, name = 'profile'),
     path("messaging/", include("messaging.urls")),
     path('accounts/', include('allauth.urls')),  #google auth
-
 ] 
-if settings.DEBUG:
+
+# Serve media files in development
+if settings.DEBUG and not settings.AWS_STORAGE_BUCKET_NAME:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
