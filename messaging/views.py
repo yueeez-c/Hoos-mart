@@ -21,6 +21,7 @@ def chat_view(request, other_user_id):
     other = get_object_or_404(User, id=other_user_id)
     msgs = (Message.objects
             .filter(Q(sender=request.user, receiver=other) | Q(sender=other, receiver=request.user))
+            .select_related("sender", "receiver")
             .order_by("timestamp")[:100])
     return render(request, "messaging/chat.html", {"other_user": other, "messages": msgs})
 
