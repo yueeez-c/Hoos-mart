@@ -1,0 +1,15 @@
+{% extends "home/base.html" %}
+{% block content %}
+<div class="container text-center mt-5">
+  <h2>Sorry, you cannot access this page until you are logged in.</h2>
+  <p>Please log in to continue.</p>
+
+  <div class="mt-4">
+    <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+    <p class="mt-3">
+      Haven’t created an account yet?
+      <a href="{% url 'register' %}">Sign up here</a>.
+    </p>
+  </div>
+</div>
+{% endblock %}

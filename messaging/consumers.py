@@ -4,6 +4,8 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
+from django.contrib.auth.models import AnonymousUser
+from .models import Message
 
 #a class that users get an instance of when they connect, disconnect, or recieve a 
 #message 
@@ -11,6 +13,11 @@ from channels.db import database_sync_to_async
 class ChatConsumer(AsyncWebsocketConsumer):
     #function that is called when a user opens a chat 
     async def connect(self):
+        # must be authenticated
+        if not self.scope.get("user") or isinstance(self.scope["user"], AnonymousUser):
+            await self.close()
+            return
+        
         #who the user wants to message
         self.other_user_id = self.scope["url_route"]["kwargs"]["other_user_id"]
         #current user
@@ -30,24 +37,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     #when the frontend sends a message to that room rocket 
     async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json['message']
+        payload = json.loads(text_data or "{}")
+        message = (payload.get("message") or "").strip()
+        if not message:
+            return
+
+        # persist first (so failures don't echo ghost messages)
+        await self._save_message(self.user.id, self.other_user_id, message)
+
         await self.channel_layer.group_send(
             self.room_group_name,
-            {
-                'type': 'chat_message',
-                'message': message,
-                "sender": self.user.username
-            }
-        )
-        await database_sync_to_async(DirectMessage.objects.create)(
-            sender=self.user, receiver_id=self.other_user_id, content=message
+            {"type": "chat.message", "message": message, "sender": self.user.username}
         )
     #when someone in the room sends a message, the message is the event and both people recieve that event
     async def chat_message(self, event):
-        message = event['message']
-        sender = event['sender']
-        await self.send(text_data=json.dumps({
-            'message': message,
-            'sender' : sender
-        }))
+        await self.send(text_data=json.dumps({"message": event["message"], "sender": event["sender"]}))
+
+    @database_sync_to_async
+    def _save_message(self, sender_id, receiver_id, content):
+        return Message.objects.create(sender_id=sender_id, receiver_id=receiver_id, content=content)
