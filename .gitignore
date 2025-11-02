@@ -1,0 +1,12 @@
+# Python virtual environments
+venv/
+__pycache__/
+
+# Node & frontend build files (if you have any)
+node_modules/
+dist/
+build/
+
+.DS_Store
+__pycache__/
+db.sqlite3

@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from .forms import StudentStatusForm
+from .models import Profile
 def signup(request):
 	if request.method == 'POST':
 		form =UserCreationForm(request.POST)
@@ -16,5 +18,15 @@ def signup(request):
 	
 @login_required
 def profile(request):
-	return render(request,'user/profile.html')
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        form = StudentStatusForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = StudentStatusForm(instance=profile)
+
+    return render(request, 'user/profile.html', {'form': form})
 # Create your views here.

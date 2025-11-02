@@ -27,17 +27,27 @@
 		        <div class="navbar-nav mr-auto">
 		          <a class="nav-item nav-link" href="{%url 'app-home'%}">Home</a>
 		          <a class="nav-item nav-link" href="{%url 'home-about'%}">About</a>
+				  <a class="nav-link" href="{% url 'chat' %}">Messages</a>
 		        </div>
 		        <!-- Navbar Right Side -->
 		        <div class="navbar-nav">
-		        	{% if user.is_authenticated %}
-		        		<a class="nav-item nav-link" href="{%url 'profile'%}">Profile</a>
-		        		<a class="nav-item nav-link" href="{%url 'logout'%}">Log out</a>
-		        	{% else %}
-			         	<a class="nav-item nav-link" href="{%url 'login'%}">Log in</a>
-			          	<a class="nav-item nav-link" href="{%url 'signup'%}">Sign up</a>
-			         {% endif %}
-		        </div>
+				    {% if user.is_authenticated %}
+				        <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+
+				        <form method="POST" action="{% url 'logout' %}" class="nav-item">
+						    {% csrf_token %}
+						    <button type="submit" class="btn btn-link nav-link" style="padding: 0; margin: 0;">
+						        Log out
+						    </button>
+						</form>
+
+
+				    {% else %}
+				        <a class="nav-item nav-link" href="{% url 'login' %}">Log in</a>
+				        <a class="nav-item nav-link" href="{% url 'signup' %}">Sign up</a>
+				    {% endif %}
+				</div>
+
 		      </div>
 		    </div>
 		  </nav>

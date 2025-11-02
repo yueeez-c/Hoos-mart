@@ -16,9 +16,12 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "shrouded-sea-15354-891c79e28258.hero
 
 # Application definition
 INSTALLED_APPS = [
+    "daphne",
     "home.apps.HomeConfig",
     "user.apps.UserConfig",
+    "messaging.apps.MessagingConfig",
     "crispy_forms",
+    "channels",
     'crispy_bootstrap4',
     "django.contrib.admin",
     "django.contrib.auth",
@@ -26,7 +29,17 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    #google auth
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+
 ]
+ 
+ASGI_APPLICATION = 'config.asgi.application'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -35,8 +48,12 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "allauth.account.middleware.AccountMiddleware",#google auth
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    
+
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -98,3 +115,27 @@ django_heroku.settings(locals())
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'app-home'
 LOGIN_URL = 'login'
+
+#google auth
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+LOGIN_REDIRECT_URL = 'app-home'
+LOGOUT_REDIRECT_URL = 'app-home'
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '169512992077-35db8krbdhgnjkuugofk2uecatd4c61c.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        }
+    }
+}
+
+#profile pic
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
