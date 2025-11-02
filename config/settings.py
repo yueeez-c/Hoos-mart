@@ -131,7 +131,7 @@ django_heroku.settings(locals())
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'app-home'
 
-LOGIN_URL = 'account_login' #mere added to make access to messsages req logi
+LOGIN_URL = 'login'
 
 #google auth
 SITE_ID = 1
