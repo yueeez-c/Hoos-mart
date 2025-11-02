@@ -3,16 +3,8 @@
 <div class="container mt-4">
   <h2>Messages</h2>
     <h5 class="text-muted">Chatting with {{ other_user.get_username }}</h5>
-  <div id="chat-log" class="border p-3" style="height: 300px; overflow-y: auto;">
+  <div id="chat-log" class="border p-3" style="height:300px; overflow-y:auto;"> 
     {% include "messaging/chat_messages.html" %} 
-    <!--{% for m in messages %}
-        <p>
-          <b>{% if m.sender_id == request.user.id %}You{% else %}{{ m.sender.username }}{% endif %}:</b>
-          {{ m.content|linebreaksbr }}
-        </p>
-      {% empty %}
-        <p class="text-muted m-0">No messages yet — say hi!</p>
-      {% endfor %} -->
   </div>
 
   <div class="input-group mt-3">
@@ -23,57 +15,44 @@
 
 <script>
   const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-  const otherId = "{{ other_user.id }}";
-  const socketUrl = `${protocol}://${window.location.host}/ws/dm/${otherId}/`;
-  const log = document.getElementById("chat-log");
+  const otherId  = "{{ other_user.id }}";
+  const me       = "{{ request.user.username|escapejs }}";
+  const socket   = new WebSocket(`${protocol}://${window.location.host}/ws/dm/${otherId}/`);
 
-  const clearEmpty = () => {
-    const empty = document.getElementById("empty-state");
-    if (empty) empty.remove();
-  };
+  const log = document.getElementById("chat-log");
+  const clearEmpty = () => { const e = document.getElementById("empty-state"); if (e) e.remove(); };
   const appendLine = (who, msg) => {
+    clearEmpty();
     log.insertAdjacentHTML("beforeend", `<p><b>${who}:</b> ${msg}</p>`);
     log.scrollTop = log.scrollHeight;
   };
 
-  const socket = new WebSocket(socketUrl);
-
-  socket.addEventListener("open", () => {
-    console.debug("WS open →", socketUrl);
-  });
-  socket.addEventListener("close", (e) => {
-    console.warn("WS closed", e.code, e.reason);
-  });
-  socket.addEventListener("error", (e) => {
-    console.error("WS error", e);
-  });
-
   socket.addEventListener("message", (e) => {
     try {
       const data = JSON.parse(e.data || "{}");
-      clearEmpty();
-      appendLine(data.sender || "User", data.message || "");
+      const who = data.sender === me ? "You" : (data.sender || "User");
+      appendLine(who, data.message || "");
     } catch (err) {
       console.error("Bad WS payload:", e.data, err);
     }
   });
 
-  document.getElementById("chat-message-submit").onclick = function () {
-    const input = document.getElementById("chat-message-input");
+  const input  = document.getElementById("chat-message-input");
+  const button = document.getElementById("chat-message-submit");
+
+  const sendMsg = () => {
     const msg = (input.value || "").trim();
-    if (!msg) return;
-
-    // Optimistic UI so it shows even before echo comes back
-    clearEmpty();
-    appendLine("You", msg);
-
-    if (socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({ message: msg }));
-    } else {
-      console.warn("WS not open; readyState =", socket.readyState);
-    }
+    if (!msg || socket.readyState !== WebSocket.OPEN) return;
+    socket.send(JSON.stringify({ message: msg }));
     input.value = "";
   };
-</script>
 
+  button.addEventListener("click", sendMsg);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+  });
+
+  // keep scrolled to bottom on first paint
+  document.addEventListener("DOMContentLoaded", () => { log.scrollTop = log.scrollHeight; });
+</script>
 {% endblock %}

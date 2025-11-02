@@ -23,7 +23,7 @@ def chat_view(request, other_user_id):
             .filter(Q(sender=request.user, receiver=other) | Q(sender=other, receiver=request.user))
             .select_related("sender", "receiver")
             .order_by("timestamp")[:100])
-    return render(request, "messaging/chat.html", {"other_user": other, "messages": msgs})
+    return render(request, "messaging/chat.html", {"other_user": other, "chat_messages": msgs})
 
 @login_required
 def chat_entry(request):
