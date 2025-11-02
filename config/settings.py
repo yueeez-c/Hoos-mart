@@ -5,7 +5,12 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    load_dotenv(BASE_DIR / ".env")
+except Exception:
+    # Don't crash if python-dotenv is missing
+    pass
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -126,7 +131,7 @@ django_heroku.settings(locals())
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'app-home'
 
-LOGIN_URL = '/messaging/login_required/' #mere added to make access to messsages req logi
+LOGIN_URL = 'account_login' #mere added to make access to messsages req logi
 
 #google auth
 SITE_ID = 1
