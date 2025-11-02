@@ -5,8 +5,13 @@
     <h5 class="text-muted">Chatting with {{ other_user.get_username }}</h5>
   <div id="chat-log" class="border p-3" style="height: 300px; overflow-y: auto;">
       {% for m in messages %}
-      <p><b>{{ m.sender.username }}:</b> {{ m.content }}</p>
-    {% endfor %}
+        <p>
+          <b>{% if m.sender_id == request.user.id %}You{% else %}{{ m.sender.username }}{% endif %}:</b>
+          {{ m.content|linebreaksbr }}
+        </p>
+      {% empty %}
+        <p class="text-muted m-0">No messages yet — say hi!</p>
+      {% endfor %}
   </div>
 
   <div class="input-group mt-3">
