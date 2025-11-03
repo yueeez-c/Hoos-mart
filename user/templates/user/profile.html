@@ -1,33 +1,104 @@
 {% extends "home/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-<div class="content-section text-center">
-  <div class="media d-flex flex-column align-items-center">
-    <img class="rounded-circle account-img"
-         src="{{ user.profile.image.url }}"
-         alt="Profile Image">
-    <div class="media-body mt-3">
-      <h2 class="account-heading">{{ user.username }}</h2>
-      <p class="text-secondary">{{ user.email }}</p>
-
-      {% if user.profile %}
-        <p class="mt-3">
-          {% if user.profile.is_student %}
-            <strong>I am a student.</strong>
-          {% else %}
-            <strong>I am not a student.</strong>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      
+      <!-- Profile Header -->
+      <div class="card mb-4">
+        <div class="card-body text-center">
+          <div class="d-flex flex-column align-items-center">
+            <img class="rounded-circle mb-3" 
+                 src="{{ profile.image.url }}" 
+                 alt="Profile Image"
+                 style="width: 150px; height: 150px; object-fit: cover;">
+            <h2 class="card-title">{{ user.get_full_name|default:user.username }}</h2>
+            <p class="text-muted">{{ user.email }}</p>
+            
+            <!-- S3 Status Badge -->
+            {% if profile.image and profile.image.url %}
+              {% if 's3.amazonaws.com' in profile.image.url %}
+                <span class="badge bg-success">🌐 Stored on AWS S3</span>
+              {% else %}
+                <span class="badge bg-secondary">📁 Stored Locally</span>
+              {% endif %}
+            {% endif %}
+            
+            {% if profile.is_student %}
+              <span class="badge bg-primary">🎓 Student</span>
+            {% else %}
+              <span class="badge bg-info">👤 General User</span>
+            {% endif %}
+          </div>
+          
+          {% if profile.info %}
+            <div class="mt-3">
+              <h6>About Me:</h6>
+              <p class="text-muted">{{ profile.info }}</p>
+            </div>
           {% endif %}
-        </p>
-      {% else %}
-        <p>N/A</p>
-      {% endif %}
+        </div>
+      </div>
+
+      <!-- Update Profile Form -->
+      <div class="card">
+        <div class="card-header">
+          <h4>Update Profile</h4>
+        </div>
+        <div class="card-body">
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="row">
+              <div class="col-md-6">
+                <fieldset class="form-group">
+                  <legend class="border-bottom mb-4 h5">User Information</legend>
+                  {{ user_form|crispy }}
+                </fieldset>
+              </div>
+              
+              <div class="col-md-6">
+                <fieldset class="form-group">
+                  <legend class="border-bottom mb-4 h5">Profile Information</legend>
+                  {{ profile_form|crispy }}
+                </fieldset>
+              </div>
+            </div>
+            
+            <!-- File Upload Info -->
+            <div class="alert alert-info">
+              <strong>📤 File Upload Info:</strong>
+              <ul class="mb-0">
+                <li>Maximum file size: 5MB</li>
+                <li>Supported formats: JPG, PNG, GIF</li>
+                <li>Files will be stored on AWS S3 (when configured)</li>
+              </ul>
+            </div>
+            
+            <div class="form-group text-center">
+              <button class="btn btn-primary btn-lg" type="submit">
+                💾 Update Profile
+              </button>
+              <a href="{% url 's3-demo' %}" class="btn btn-outline-info btn-lg ml-2">
+                🔍 View S3 Demo
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+      
     </div>
   </div>
+</div>
 
-  <form method="POST" class="mt-3" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-primary" type="submit">Save</button>
+<style>
+.account-img {
+  border: 3px solid #dee2e6;
+}
+</style>
+{% endblock %}
   </form>
 </div>
 {% endblock content %}
