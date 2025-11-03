@@ -1,0 +1,9 @@
+{# iterate chat_messages now, not messages #}
+{% for m in chat_messages %}
+  <p>
+    <b>{% if m.sender_id == request.user.id %}You{% else %}{{ m.sender.username }}{% endif %}:</b>
+    {{ m.content|linebreaksbr }}
+  </p>
+{% empty %}
+  <p id="empty-state" class="text-muted m-0">No messages yet — say hi!</p>
+{% endfor %}
