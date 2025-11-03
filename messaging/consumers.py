@@ -18,6 +18,43 @@ def create_message(sender_id, receiver_id, content):
         content=content,
     )
 
+async def receive(self, text_data=None, bytes_data=None):
+    if not text_data:
+        return
+
+    try:
+        data = json.loads(text_data)
+    except json.JSONDecodeError:
+        return  # ignore bad payloads
+
+    content = (data.get("content") or data.get("message") or "").strip()
+    if not content:
+        return
+
+    user = self.scope.get("user")
+    if not user or isinstance(user, AnonymousUser):
+        await self.close()
+        return
+
+    sender_id = user.id
+    try:
+        receiver_id = int(self.chat_id)
+    except (TypeError, ValueError):
+        return
+
+    msg = await create_message(sender_id, receiver_id, content)
+
+    await self.channel_layer.group_send(
+        self.room_group_name,
+        {
+            "type": "chat.message",
+            "message_id": msg.id,
+            "message": content,
+            "sender_id": sender_id,
+            "receiver_id": receiver_id,
+        },
+    )
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
