@@ -12,6 +12,7 @@ from .models import Message
 
 class ChatConsumer(AsyncWebsocketConsumer):
     #function that is called when a user opens a chat 
+    DMConsumer = ChatConsumer
     async def connect(self):
         # must be authenticated
         if not self.scope.get("user") or isinstance(self.scope["user"], AnonymousUser):
