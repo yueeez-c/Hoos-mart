@@ -25,6 +25,11 @@ DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "shrouded-sea-15354-891c79e28258.herokuapp.com"]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.herokuapp.com",
+]
+
+
 # Application definition
 INSTALLED_APPS = [
     "daphne",
