@@ -9,6 +9,14 @@ from .models import Message
 
 #a class that users get an instance of when they connect, disconnect, or recieve a 
 #message 
+@database_sync_to_async
+def create_message(sender_id, receiver_id, content):
+    """Sync ORM helper, run in a thread by channels."""
+    return Message.objects.create(
+        sender_id=sender_id,
+        receiver_id=receiver_id,
+        content=content,
+    )
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -27,11 +35,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         content = data.get("content", "")
 
         # Save the message in the DB
-        msg = Message.objects.create(
-            sender_id=sender_id,
-            receiver_id=receiver_id,
-            content=content,
-        )
+        msg = await create_message(sender_id, receiver_id, content)
 
         # Broadcast to group
         await self.channel_layer.group_send(
@@ -48,5 +52,5 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def chat_message(self, event):
         await self.send(text_data=json.dumps(event))
 
-# ⬇️ If you still want DMConsumer as an alias, put it **here**, OUTSIDE the class
+# DMConsumer as an alias
 DMConsumer = ChatConsumer
