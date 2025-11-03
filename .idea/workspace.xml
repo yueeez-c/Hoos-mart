@@ -7,6 +7,7 @@
     <list default="true" id="f43f1b1b-327f-40f6-ae7d-86806911b958" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/profile_pics/IMG_7257.jpeg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +95,7 @@
       <workItem from="1761428273708" duration="6450000" />
       <workItem from="1761439729088" duration="973000" />
       <workItem from="1762144643140" duration="343000" />
-      <workItem from="1762145164705" duration="971000" />
+      <workItem from="1762145164705" duration="2395000" />
     </task>
     <servers />
   </component>

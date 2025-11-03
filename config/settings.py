@@ -4,6 +4,11 @@ import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv
 
+
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 # Load environment variables from .env file
 try:
     from dotenv import load_dotenv
@@ -11,9 +16,6 @@ try:
 except Exception:
     # Don't crash if python-dotenv is missing
     pass
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
@@ -67,9 +69,6 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",#google auth
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-
-    
-
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -130,7 +129,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Activate Django-Heroku settings
-django_heroku.settings(locals())
+django_heroku.settings(locals(),databases=False)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'app-home'
