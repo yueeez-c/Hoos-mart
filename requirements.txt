@@ -21,12 +21,9 @@ gunicorn==23.0.0
 hyperlink==21.0.0
 idna==3.11
 incremental==24.7.2
-<<<<<<< HEAD
 jmespath==1.0.1
 joblib==1.5.2
 kiwisolver==1.4.9
-=======
->>>>>>> 60ae2de (adding websocket)
 matplotlib==3.10.6
 msgpack==1.1.2
 numpy==2.3.3

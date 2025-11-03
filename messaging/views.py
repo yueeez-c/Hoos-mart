@@ -29,5 +29,5 @@ def chat_view(request, other_user_id):
 def chat_entry(request):
     # if someone hits /messaging/chat/ with no id, send them to the picker
     return redirect("messaging:user_list")
-#
+
 
