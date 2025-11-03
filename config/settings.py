@@ -4,7 +4,16 @@ import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv
 
-
+REDIS_URL = os.environ.get("REDIS_URL")
+if REDIS_URL:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {"hosts": [REDIS_URL]},
+        }
+    }
+else:
+    CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,10 +33,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "shrouded-sea-15354-891c79e28258.herokuapp.com"]
-
-CSRF_TRUSTED_ORIGINS = [
-    "https://*.herokuapp.com",
-]
+CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", ]
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Application definition
