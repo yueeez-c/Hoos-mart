@@ -27,6 +27,9 @@
 		        <div class="navbar-nav mr-auto">
 		          <a class="nav-item nav-link" href="{%url 'app-home'%}">Home</a>
 		          <a class="nav-item nav-link" href="{%url 'home-about'%}">About</a>
+				  <a class="nav-item nav-link" href="{% url 'marketplace-buy' %}">Buy</a>
+				  <a class="nav-item nav-link" href="{% url 'marketplace-sell' %}">Sell</a>
+
 				  <!-- messages can really only be accessed for users after login -->
 				  {% if user.is_authenticated %}
 				    <a class="nav-link" href="{% url 'messaging:user_list' %}">Messages</a>

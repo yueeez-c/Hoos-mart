@@ -1,0 +1,16 @@
+{% extends "home/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1 class="mb-3">Buy Items</h1>
+
+  <!-- Search/filter bar -->
+  <form method="get" class="mb-3 d-flex gap-2">
+    <input type="text" name="q" class="form-control" placeholder="Search items...">
+    <button class="btn btn-primary" type="submit">Search</button>
+  </form>
+
+  <!-- Placeholder for items grid -->
+  <p>Item cards will go here (image, title, price, seller, etc.).</p>
+</div>
+{% endblock %}

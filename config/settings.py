@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "home.apps.HomeConfig",
     "user.apps.UserConfig",
     "messaging.apps.MessagingConfig",
+    'Marketplace',
     "crispy_forms",
     "channels",
     'crispy_bootstrap4',
