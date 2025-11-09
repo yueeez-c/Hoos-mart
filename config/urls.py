@@ -28,9 +28,12 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='user/login.html'), name = 'login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='user/logout.html'), name = 'logout'),
     path('profile/', user_views.profile, name = 'profile'),
+    path('s3-demo/', user_views.s3_demo, name = 's3-demo'),
+    path("marketplace/", include("Marketplace.urls")),
     path("messaging/", include("messaging.urls")),
     path('accounts/', include('allauth.urls')),  #google auth
-
 ] 
-if settings.DEBUG:
+
+# Serve media files in development
+if settings.DEBUG and not settings.AWS_STORAGE_BUCKET_NAME:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,227 @@
+{% extends "home/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      
+      <!-- S3 Status Information -->
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">🌐 AWS S3 Integration Demo</h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h5>Configuration Status</h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>S3 Configured:</span>
+                  <span class="badge {% if s3_info.configured %}bg-success{% else %}bg-warning{% endif %}">
+                    {% if s3_info.configured %}✅ Yes{% else %}⚠️ No{% endif %}
+                  </span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Storage Backend:</span>
+                  <span class="badge {% if s3_info.using_s3 %}bg-success{% else %}bg-secondary{% endif %}">
+                    {{ s3_info.storage_type }}
+                  </span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>S3 Bucket:</span>
+                  <code>{{ s3_info.bucket_name }}</code>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Media URL Base:</span>
+                  <code class="text-break">{{ s3_info.media_url }}</code>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="col-md-6">
+              <h5>How It Works</h5>
+              <div class="alert alert-info">
+                <ol class="mb-0">
+                  <li><strong>Upload:</strong> Files go to S3 automatically</li>
+                  <li><strong>Storage:</strong> Organized in S3 folders</li>
+                  <li><strong>Access:</strong> Direct S3 URLs for fast delivery</li>
+                  <li><strong>Fallback:</strong> Local storage when S3 unavailable</li>
+                </ol>
+              </div>
+              
+              {% if s3_info.configured %}
+                <div class="alert alert-success">
+                  <strong>✅ S3 Ready!</strong> Files will be uploaded to AWS S3.
+                </div>
+              {% else %}
+                <div class="alert alert-warning">
+                  <strong>⚠️ Local Storage:</strong> Create S3 bucket to enable cloud storage.
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upload Examples -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h4>📤 File Upload Examples</h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-body text-center">
+                  <h6 class="card-title">Profile Pictures</h6>
+                  <p class="card-text">Upload your profile image</p>
+                  <a href="{% url 'profile' %}" class="btn btn-primary">Upload Profile Image</a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-body text-center">
+                  <h6 class="card-title">Message Files</h6>
+                  <p class="card-text">Share files in messages</p>
+                  <a href="{% url 'messaging:conversation_list' %}" class="btn btn-info">Send Files</a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-body text-center">
+                  <h6 class="card-title">File Manager</h6>
+                  <p class="card-text">View all uploaded files</p>
+                  <button class="btn btn-secondary" onclick="toggleFileList()">View Files</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Images Gallery -->
+      {% if profiles_with_images %}
+      <div class="card mb-4">
+        <div class="card-header">
+          <h4>🖼️ Recent Profile Images (S3 Examples)</h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            {% for profile in profiles_with_images %}
+            <div class="col-md-3 mb-3">
+              <div class="card">
+                <img src="{{ profile.image.url }}" 
+                     class="card-img-top" 
+                     alt="{{ profile.user.username }}'s profile"
+                     style="height: 200px; object-fit: cover;">
+                <div class="card-body text-center">
+                  <h6 class="card-title">{{ profile.user.username }}</h6>
+                  <p class="card-text">
+                    {% if 's3.amazonaws.com' in profile.image.url %}
+                      <span class="badge bg-success">S3 Hosted</span>
+                    {% else %}
+                      <span class="badge bg-secondary">Local</span>
+                    {% endif %}
+                  </p>
+                  <button class="btn btn-sm btn-outline-primary" 
+                          onclick="showImageInfo('{{ profile.image.url }}', '{{ profile.user.username }}')">
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- File List (Hidden by default) -->
+      <div id="fileList" class="card mb-4" style="display: none;">
+        <div class="card-header">
+          <h4>📁 File Storage Information</h4>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-info">
+            <h6>File Organization in S3:</h6>
+            <pre>{{ s3_info.bucket_name }}/
+├── media/
+│   ├── profile_pics/
+│   │   ├── user1_abc123.jpg
+│   │   └── user2_def456.png
+│   ├── message_files/
+│   │   └── conversation_files/
+│   └── uploads/
+│       └── other_files/</pre>
+          </div>
+          
+          <h6>URL Structure:</h6>
+          <div class="row">
+            <div class="col-md-6">
+              <strong>S3 URLs:</strong>
+              <code class="d-block">https://{{ s3_info.bucket_name }}.s3.amazonaws.com/media/profile_pics/image.jpg</code>
+            </div>
+            <div class="col-md-6">
+              <strong>Local URLs:</strong>
+              <code class="d-block">/media/profile_pics/image.jpg</code>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back to Profile -->
+      <div class="text-center">
+        <a href="{% url 'profile' %}" class="btn btn-primary btn-lg">
+          ← Back to Profile
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Image Details Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Image Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <img id="modalImage" src="" class="img-fluid mb-3" alt="">
+        <div id="modalDetails"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleFileList() {
+  const fileList = document.getElementById('fileList');
+  fileList.style.display = fileList.style.display === 'none' ? 'block' : 'none';
+}
+
+function showImageInfo(imageUrl, username) {
+  const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+  document.getElementById('modalImage').src = imageUrl;
+  
+  const isS3 = imageUrl.includes('s3.amazonaws.com');
+  const storageType = isS3 ? 'AWS S3' : 'Local Storage';
+  const storageIcon = isS3 ? '🌐' : '📁';
+  
+  document.getElementById('modalDetails').innerHTML = `
+    <h6>${username}'s Profile Image</h6>
+    <p><strong>Storage:</strong> ${storageIcon} ${storageType}</p>
+    <p><strong>URL:</strong> <code class="text-break">${imageUrl}</code></p>
+    <p><strong>Access:</strong> ${isS3 ? 'Global CDN delivery' : 'Local file system'}</p>
+  `;
+  
+  modal.show();
+}
+</script>
+{% endblock %}

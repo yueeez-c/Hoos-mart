@@ -1,0 +1,47 @@
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1 class="mb-3">Sell an Item</h1>
+
+  <!-- Create listing form -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        <button class="btn btn-primary" type="submit">Post listing</button>
+      </form>
+    </div>
+  </div>
+
+  <h3>Your listings</h3>
+  {% if user_listings %}
+    <div class="row">
+      {% for listing in user_listings %}
+        <div class="col-md-4 mb-3">
+          <div class="card h-100">
+            {% with first_image=listing.images.first %}
+              {% if first_image %}
+                <img src="{{ first_image.image.url }}" class="card-img-top" alt="{{ listing.title }}">
+              {% endif %}
+            {% endwith %}
+            <div class="card-body">
+              <h5 class="card-title">{{ listing.title }}</h5>
+              <p class="card-text mb-1"><strong>${{ listing.price }}</strong></p>
+              <p class="card-text mb-1">
+                <small class="text-muted">{{ listing.get_category_display }}</small>
+              </p>
+              <p class="card-text text-truncate">{{ listing.description }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>You haven’t posted any items yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
