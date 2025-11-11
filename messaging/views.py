@@ -15,15 +15,34 @@ def user_list(request):
     return render(request, "messaging/user_list.html", {"users": users})
 
 @login_required
+@login_required
 def chat_view(request, other_user_id):
     if other_user_id == request.user.id:
-        return redirect("messaging:user_list")  # prevent self-DM
+        return redirect("messaging:user_list")
+
     other = get_object_or_404(User, id=other_user_id)
-    msgs = (Message.objects
-            .filter(Q(sender=request.user, receiver=other) | Q(sender=other, receiver=request.user))
-            .select_related("sender", "receiver")
-            .order_by("timestamp")[:100])
-    return render(request, "messaging/chat.html", {"other_user": other, "chat_messages": msgs})
+
+    # NEW: optional reference to a listing
+    listing_id = request.GET.get("listing_id")
+    listing = None
+    if listing_id:
+        from Marketplace.models import Listing
+        listing = Listing.objects.filter(id=listing_id).first()
+
+    msgs = (
+        Message.objects
+        .filter(Q(sender=request.user, receiver=other) | Q(sender=other, receiver=request.user))
+        .select_related("sender", "receiver")
+        .order_by("timestamp")[:100]
+    )
+
+    context = {
+        "other_user": other,
+        "chat_messages": msgs,
+        "listing": listing,  # pass this to template
+    }
+
+    return render(request, "messaging/chat.html", context)
 
 @login_required
 def chat_entry(request):
