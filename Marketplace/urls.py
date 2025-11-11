@@ -7,4 +7,5 @@ urlpatterns = [
     path("<int:pk>/", views.listing_detail, name="listing-detail"),
     path("listing/<int:pk>/edit/", views.edit_listing, name="marketplace-edit"),
     path("listing/<int:pk>/delete/", views.delete_listing, name="marketplace-delete"),
+    path("<int:pk>/", views.listing_detail, name="marketplace-detail"),
 ]
