@@ -8,13 +8,6 @@ class MultipleFileInput(forms.ClearableFileInput):
 
 
 class ListingCreateForm(forms.ModelForm):
-    images = forms.FileField(
-        widget=MultipleFileInput(attrs={"multiple": True}),
-        required=False,
-        label="Item photos",
-    )
-
     class Meta:
         model = Listing
-        exclude = ["seller"]
-        fields = ["title", "description", "price", "category",  "status"] #add 
+        fields = ["title", "description", "price", "category", "status"]

@@ -30,33 +30,38 @@ def buy_marketplace(request):
 
 @login_required
 def sell_marketplace(request):
-    """
-    Seller-facing page:
-    - form to create a new listing
-    - list of this user's existing listings
-    """
     if request.method == "POST":
+        # IMPORTANT: pass request.FILES
         form = ListingCreateForm(request.POST, request.FILES)
         if form.is_valid():
+            # Save the listing first
             listing = form.save(commit=False)
             listing.seller = request.user
             listing.save()
 
-            # handle multiple images
-            for img in request.FILES.getlist("images"):
-                ListingImage.objects.create(listing=listing, image=img)
+            # Save each uploaded image as a ListingImage
+            # NOTE: "images" must match the name of the FileField in your form
+            for uploaded_file in request.FILES.getlist("images"):
+                ListingImage.objects.create(
+                    listing=listing,
+                    image=uploaded_file,
+                )
 
+            messages.success(request, "Listing created!")
             return redirect("marketplace-sell")
     else:
         form = ListingCreateForm()
 
-    user_listings = Listing.objects.filter(seller=request.user).order_by("-created_at")
+    user_listings = Listing.objects.filter(
+        seller=request.user
+    ).order_by("-created_at")
 
     return render(
         request,
         "marketplace/sell.html",
         {"form": form, "user_listings": user_listings},
     )
+
 
 @login_required
 def edit_listing(request, pk):
