@@ -17,4 +17,4 @@ class ListingCreateForm(forms.ModelForm):
     class Meta:
         model = Listing
         exclude = ["seller"]
-        fields = ["title", "description", "price", "category"]
+        fields = ["title", "description", "price", "category",  "status"] #add 

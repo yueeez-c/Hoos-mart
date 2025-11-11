@@ -28,13 +28,43 @@
                 <img src="{{ first_image.image.url }}" class="card-img-top" alt="{{ listing.title }}">
               {% endif %}
             {% endwith %}
-            <div class="card-body">
+
+            <div class="card-body d-flex flex-column">
               <h5 class="card-title">{{ listing.title }}</h5>
               <p class="card-text mb-1"><strong>${{ listing.price }}</strong></p>
+
               <p class="card-text mb-1">
-                <small class="text-muted">{{ listing.get_category_display }}</small>
+                <small class="text-muted">
+                  Category: {{ listing.get_category_display }}
+                </small>
               </p>
-              <p class="card-text text-truncate">{{ listing.description }}</p>
+
+              <p class="card-text mb-2">
+                <small class="text-muted">
+                  Status: {{ listing.get_status_display }}
+                </small>
+              </p>
+
+              <p class="card-text text-truncate mb-3">
+                {{ listing.description }}
+              </p>
+
+              <!-- Action buttons -->
+              <div class="mt-auto d-flex gap-2">
+                <a href="{% url 'marketplace-edit' listing.id %}"
+                   class="btn btn-sm btn-secondary">
+                  Edit
+                </a>
+
+                <form method="post"
+                      action="{% url 'marketplace-delete' listing.id %}"
+                      class="d-inline">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-danger">
+                    Delete
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>

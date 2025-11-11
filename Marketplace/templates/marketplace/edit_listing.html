@@ -1,0 +1,21 @@
+{% extends "home/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1>Edit listing: {{ listing.title }}</h1>
+
+  <form method="post" enctype="multipart/form-data" class="mb-3">
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <button class="btn btn-primary" type="submit">Save changes</button>
+    <a href="{% url 'marketplace-sell' %}" class="btn btn-secondary">Back to your listings</a>
+  </form>
+
+  <p class="text-muted">
+    Current status: <strong>{{ listing.get_status_display }}</strong>
+  </p>
+</div>
+{% endblock %}

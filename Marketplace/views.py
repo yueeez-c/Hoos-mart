@@ -1,6 +1,8 @@
 # Marketplace/views.py
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
+from django.contrib import messages
 
 from .forms import ListingCreateForm
 from .models import Listing, ListingImage
@@ -55,6 +57,33 @@ def sell_marketplace(request):
         "marketplace/sell.html",
         {"form": form, "user_listings": user_listings},
     )
+
+@login_required
+def edit_listing(request, pk):
+    listing = get_object_or_404(Listing, pk=pk, seller=request.user)
+
+    if request.method == "POST":
+        form = ListingCreateForm(request.POST, request.FILES, instance=listing)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Listing updated.")
+            return redirect("marketplace-sell")  # back to your “sell” page
+    else:
+        form = ListingCreateForm(instance=listing)
+
+    return render(
+        request,
+        "marketplace/edit_listing.html",
+        {"form": form, "listing": listing},
+    )
+
+@login_required
+@require_POST
+def delete_listing(request, pk):
+    listing = get_object_or_404(Listing, pk=pk, seller=request.user)
+    listing.delete()
+    messages.success(request, "Listing deleted.")
+    return redirect("marketplace-sell")
 
 
 def listing_detail(request, pk):
