@@ -7,5 +7,6 @@ urlpatterns = [
     path("users/", views.user_list, name="user_list"),
     path("chat/", views.chat_entry, name="chat_entry"),
     path("chat/<int:other_user_id>/", views.chat_view, name="chat"),
+    path("chat/<int:user_id>/", views.chat_view, name="chat"),
     path("login_required/", views.login_required_view, name="login_required"),
 ]

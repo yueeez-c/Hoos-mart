@@ -1,8 +1,10 @@
+#messaging/views
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import Message
+from .models import Message, Thread
 from django.db.models import Q
+from Marketplace.models import Listing
 
 User = get_user_model()
 
@@ -15,34 +17,40 @@ def user_list(request):
     return render(request, "messaging/user_list.html", {"users": users})
 
 @login_required
-@login_required
 def chat_view(request, other_user_id):
-    if other_user_id == request.user.id:
-        return redirect("messaging:user_list")
+    other_user = get_object_or_404(User, pk=other_user_id)
 
-    other = get_object_or_404(User, id=other_user_id)
-
-    # NEW: optional reference to a listing
-    listing_id = request.GET.get("listing_id")
     listing = None
+    listing_id = request.GET.get("listing_id")
     if listing_id:
-        from Marketplace.models import Listing
-        listing = Listing.objects.filter(id=listing_id).first()
+        listing = Listing.objects.filter(pk=listing_id).prefetch_related("images").first()
 
-    msgs = (
+    # Find an existing thread that has *both* participants
+    thread = (
+        Thread.objects
+        .filter(participants=request.user)
+        .filter(participants=other_user)
+        .distinct()
+        .first()
+    )
+    if not thread:
+        thread = Thread.objects.create()
+        thread.participants.add(request.user, other_user)
+
+    # Load messages for this thread
+    messages_qs = (
         Message.objects
-        .filter(Q(sender=request.user, receiver=other) | Q(sender=other, receiver=request.user))
-        .select_related("sender", "receiver")
-        .order_by("timestamp")[:100]
+        .filter(thread=thread)
+        .select_related("sender", "thread")
+        .order_by("created_at")
     )
 
-    context = {
-        "other_user": other,
-        "chat_messages": msgs,
-        "listing": listing,  # pass this to template
-    }
-
-    return render(request, "messaging/chat.html", context)
+    return render(request, "messaging/chat.html", {
+        "other_user": other_user,   # matches your template
+        "listing": listing,         # for the banner and pinned line
+        "chat_messages": messages_qs,    # used in the included chat_messages.html
+        "thread": thread,           # handy if you need it in JS later
+    })
 
 @login_required
 def chat_entry(request):
