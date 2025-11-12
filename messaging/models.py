@@ -67,15 +67,6 @@ from django.db import models
 from django.conf import settings
 
 class Thread(models.Model):
-    # OLD field (no through here!)
-    participants = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        through="ThreadParticipant",
-        related_name="threads",
-        blank=True,
-   )
-
-
     # NEW field with through
     participants_new = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
