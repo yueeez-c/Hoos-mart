@@ -1,0 +1,46 @@
+{% extends "home/base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h1 class="mb-3">Messages</h1>
+
+  {% if threads %}
+    <ul class="list-group">
+      {% for t in threads %}
+        {% with is_unread=t.unread_count|default:0 %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            {# show the other participant's name (first non-you username) #}
+            {% with names=t.participants.all %}
+              {% for u in names %}
+                {% if u.id != request.user.id %}
+                  <a href="{% url 'messaging:chat' u.id %}" class="text-decoration-none">
+                    <span class="{% if is_unread %}font-weight-bold{% endif %}">
+                      {{ u.username }}
+                    </span>
+                  </a>
+                  {% break %}
+                {% endif %}
+              {% endfor %}
+            {% endwith %}
+            <div class="small text-muted">
+              {% if t.last_msg_sender %}{{ t.last_msg_sender }}: {% endif %}
+              {{ t.last_msg_text|default:"(no messages yet)"|truncatechars:60 }}
+            </div>
+          </div>
+          <div class="text-right">
+            {% if is_unread %}
+              <span class="badge badge-primary">{{ t.unread_count }}</span>
+            {% endif %}
+            {% if t.last_msg_time %}
+              <div class="small text-muted">{{ t.last_msg_time|date:"m/d/Y P" }}</div>
+            {% endif %}
+          </div>
+        </li>
+        {% endwith %}
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-muted">No conversations yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

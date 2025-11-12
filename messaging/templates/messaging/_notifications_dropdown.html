@@ -1,0 +1,17 @@
+{# templates/messaging/_notifications_dropdown.html #}
+{% if notifs %}
+  <ul class="list-group list-group-flush">
+    {% for n in notifs %}
+      <li class="list-group-item {% if not n.is_read %}bg-light{% endif %}">
+        <a class="text-decoration-none d-block"
+           href="{% url 'messaging:chat' n.thread.participants.exclude(id=request.user.id).first.id %}?listing_id={{ n.message.listing.id }}">
+          <strong>{{ n.message.sender.get_username }}</strong> {{ n.verb }}
+          <div class="small text-muted">{{ n.created_at|date:"m/d/Y P" }}</div>
+          <div class="text-truncate">{{ n.message.text }}</div>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <div class="p-3 text-muted small">No notifications.</div>
+{% endif %}
