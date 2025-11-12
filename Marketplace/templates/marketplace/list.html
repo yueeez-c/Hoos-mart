@@ -1,15 +1,67 @@
 {% extends "home/base.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 <div class="container mt-4">
   <h1 class="mb-3">Marketplace</h1>
 
-  <!-- Optional: search/filter bar placeholder -->
-  <form method="get" class="mb-3 d-flex gap-2">
-    <input type="text" name="q" class="form-control" placeholder="Search items...">
-    <button class="btn btn-primary" type="submit">Search</button>
+
+  <!-- Filter / Search Bar -->
+  <form method="get" class="row g-2 align-items-end mb-3">
+    <div class="col-12 col-md-4">
+      {{ form.q }}
+    </div>
+
+    <div class="col-6 col-md-3">
+      {{ form.category }}
+    </div>
+
+    {% if form.fields.min_price %}
+    <div class="col-3 col-md-2">
+      <label class="form-label">Min $</label>
+      {{ form.min_price|as_crispy_field }}
+    </div>
+    {% endif %}
+
+    {% if form.fields.max_price %}
+    <div class="col-3 col-md-2">
+      <label class="form-label">Max $</label>
+      {{ form.max_price|as_crispy_field }}
+    </div>
+    {% endif %}
+
+    {% if form.fields.condition %}
+    <div class="col-6 col-md-3">
+      {{ form.condition }}
+    </div>
+    {% endif %}
+
+    <div class="col-6 col-md-3">
+      {{ form.sort }}
+    </div>
+
+    <div class="col-12 col-md-2 d-grid">
+      <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+    <div class="col-12 col-md-2 d-grid">
+      <a href="{% url 'marketplace-list' %}" class="btn btn-outline-secondary">Clear</a>
+    </div>
   </form>
 
+  <!-- Active filter chips -->
+  {% if request.GET.q or request.GET.category or request.GET.min_price or request.GET.max_price or request.GET.condition %}
+    <div class="mb-3">
+      <small class="text-muted">Filters:</small>
+      <div>
+        {% if request.GET.q %}<span class="badge bg-light text-dark me-1">q: "{{ request.GET.q }}"</span>{% endif %}
+        {% if request.GET.category %}<span class="badge bg-light text-dark me-1">category: {{ request.GET.category }}</span>{% endif %}
+        {% if request.GET.min_price %}<span class="badge bg-light text-dark me-1">min: ${{ request.GET.min_price }}</span>{% endif %}
+        {% if request.GET.max_price %}<span class="badge bg-light text-dark me-1">max: ${{ request.GET.max_price }}</span>{% endif %}
+        {% if request.GET.condition %}<span class="badge bg-light text-dark me-1">condition: {{ request.GET.condition }}</span>{% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Listing Grid -->
   <div class="row">
     {% for item in listings %}
       <div class="col-md-4 mb-4">

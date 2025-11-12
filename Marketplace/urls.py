@@ -8,4 +8,6 @@ urlpatterns = [
     path("listing/<int:pk>/edit/", views.edit_listing, name="marketplace-edit"),
     path("listing/<int:pk>/delete/", views.delete_listing, name="marketplace-delete"),
     path("<int:pk>/", views.listing_detail, name="marketplace-detail"),
+    path("", views.listing_list, name="marketplace-list"),
+    path("<int:pk>/", views.listing_detail, name="marketplace-detail"),
 ]
