@@ -108,34 +108,56 @@ def conversations_list(request):
 def chat_view(request, other_user_id):
     other_user = get_object_or_404(User, pk=other_user_id)
 
-    # Optional listing context
+    # Optional listing context from querystring
     listing = None
     listing_id = request.GET.get("listing_id")
     if listing_id:
-        listing = Listing.objects.filter(pk=listing_id).prefetch_related("images").first()
+        listing = (
+            Listing.objects
+            .filter(pk=listing_id)
+            .prefetch_related("images")
+            .first()
+        )
 
-    # Find existing thread with exactly these two users
-    thread_qs = (
+    # Base: threads that have exactly these two users
+    base_qs = (
         Thread.objects
         .filter(thread_participants__user__in=[request.user, other_user])
         .annotate(num_participants=Count("thread_participants", distinct=True))
         .filter(num_participants=2)
+        .distinct()
     )
 
+    # If we came from a listing, stay within that listing
     if listing:
-        thread_qs = thread_qs.filter(context_listing=listing)
+        thread_qs = base_qs.filter(context_listing=listing)
     else:
-        thread_qs = thread_qs.filter(context_listing__isnull=True)
+        # No listing specified: pick the *latest* thread between these 2 users
+        thread_qs = base_qs.annotate(
+            last_msg=Max("messages__created_at")
+        ).order_by("-last_msg", "-created_at")
 
     thread = thread_qs.first()
 
-    # If none exists, create one + participants
+    # If none exists, create one (with or without listing)
     if thread is None:
         thread = Thread.objects.create(context_listing=listing)
         ThreadParticipant.objects.bulk_create([
             ThreadParticipant(thread=thread, user=request.user),
             ThreadParticipant(thread=thread, user=other_user),
         ])
+
+    # If we didn't come in with a listing, but this thread has one,
+    # use it so the template can show "chatting about X"
+    if listing is None:
+        listing = thread.context_listing
+
+    # ---- Mark notifications for this thread as read ----
+    Notification.objects.filter(
+        user=request.user,
+        thread=thread,
+        is_read=False
+    ).update(is_read=True)
 
     # Messages for THIS thread
     messages_qs = (
@@ -145,14 +167,7 @@ def chat_view(request, other_user_id):
         .order_by("created_at")
     )
 
-    # 🔴 mark notifications for this thread as read for the current user
-    Notification.objects.filter(
-        user=request.user,
-        thread=thread,
-        is_read=False,
-    ).update(is_read=True)
-
-    # Sidebar threads list (optional – you can keep or later refactor)
+    # Sidebar threads list (optional)
     threads = (
         Thread.objects
         .filter(thread_participants__user=request.user)
@@ -168,6 +183,35 @@ def chat_view(request, other_user_id):
         "threads": threads,
         "thread": thread,
     })
+
+
+@login_required
+def message_seller_from_listing(request, listing_id):
+    listing = get_object_or_404(Listing, pk=listing_id)
+    seller = listing.seller  # adjust field name if different
+    buyer = request.user
+
+    # 1. Get or create thread with this listing + these two people
+    thread, created = Thread.objects.get_or_create(
+        context_listing=listing
+    )
+
+    # 2. Ensure BOTH people are ThreadParticipants
+    ThreadParticipant.objects.get_or_create(thread=thread, user=buyer)
+    ThreadParticipant.objects.get_or_create(thread=thread, user=seller)
+
+    if request.method == "POST":
+        text = request.POST.get("text", "").strip()
+        if text:
+            msg = Message.objects.create(
+                thread=thread,
+                sender=buyer,
+                text=text,
+            )
+            # your notification logic here
+
+    # then redirect to your chat view for this thread
+    return redirect("messaging:chat", other_user_id=seller.id)
 
 @login_required
 def chat_entry(request):
@@ -192,7 +236,17 @@ def notifications_mark_all_read(request):
 
 @login_required
 def notifications_unread_count(request):
-    count = Notification.objects.filter(user=request.user, is_read=False).count()
+    count = (
+        Notification.objects
+        .filter(
+            user=request.user,
+            is_read=False,
+            thread__thread_participants__user=request.user,  # 👈 ensure you're in that thread
+        )
+        .distinct()
+        .count()
+    )
+
     return JsonResponse({"count": count})
 
 
