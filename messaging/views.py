@@ -114,42 +114,28 @@ def chat_view(request, other_user_id):
     if listing_id:
         listing = Listing.objects.filter(pk=listing_id).prefetch_related("images").first()
 
-    # Threads that include BOTH request.user AND other_user
-    base_qs = Thread.objects.filter(
-        thread_participants__user__in=[request.user, other_user]
+    # Find existing thread with exactly these two users
+    thread_qs = (
+        Thread.objects
+        .filter(thread_participants__user__in=[request.user, other_user])
+        .annotate(num_participants=Count("thread_participants", distinct=True))
+        .filter(num_participants=2)
     )
 
-    # Restrict by listing context
     if listing:
-        base_qs = base_qs.filter(context_listing=listing)
+        thread_qs = thread_qs.filter(context_listing=listing)
     else:
-        base_qs = base_qs.filter(context_listing__isnull=True)
+        thread_qs = thread_qs.filter(context_listing__isnull=True)
 
-    # Only keep threads where **both** users are present
-    base_qs = base_qs.annotate(
-        participant_matches=Count(
-            "thread_participants",
-            filter=Q(thread_participants__user__in=[request.user, other_user]),
-            distinct=True,
-        )
-    ).filter(participant_matches=2)
+    thread = thread_qs.first()
 
-    # Pick the most recent thread between these two users
-    thread = (
-        base_qs
-        .annotate(last_msg=Max("messages__created_at"))
-        .order_by("-last_msg", "-created_at")
-        .first()
-    )
-
-    # If none exists, create a new one
+    # If none exists, create one + participants
     if thread is None:
         thread = Thread.objects.create(context_listing=listing)
         ThreadParticipant.objects.bulk_create([
             ThreadParticipant(thread=thread, user=request.user),
-            ThreadParticipant(thread=thread, user=other_user), 
+            ThreadParticipant(thread=thread, user=other_user),
         ])
-
 
     # Messages for THIS thread
     messages_qs = (
@@ -159,7 +145,14 @@ def chat_view(request, other_user_id):
         .order_by("created_at")
     )
 
-    # Sidebar threads list (can keep as-is, or later reuse your conversations_list logic)
+    # 🔴 mark notifications for this thread as read for the current user
+    Notification.objects.filter(
+        user=request.user,
+        thread=thread,
+        is_read=False,
+    ).update(is_read=True)
+
+    # Sidebar threads list (optional – you can keep or later refactor)
     threads = (
         Thread.objects
         .filter(thread_participants__user=request.user)
