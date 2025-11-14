@@ -1,0 +1,3 @@
+psycopg2-binary==2.9.11
+# force django-heroku to use binary version
+psycopg2==2.9.11

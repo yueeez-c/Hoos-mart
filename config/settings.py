@@ -1,8 +1,6 @@
 import os
-import django_heroku
 import dj_database_url
 from pathlib import Path
-from dotenv import load_dotenv
 
 REDIS_URL = os.environ.get("REDIS_URL")
 if REDIS_URL:
@@ -43,7 +41,7 @@ INSTALLED_APPS = [
     "home.apps.HomeConfig",
     "user.apps.UserConfig",
     "messaging.apps.MessagingConfig",
-    'Marketplace',
+    'marketplace.apps.MarketplaceConfig',
     "crispy_forms",
     "channels",
     'crispy_bootstrap4',
@@ -140,9 +138,6 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# Activate Django-Heroku settings
-django_heroku.settings(locals(),databases=False)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'app-home'
