@@ -14,10 +14,23 @@ class Listing(models.Model):
         ("other", "Other"),
     ]
 
+    STATUS_CHOICES = [
+        ("available", "Available"),
+        ("sold", "Sold"),
+        ("pending", "Pending"),
+    ]
+
+    
+
     title = models.CharField(max_length=120)
     description = models.TextField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
     category = models.CharField(max_length=30, choices=CATEGORY_CHOICES)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="available",
+    )
 
     seller = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listings"

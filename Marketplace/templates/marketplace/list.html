@@ -1,43 +1,121 @@
 {% extends "home/base.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 <div class="container mt-4">
   <h1 class="mb-3">Marketplace</h1>
 
-  <!-- Optional: search/filter bar placeholder -->
-  <form method="get" class="mb-3 d-flex gap-2">
-    <input type="text" name="q" class="form-control" placeholder="Search items...">
-    <button class="btn btn-primary" type="submit">Search</button>
+
+  <!-- Filter / Search Bar -->
+  <form method="get" class="row g-2 align-items-end mb-3">
+    <div class="col-12 col-md-4">
+      {{ form.q }}
+    </div>
+
+    <div class="col-6 col-md-3">
+      {{ form.category }}
+    </div>
+
+    {% if form.fields.min_price %}
+    <div class="col-3 col-md-2">
+      <label class="form-label">Min $</label>
+      {{ form.min_price|as_crispy_field }}
+    </div>
+    {% endif %}
+
+    {% if form.fields.max_price %}
+    <div class="col-3 col-md-2">
+      <label class="form-label">Max $</label>
+      {{ form.max_price|as_crispy_field }}
+    </div>
+    {% endif %}
+
+    {% if form.fields.condition %}
+    <div class="col-6 col-md-3">
+      {{ form.condition }}
+    </div>
+    {% endif %}
+
+    <div class="col-6 col-md-3">
+      {{ form.sort }}
+    </div>
+
+    <div class="col-12 col-md-2 d-grid">
+      <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+    <div class="col-12 col-md-2 d-grid">
+      <a href="{% url 'marketplace-list' %}" class="btn btn-outline-secondary">Clear</a>
+    </div>
   </form>
 
+  <!-- Active filter chips -->
+  {% if request.GET.q or request.GET.category or request.GET.min_price or request.GET.max_price or request.GET.condition %}
+    <div class="mb-3">
+      <small class="text-muted">Filters:</small>
+      <div>
+        {% if request.GET.q %}<span class="badge bg-light text-dark me-1">q: "{{ request.GET.q }}"</span>{% endif %}
+        {% if request.GET.category %}<span class="badge bg-light text-dark me-1">category: {{ request.GET.category }}</span>{% endif %}
+        {% if request.GET.min_price %}<span class="badge bg-light text-dark me-1">min: ${{ request.GET.min_price }}</span>{% endif %}
+        {% if request.GET.max_price %}<span class="badge bg-light text-dark me-1">max: ${{ request.GET.max_price }}</span>{% endif %}
+        {% if request.GET.condition %}<span class="badge bg-light text-dark me-1">condition: {{ request.GET.condition }}</span>{% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Listing Grid -->
   <div class="row">
     {% for item in listings %}
       <div class="col-md-4 mb-4">
-        <div class="card h-100">
-          {% if item.image %}
-            <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.title }}">
-          {% endif %}
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">{{ item.title }}</h5>
-            <p class="card-text mb-1"><strong>${{ item.price }}</strong></p>
+        <a href="{% url 'marketplace-detail' item.id %}" class="text-decoration-none text-dark">
+          <div class="card h-100">
+            {% with first_image=item.images.first %}
+              {% if first_image %}
+                <img src="{{ first_image.image.url }}" class="card-img-top" alt="{{ item.title }}">
+              {% endif %}
+            {% endwith %}
 
-            <p class="card-text text-muted mb-1">
-              Seller:
-              {{ item.seller.profile.nickname|default:item.seller.get_full_name }}
-            </p>
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ item.title }}</h5>
 
-            <p class="card-text text-truncate">
-              {{ item.description }}
-            </p>
+              <p class="card-text mb-1">
+                <strong>${{ item.price }}</strong>
+              </p>
 
-            <a href="{% url 'listing-detail' item.pk %}" class="mt-auto btn btn-outline-primary btn-sm">
-              View details
-            </a>
+              <p class="card-text mb-1">
+                <small class="text-muted">Category: {{ item.get_category_display }}</small>
+              </p>
+
+              <p class="card-text mb-1">
+                <small class="text-muted">Status: {{ item.get_status_display }}</small>
+              </p>
+
+              <p class="card-text text-truncate mb-2">{{ item.description }}</p>
+              <p class="card-text mb-2"><small class="text-muted">Seller: {{ item.seller }}</small></p>
+
+              <div class="mt-auto">
+                {% if user.is_authenticated %}
+                  {% if item.seller == user %}
+                    <span class="badge bg-secondary">Your listing</span>
+                  {% else %}
+                    <a
+                      href="{% url 'messaging:chat' item.seller.id %}?listing_id={{ item.id }}"
+                      class="btn btn-sm btn-outline-primary"
+                      onclick="event.stopPropagation()"
+                    >
+                      Message seller
+                    </a>
+                  {% endif %}
+                {% else %}
+                  <a href="{% url 'login' %}" class="btn btn-sm btn-outline-primary" onclick="event.stopPropagation()">
+                    Log in to message seller
+                  </a>
+                {% endif %}
+              </div>
+            </div>
           </div>
-        </div>
+        </a>
       </div>
     {% empty %}
-      <p>No items listed yet. Be the first to post something!</p>
+      <p>No listings found.</p>
     {% endfor %}
   </div>
 </div>

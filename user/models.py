@@ -13,8 +13,9 @@ def user_directory_path(instance, filename):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    image = models.ImageField(default='profile_pics/default.jpg', upload_to='profile_pics')
     info = models.TextField(blank=True, null=True, default='')
+    is_verified = models.BooleanField(default=False)
     is_student = models.BooleanField(default=False)
 
     def __str__(self):

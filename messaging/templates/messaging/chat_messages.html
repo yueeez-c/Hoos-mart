@@ -1,9 +1,23 @@
-{# iterate chat_messages now, not messages #}
-{% for m in chat_messages %}
-  <p>
-    <b>{% if m.sender_id == request.user.id %}You{% else %}{{ m.sender.username }}{% endif %}:</b>
-    {{ m.content|linebreaksbr }}
-  </p>
-{% empty %}
-  <p id="empty-state" class="text-muted m-0">No messages yet — say hi!</p>
-{% endfor %}
+{# messaging/chat_messages.html #}
+{% if messages %}
+  {% for m in messages %}
+    {% if m.is_system %}
+      <div class="text-center small text-muted my-2">
+        {{ m.text|linebreaksbr }}
+        {% if m.listing %}
+          (<a href="{% url 'marketplace-detail' m.listing.id %}">{{ m.listing.title }}</a>)
+        {% endif %}
+      </div>
+    {% else %}
+      <p>
+        <strong>
+          {% if m.sender_id == request.user.id %}You{% else %}{{ m.sender.get_username }}{% endif %}:
+        </strong>
+        {{ m.text|linebreaksbr }}
+        <span class="text-muted small">{{ m.created_at|date:"m/d/Y P" }}</span>
+      </p>
+    {% endif %}
+  {% endfor %}
+{% else %}
+  <div id="empty-state" class="text-muted text-center small">No messages yet.</div>
+{% endif %}

@@ -1,84 +1,109 @@
-{%load static%}
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-	<!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{%static 'home/main.css' %}">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        crossorigin="anonymous">
 
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
+  <link rel="stylesheet" href="{% static 'home/main.css' %}">
+  <title>{% block title %}APP NAME{% endblock %}</title>
 </head>
+
 <body>
+<header class="site-header">
+  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+    <div class="container">
+      <a class="navbar-brand mr-4" href="/">APP NAME</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse"
+              data-target="#navbarToggle">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-		<header class="site-header">
-		  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-		    <div class="container">
-		      <a class="navbar-brand mr-4" href="/">APP NAME</a>
-		      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-		      <span class="navbar-toggler-icon"></span>
-		      </button>
-		      <div class="collapse navbar-collapse" id="navbarToggle">
-		        <div class="navbar-nav mr-auto">
-		          <a class="nav-item nav-link" href="{%url 'app-home'%}">Home</a>
-		          <a class="nav-item nav-link" href="{%url 'home-about'%}">About</a>
-				  <a class="nav-item nav-link" href="{% url 'marketplace-buy' %}">Buy</a>
-				  <a class="nav-item nav-link" href="{% url 'marketplace-sell' %}">Sell</a>
+      <div class="collapse navbar-collapse" id="navbarToggle">
+        <!-- Left side -->
+        <div class="navbar-nav mr-auto">
+          <a class="nav-item nav-link" href="{% url 'app-home' %}">Home</a>
+          <a class="nav-item nav-link" href="{% url 'home-about' %}">About</a>
+          <a class="nav-item nav-link" href="{% url 'marketplace-buy' %}">Buy</a>
+          <a class="nav-item nav-link" href="{% url 'marketplace-sell' %}">Sell</a>
 
-				  <!-- messages can really only be accessed for users after login -->
-				  {% if user.is_authenticated %}
-				    <a class="nav-link" href="{% url 'messaging:user_list' %}">Messages</a>
-				  {% else %}
-					<a class="nav-link" href="{% url 'messaging:login_required' %}">Messages</a>
-				  {% endif %}
+          {% if user.is_authenticated %}
+            <a class="nav-item nav-link" href="{% url 'messaging:contacts' %}">Contacts</a>
 
-		        </div>
-		        <!-- Navbar Right Side -->
-		        <div class="navbar-nav">
-				    {% if user.is_authenticated %}
-				        <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'messaging:conversations' %}">
+                Messages
+                <span id="messages-unread" class="badge badge-danger d-none">0</span>
+              </a>
+            </li>
+          {% endif %}
+        </div>
 
-				        <form method="POST" action="{% url 'logout' %}" class="nav-item">
-						    {% csrf_token %}
-						    <button type="submit" class="btn btn-link nav-link" style="padding: 0; margin: 0;">
-						        Log out
-						    </button>
-						</form>
+        <!-- Right side -->
+        <div class="navbar-nav">
+          {% if user.is_authenticated %}
+            <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
 
+            <form method="POST" action="{% url 'logout' %}" class="nav-item">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-link nav-link p-0 m-0">Log out</button>
+            </form>
+          {% else %}
+            <a class="nav-item nav-link" href="{% url 'messaging:login_required' %}">Messages</a>
+            <a class="nav-item nav-link" href="{% url 'login' %}">Log in</a>
+            <a class="nav-item nav-link" href="{% url 'account_signup' %}">Sign up</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
 
-				    {% else %}
-				        <a class="nav-item nav-link" href="{% url 'login' %}">Log in</a>
-				        <a class="nav-item nav-link" href="{% url 'signup' %}">Sign up</a>
-				    {% endif %}
-				</div>
+<main class="container" style="padding-top: 80px;">
+  {% block content %}{% endblock %}
+</main>
 
-		      </div>
-		    </div>
-		  </nav>
-		</header>
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
 
-		<div class="container">
-			<div class="col-md-8">
-				{%if messages%}
-					{%for message in messages%}
-						<div class="alert alert-{{message.tags}}">
-							{{message}}
-						</div>
-					{%endfor%}	
-				{%endif%}
-			</div>
-		{% block content %}{% endblock%}
-	 	</div>
+{% if user.is_authenticated %}
+<script>
+  function refreshMessagesBadge() {
+    fetch("{% url 'messaging:notifications-unread-count' %}", {
+      credentials: "same-origin"
+    })
+      .then(response => response.json())
+      .then(data => {
+        const badge = document.getElementById("messages-unread");
+        if (!badge) return;
 
-		 <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        const count = data.count || 0;
+
+        if (count > 0) {
+          badge.textContent = count;
+          badge.classList.remove("d-none");
+        } else {
+          badge.classList.add("d-none");
+        }
+      })
+      .catch(err => console.error("Error fetching unread count:", err));
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    refreshMessagesBadge();
+    setInterval(refreshMessagesBadge, 10000);
+  });
+</script>
+{% endif %}
+
+<!-- Extra per-page scripts -->
+{% block extra_scripts %}{% endblock %}
+
 </body>
 </html>

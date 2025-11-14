@@ -1,3 +1,4 @@
+from django.contrib.auth import logout
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -54,6 +55,21 @@ def profile(request):
         'profile': profile
     }
     return render(request, 'user/profile.html', context)
+@login_required
+def delete_profile(request):
+    if request.method == "POST":
+        user = request.user
+        # Remove profile image if not default
+        if hasattr(user, "profile"):
+            img = user.profile.image
+            if img and img.name != "profile_pics/default.jpg":
+                img.delete(save=False)
+
+        logout(request)
+        user.delete()
+        return redirect("/?deleted=1")
+
+    return redirect("profile")
 
 @login_required 
 def s3_demo(request):

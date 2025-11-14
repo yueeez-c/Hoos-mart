@@ -1,10 +1,36 @@
+{# messaging/chat.html #}
 {% extends "home/base.html" %}
 {% block content %}
+{% if listing %}
+<div class="alert alert-info d-flex align-items-center mb-3">
+  {% with first_image=listing.images.first %}
+    {% if first_image %}
+      <img src="{{ first_image.image.url }}" alt="{{ listing.title }}"
+           style="width:60px;height:60px;object-fit:cover;margin-right:10px;">
+    {% endif %}
+  {% endwith %}
+  <div>
+    <strong>You're asking about:</strong> {{ listing.title }} — ${{ listing.price }}<br>
+    <small>{{ listing.get_category_display }}</small>
+  </div>
+</div>
+{% endif %}
+
 <div class="container mt-4">
   <h2>Messages</h2>
-    <h5 class="text-muted">Chatting with {{ other_user.get_username }}</h5>
-  <div id="chat-log" class="border p-3" style="height:300px; overflow-y:auto;"> 
-    {% include "messaging/chat_messages.html" %} 
+  <h5 class="text-muted">Chatting with {{ other_user.get_username }}</h5>
+
+  <div id="chat-log" class="border p-3" style="height:300px; overflow-y:auto;">
+    {% if listing %}
+      <div class="text-center small text-muted mb-2" id="context-line">
+        You are messaging about
+        <a href="{% url 'marketplace-detail' listing.id %}">{{ listing.title }}</a>.
+      </div>
+      <hr class="mt-0 mb-2">
+    {% endif %}
+
+    {# IMPORTANT: pass only the messages context and avoid recursion #}
+    {% include "messaging/chat_messages.html" with messages=chat_messages only %}
   </div>
 
   <div class="input-group mt-3">
@@ -15,9 +41,8 @@
 
 <script>
   const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-  const otherId  = "{{ other_user.id }}";
-  const me       = "{{ request.user.username|escapejs }}";
-  const socket   = new WebSocket(`${protocol}://${window.location.host}/ws/dm/${otherId}/`);
+  const threadId = "{{ thread.id }}";
+  const socket   = new WebSocket(`${protocol}://${window.location.host}/ws/dm/${threadId}/`);
 
   const log = document.getElementById("chat-log");
   const clearEmpty = () => { const e = document.getElementById("empty-state"); if (e) e.remove(); };
@@ -30,29 +55,23 @@
   socket.addEventListener("message", (e) => {
     try {
       const data = JSON.parse(e.data || "{}");
-      const who = data.sender === me ? "You" : (data.sender || "User");
+      const who = data.sender_id === {{ request.user.id }} ? "You" : "{{ other_user.username|escapejs }}";
       appendLine(who, data.message || "");
-    } catch (err) {
-      console.error("Bad WS payload:", e.data, err);
-    }
+    } catch (err) { console.error("Bad WS payload:", e.data, err); }
   });
 
   const input  = document.getElementById("chat-message-input");
   const button = document.getElementById("chat-message-submit");
-
   const sendMsg = () => {
     const msg = (input.value || "").trim();
     if (!msg || socket.readyState !== WebSocket.OPEN) return;
     socket.send(JSON.stringify({ message: msg }));
     input.value = "";
   };
-
   button.addEventListener("click", sendMsg);
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMsg(); }
   });
-
-  // keep scrolled to bottom on first paint
   document.addEventListener("DOMContentLoaded", () => { log.scrollTop = log.scrollHeight; });
 </script>
 {% endblock %}

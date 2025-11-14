@@ -1,12 +1,49 @@
+# messaging/models.py
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
+
+class Thread(models.Model):
+    participants = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        through="ThreadParticipant",
+        related_name="threads",
+        blank=True,
+    )
+    context_listing = models.ForeignKey(
+        'Marketplace.Listing', null=True, blank=True,
+        on_delete=models.SET_NULL, related_name='message_threads'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class ThreadParticipant(models.Model):
+    thread = models.ForeignKey("Thread", on_delete=models.CASCADE, related_name="thread_participants")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="thread_participants")
+    unread_count = models.PositiveIntegerField(default=0)
+    last_seen = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ("thread", "user")
+        indexes = [
+            models.Index(fields=["user"]),
+            models.Index(fields=["thread"]),
+        ]
 
 class Message(models.Model):
-    sender = models.ForeignKey(User, related_name="sent_messages", on_delete=models.CASCADE, default=1)
-    receiver = models.ForeignKey(User, related_name="received_messages", on_delete=models.CASCADE, default=1)
-    content = models.TextField(default='')
-    timestamp = models.DateTimeField(auto_now_add=True)
-    def __str__(self): 
-        return f'{self.sender}: {self.content}'
+    thread = models.ForeignKey('messaging.Thread', on_delete=models.CASCADE, related_name='messages')
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    text = models.TextField(blank=True)
+    listing = models.ForeignKey('Marketplace.Listing', null=True, blank=True, on_delete=models.SET_NULL)
+    is_system = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-# Create your models here.
+class Notification(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="notifications")
+    thread = models.ForeignKey('messaging.Thread', on_delete=models.CASCADE, null=True, blank=True)
+    message = models.ForeignKey('messaging.Message', on_delete=models.CASCADE, null=True, blank=True)
+    verb = models.CharField(max_length=120, default="sent you a message")
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [models.Index(fields=["user", "is_read", "created_at"])]
