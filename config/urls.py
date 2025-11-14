@@ -32,6 +32,7 @@ urlpatterns = [
     path("marketplace/", include("Marketplace.urls")),
     path("messaging/", include("messaging.urls")),
     path('accounts/', include('allauth.urls')),  #google auth
+    path("delete-profile/", user_views.delete_profile, name="delete_profile"),
 ] 
 
 # Serve media files in development
