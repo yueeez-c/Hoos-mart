@@ -27,11 +27,28 @@
               {% endif %}
             {% endif %}
 
-            {% if profile.is_student %}
-              <span class="badge bg-primary">🎓 Student</span>
-            {% else %}
-              <span class="badge bg-info">👤 General User</span>
+{#            {% if profile.is_student %}#}
+{#              <span class="badge bg-primary">🎓 Student</span>#}
+{#            {% else %}#}
+{#              <span class="badge bg-info">👤 General User</span>#}
+{#            {% endif %}#}
+            <p>
+              Student status:
+              {% if user.profile.is_verified %}
+                  <span class="text-success"><strong>Verified ✔</strong></span>
+              {% else %}
+                  <span class="text-danger"><strong>Not Verified ✖</strong></span>
+              {% endif %}
+            </p>
+            {% if not user.profile.is_verified %}
+                <form method="POST" action="{% url 'account_email' %}">
+                    {% csrf_token %}
+                    <button class="btn btn-warning" name="action_send">
+                        Resend verification email
+                    </button>
+                </form>
             {% endif %}
+
           </div>
 
           {% if profile.info %}

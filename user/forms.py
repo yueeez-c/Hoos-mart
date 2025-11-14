@@ -3,6 +3,21 @@ from django.contrib.auth.models import User
 from .models import Profile
 from django.forms import ValidationError
 from django.db.models.fields.files import ImageFieldFile
+from allauth.account.forms import SignupForm
+from django import forms
+from user.validators import validate_school_email
+
+class CustomSignupForm(SignupForm):
+    email = forms.EmailField(required=True, label="Email")
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        validate_school_email(email)   # <-- apply validator manually
+        return email
+
+    def save(self, request):
+        user = super().save(request)
+        return user
 
 class StudentStatusForm(forms.ModelForm):
     class Meta:

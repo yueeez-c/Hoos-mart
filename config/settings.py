@@ -188,3 +188,19 @@ else:
     # Fallback to local storage for development
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     MEDIA_URL = '/media/'
+# ============================================================
+# EMAIL CONFIGURATION: Local (console) vs Heroku (SMTP)
+# ============================================================
+ACCOUNT_EMAIL_VALIDATORS = [
+    "user.validators.validate_school_email"
+]
+ACCOUNT_FORMS = {
+    "signup": "user.forms.CustomSignupForm",
+}
+
+if not DEBUG:
+    EMAIL_BACKEND = "config.resend_backend.ResendEmailBackend"
+    DEFAULT_FROM_EMAIL = "chyueez@gmail.com"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+

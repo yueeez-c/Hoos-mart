@@ -1,0 +1,30 @@
+{% extends "home/base.html"%}
+{% load crispy_forms_tags %}
+{% load socialaccount %}  {# <-- needed for provider_login_url #}
+
+{% block content %}
+		<div class="content-section">
+			<form method ="POST">
+				{% csrf_token %}
+				<fieldset class="form-group">
+					<legend class="border-bottom mb-4">Sign Up here</legend>
+					{{ form|crispy }}
+				</fieldset>
+				<div class="form-group">
+					<button class="btn btn-outline-info" type = "submit">Sign up</button>
+				</div>
+			</form>
+			<div class="border-top pt-3">
+				<small class="text-muted">
+					Already has an account? <a class="ml-2"  href="{%url 'login'%}"> Log In</a>
+				</small>
+			</div>
+			<div class="text-center my-3">
+		        <p class="text-muted mb-2">— or —</p>
+		        <a href="{% provider_login_url 'google' %}" class="btn btn-danger btn-block">
+		            <i class="fab fa-google"></i> Log in with Google
+		        </a>
+		    </div>
+		</div>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{%endblock content%}
