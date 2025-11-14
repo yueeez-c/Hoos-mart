@@ -198,9 +198,9 @@ ACCOUNT_FORMS = {
     "signup": "user.forms.CustomSignupForm",
 }
 
-if not DEBUG:
-    EMAIL_BACKEND = "config.resend_backend.ResendEmailBackend"
-    DEFAULT_FROM_EMAIL = "chyueez@gmail.com"
-else:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# if not DEBUG:
+EMAIL_BACKEND = "config.resend_backend.ResendEmailBackend"
+DEFAULT_FROM_EMAIL = "chyueez@gmail.com"
+# else:
+#     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
