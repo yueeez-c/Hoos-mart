@@ -17,9 +17,15 @@ class Profile(models.Model):
     info = models.TextField(blank=True, null=True, default='')
     is_verified = models.BooleanField(default=False)
     is_student = models.BooleanField(default=False)
+    scam_warnings_count = models.PositiveIntegerField(default=0, help_text="Number of scam/fraud warnings")
+    is_flagged = models.BooleanField(default=False, help_text="Account flagged for suspicious activity")
 
     def __str__(self):
         return f"{self.user.username}'s profile"
+    
+    @property
+    def has_warnings(self):
+        return self.scam_warnings_count > 0 or self.is_flagged
 
 class UserFile(models.Model):
     """Demo model for showcasing S3 file uploads"""

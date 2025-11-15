@@ -10,7 +10,13 @@ class MultipleFileInput(forms.ClearableFileInput):
 class ListingCreateForm(forms.ModelForm):
     class Meta:
         model = Listing
-        fields = ["title", "description", "price", "category", "status"]
+        fields = ["title", "description", "price", "category", "status", "pickup_location"]
+        widgets = {
+            'pickup_location': forms.TextInput(attrs={
+                'placeholder': 'e.g., UVA Library, Student Union, etc.',
+                'class': 'form-control'
+            })
+        }
 
 class ListingSearchForm(forms.Form):
     SORT_CHOICES = [

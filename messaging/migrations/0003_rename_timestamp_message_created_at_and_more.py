@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("Marketplace", "0002_listing_status"),
-        ("messaging", "0002_remove_message_conteent_message_content_and_more"),
+        ("messaging", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
