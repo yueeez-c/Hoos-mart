@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404, render
 from .models import Profile
 from django.forms import ValidationError
 from django.db.models.fields.files import ImageFieldFile
@@ -37,12 +38,22 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image', 'info', 'is_student']
+        fields = ['image', 'info', 'is_student', 'nickname', 'bio', 'interests', 'is_image_public']
         widgets = {
             'info': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 4,
                 'placeholder': 'Tell us about yourself...'
+            }),
+            'bio': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Your biography...'
+            }),
+            'interests': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': 'What are you into?'
             }),
             'is_student': forms.RadioSelect(choices=[(True, 'Yes'), (False, 'No')]),
             'image': forms.FileInput(attrs={
@@ -51,30 +62,28 @@ class ProfileUpdateForm(forms.ModelForm):
             })
         }
 
-    from django.core.files.uploadedfile import UploadedFile
-    from django.forms import ValidationError
-    from django.db.models.fields.files import ImageFieldFile
-
     def clean_image(self):
         image = self.cleaned_data.get('image')
 
-        # If no new file uploaded, return existing image
+        # No new upload → allow existing image
         if not image or isinstance(image, ImageFieldFile):
             return image
 
-        # -----------------------------
-        # Validate only NEW uploaded files
-        # -----------------------------
-        # File size (limit 5MB)
-        if image.size > 5 * 1024 * 1024:
+        # Validate file size (limit 5MB)
+        if hasattr(image, 'size') and image.size > 5 * 1024 * 1024:
             raise ValidationError("Image file too large ( > 5MB )")
 
-        # File type (UploadedFile has content_type)
-        if hasattr(image, 'content_type'):
-            if not image.content_type.startswith('image/'):
-                raise ValidationError("File is not an image")
-        else:
-            raise ValidationError("Invalid file upload")
+        # Validate image type safely
+        content_type = getattr(image, 'content_type', None)
+        if content_type and not content_type.startswith('image/'):
+            raise ValidationError("File is not an image")
 
         return image
 
+def profile_view(request, username): # For when you want to view a user's profile for the future
+    profile_user = get_object_or_404(User, username=username)
+    profile = profile_user.profile
+
+    if not profile.is_image_public and request.user != profile_user:
+        profile.image = None  # hide image
+    return render(request, ...)

@@ -5,6 +5,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import StudentStatusForm, UserUpdateForm, ProfileUpdateForm
 from .models import Profile
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status, permissions
+from .serializers import ProfileUpdateSerializer
+
 
 def signup(request):
 	if request.method == 'POST':
@@ -96,5 +101,23 @@ def s3_demo(request):
     }
     
     return render(request, 'user/s3_demo.html', context)
+
+class ProfileUpdateAPI(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request, *args, **kwargs):
+        profile = request.user.profile  # current user's profile
+
+        serializer = ProfileUpdateSerializer(
+            profile,
+            data=request.data,
+            partial=True
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Create your views here.

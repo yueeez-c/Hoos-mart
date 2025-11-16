@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'rest_framework',
     "storages",  # for S3 integration
 
     #google auth
@@ -173,16 +174,19 @@ AWS_DEFAULT_ACL = None
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = False
 
 # Media files configuration
+AWS_LOCATION = "media"   # this is REQUIRED for S3
+
 if AWS_STORAGE_BUCKET_NAME:
-    # Use S3 for media files (user uploads)
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
 else:
-    # Fallback to local storage for development
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     MEDIA_URL = '/media/'
+
 # ============================================================
 # EMAIL CONFIGURATION: Local (console) vs Heroku (SMTP)
 # ============================================================

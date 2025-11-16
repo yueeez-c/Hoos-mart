@@ -13,12 +13,19 @@ def user_directory_path(instance, filename):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='profile_pics/default.jpg', upload_to='profile_pics')
+    image = models.ImageField(
+    default='profile_pics/default.jpg',
+    upload_to=user_directory_path
+)
     info = models.TextField(blank=True, null=True, default='')
     is_verified = models.BooleanField(default=False)
     is_student = models.BooleanField(default=False)
     scam_warnings_count = models.PositiveIntegerField(default=0, help_text="Number of scam/fraud warnings")
     is_flagged = models.BooleanField(default=False, help_text="Account flagged for suspicious activity")
+    nickname = models.CharField(max_length=50, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    interests = models.TextField(blank=True, null=True)
+    is_image_public = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.user.username}'s profile"

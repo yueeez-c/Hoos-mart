@@ -20,6 +20,7 @@ from django.contrib.auth import views as auth_views
 from user import views as user_views
 from django.conf import settings
 from django.conf.urls.static import static
+from user.views import ProfileUpdateAPI
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,6 +34,7 @@ urlpatterns = [
     path("messaging/", include("messaging.urls")),
     path('accounts/', include('allauth.urls')),  #google auth
     path("delete-profile/", user_views.delete_profile, name="delete_profile"),
+    path("api/profile/", ProfileUpdateAPI.as_view(), name="api-profile-update"),
 ] 
 
 # Serve media files in development
