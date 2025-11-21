@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,62 +9,100 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         crossorigin="anonymous">
 
+  <!-- Your custom styles -->
   <link rel="stylesheet" href="{% static 'home/main.css' %}">
-  <title>{% block title %}APP NAME{% endblock %}</title>
-</head>
 
+  <title>{% block title %}Hoo-Mart{% endblock %}</title>
+</head>
 <body>
+
 <header class="site-header">
-  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+  <nav class="navbar navbar-expand-md navbar-dark hoo-navbar fixed-top">
     <div class="container">
-      <a class="navbar-brand mr-4" href="/">APP NAME</a>
+      <!-- Left: logo / app name -->
+      <a class="navbar-brand d-flex align-items-center" href="{% url 'app-home' %}">
+        <span class="hoo-logo-icon mr-2"></span>
+        <span class="hoo-logo-text">Hoo-Mart</span>
+      </a>
+
+      <!-- Mobile toggle -->
       <button class="navbar-toggler" type="button" data-toggle="collapse"
-              data-target="#navbarToggle">
+              data-target="#navbarToggle" aria-controls="navbarToggle"
+              aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarToggle">
-        <!-- Left side -->
-        <div class="navbar-nav mr-auto">
-          <a class="nav-item nav-link" href="{% url 'app-home' %}">Home</a>
-          <a class="nav-item nav-link" href="{% url 'home-about' %}">About</a>
-          <a class="nav-item nav-link" href="{% url 'marketplace-buy' %}">Buy</a>
-          <a class="nav-item nav-link" href="{% url 'marketplace-sell' %}">Sell</a>
+        <!-- Left side nav -->
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'marketplace-buy' %}active{% endif %}"
+              href="{% url 'marketplace-buy' %}">Buy</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'marketplace-sell' %}active{% endif %}"
+              href="{% url 'marketplace-sell' %}">Sell</a>
+          </li>
 
           {% if user.is_authenticated %}
-            <a class="nav-item nav-link" href="{% url 'messaging:contacts' %}">Contacts</a>
-
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'messaging:conversations' %}">
+              <a class="nav-link {% if request.resolver_match.app_name == 'messaging' and request.resolver_match.url_name == 'contacts' %}active{% endif %}"
+                href="{% url 'messaging:contacts' %}">
+                Contacts
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.app_name == 'messaging' and request.resolver_match.url_name == 'conversations' %}active{% endif %}"
+                href="{% url 'messaging:conversations' %}">
                 Messages
-                <span id="messages-unread" class="badge badge-danger d-none">0</span>
+                <span id="messages-unread" class="badge badge-pill badge-danger d-none">0</span>
               </a>
             </li>
           {% endif %}
-        </div>
+        </ul>
 
-        <!-- Right side -->
-        <div class="navbar-nav">
+
+        <!-- Right side (profile / auth) -->
+        <ul class="navbar-nav">
           {% if user.is_authenticated %}
-            <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
-
-            <form method="POST" action="{% url 'logout' %}" class="nav-item">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-link nav-link p-0 m-0">Log out</button>
-            </form>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle d-flex align-items-center"
+                 href="#" id="profileDropdown" role="button" data-toggle="dropdown">
+                <div class="hoo-avatar mr-2">
+                  {{ user.username|first|upper }}
+                </div>
+                <span class="hoo-nav-username">
+                  {{ user.profile.nickname|default:user.first_name|default:user.username }}
+                </span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
+                <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                <a class="dropdown-item" href="{% url 'home-about' %}">About</a>
+                <div class="dropdown-divider"></div>
+                <form method="POST" action="{% url 'logout' %}" class="px-3">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-link p-0 hoo-logout-btn">Log out</button>
+                </form>
+              </div>
+            </li>
           {% else %}
-            <a class="nav-item nav-link" href="{% url 'messaging:login_required' %}">Messages</a>
-            <a class="nav-item nav-link" href="{% url 'login' %}">Log in</a>
-            <a class="nav-item nav-link" href="{% url 'account_signup' %}">Sign up</a>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Log in</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'account_signup' %}">Sign up</a>
+            </li>
           {% endif %}
-        </div>
+        </ul>
       </div>
     </div>
   </nav>
 </header>
 
-<main class="container" style="padding-top: 80px;">
-  {% block content %}{% endblock %}
+<main class="hoo-main">
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
 </main>
 
 <!-- Scripts -->
@@ -102,8 +140,6 @@
 </script>
 {% endif %}
 
-<!-- Extra per-page scripts -->
 {% block extra_scripts %}{% endblock %}
-
 </body>
 </html>
