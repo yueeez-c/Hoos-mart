@@ -7,7 +7,7 @@ botocore==1.40.59
 cbor2==5.7.1
 certifi==2025.10.5
 cffi==2.0.0
-channels==4.1.0
+channels==4.2.2
 channels_redis==4.3.0
 charset-normalizer==3.4.4
 constantly==23.10.4
@@ -34,9 +34,7 @@ jmespath==1.0.1
 joblib==1.5.2
 kiwisolver==1.4.9
 MarkupSafe==3.0.3
-matplotlib==3.10.6
 msgpack==1.1.2
-numpy==2.3.3
 oauthlib==3.3.1
 packaging==25.0
 pillow==11.3.0
@@ -57,7 +55,6 @@ requests==2.32.5
 requests-oauthlib==2.0.0
 resend==2.19.0
 s3transfer==0.14.0
-scikit-learn==1.7.2
 scipy==1.16.2
 sendgrid==6.12.5
 service-identity==24.2.0
