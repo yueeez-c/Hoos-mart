@@ -20,6 +20,7 @@ from django.contrib.auth import views as auth_views
 from user import views as user_views
 from django.conf import settings
 from django.conf.urls.static import static
+from user.views import ProfileUpdateAPI
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,12 +30,13 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='user/logout.html'), name = 'logout'),
     path('profile/', user_views.profile, name = 'profile'),
     path('s3-demo/', user_views.s3_demo, name = 's3-demo'),
-    path("marketplace/", include("marketplace.urls")),
+    path("marketplace/", include("Marketplace.urls")),
     path("messaging/", include("messaging.urls")),
     path('accounts/', include('allauth.urls')),  #google auth
     path("delete-profile/", user_views.delete_profile, name="delete_profile"),
     path("users/", include("user.urls")),
     path("reports/", include("reports.urls")),
+    path("api/profile/", ProfileUpdateAPI.as_view(), name="api-profile-update"),
 ] 
 
 # Serve media files in development

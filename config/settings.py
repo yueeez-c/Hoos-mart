@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'rest_framework',
     "storages",  # for S3 integration
 
     #google auth
@@ -183,16 +184,19 @@ AWS_DEFAULT_ACL = None
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = False
 
 # Media files configuration
+AWS_LOCATION = "media"   # this is REQUIRED for S3
+
 if AWS_STORAGE_BUCKET_NAME:
-    # Use S3 for media files (user uploads)
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
 else:
-    # Fallback to local storage for development
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     MEDIA_URL = '/media/'
+
 # ============================================================
 # EMAIL CONFIGURATION: Local (console) vs Heroku (SMTP)
 # ============================================================
@@ -204,8 +208,17 @@ ACCOUNT_FORMS = {
 }
 
 # if not DEBUG:
-EMAIL_BACKEND = "config.resend_backend.ResendEmailBackend"
-DEFAULT_FROM_EMAIL = "chyueez@gmail.com"
+# EMAIL_BACKEND = "config.resend_backend.ResendEmailBackend"
+# DEFAULT_FROM_EMAIL = "chyueez@gmail.com"
 # else:
 #     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER') # Your gmail address
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS') # Your App Password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 

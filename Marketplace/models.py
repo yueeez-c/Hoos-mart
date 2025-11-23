@@ -11,6 +11,7 @@ class Listing(models.Model):
         ("electronics", "Electronics"),
         ("textbooks", "Textbooks"),
         ("clothing", "Clothing"),
+        ("donation", "Donation/Free"),
         ("other", "Other"),
     ]
 
@@ -30,6 +31,11 @@ class Listing(models.Model):
         max_length=20,
         choices=STATUS_CHOICES,
         default="available",
+    )
+    pickup_location = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="Specify a safe pickup location for exchanges (e.g., 'UVA Library', 'Student Union')"
     )
 
     seller = models.ForeignKey(

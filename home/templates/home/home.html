@@ -1,14 +1,80 @@
-{% extends "home/base.html"%}
-{%block content%}
-		<h1>Home!</h1>
-		<article class="media content-section">
-		  <div class="media-body">
-		    <div class="article-metadata">
-		      <a class="mr-2" href="#">{{ post.author }}</a>
-		      <small class="text-muted">{{ post.date_posted }}</small>
-		    </div>
-		    <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
-		    <p class="article-content">{{ post.content }}</p>
-		  </div>
-		</article>
-{%endblock content%}
+{% extends "home/base.html" %}
+
+{% block title %}Home | Hoo-Mart{% endblock %}
+
+{% block content %}
+  <section class="home-hero">
+    <h1 class="home-title">Home</h1>
+    <p class="home-subtitle">
+      Welcome,
+      {% if user.is_authenticated %}
+        {{ user.profile.nickname|default:user.first_name|default:user.username }}
+      {% else %}
+        Guest
+      {% endif %}!
+    </p>
+  </section>
+
+  <!-- Recent Listings -->
+  <section class="home-section">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="home-section-title">Recent Listings</h2>
+      <a href="{% url 'marketplace-buy' %}" class="home-section-link">View all</a>
+    </div>
+
+    <div class="card-deck home-listings-deck">
+      {% if recent_listings %}
+        {% for listing in recent_listings %}
+          	<a href="{% url 'listing-detail' listing.pk %}"
+				class="card home-listing-card text-reset text-decoration-none d-block">
+				{% if listing.image_url %}
+					<img class="card-img-top home-listing-img" src="{{ listing.image_url }}" alt="{{ listing.title }}">
+				{% endif %}
+				<div class="card-body">
+					<h5 class="card-title mb-1">{{ listing.title }}</h5>
+					<p class="card-text home-listing-meta">
+					{{ listing.short_description|default:listing.description|truncatechars:70 }}
+					</p>
+					<p class="home-listing-price mb-0">
+					{% if listing.price == 0 %}
+						Free
+					{% else %}
+						${{ listing.price }}
+					{% endif %}
+					</p>
+				</div>
+			</a>
+        {% endfor %}
+      {% else %}
+        <div class="home-empty-state">
+          <p>No listings yet. Be the first to <a href="{% url 'marketplace-sell' %}">post something</a>!</p>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Quick Actions -->
+  <section class="home-section">
+    <div class="home-actions">
+      <a href="{% url 'marketplace-buy' %}" class="btn hoo-btn-primary">Buy</a>
+      <a href="{% url 'marketplace-sell' %}" class="btn hoo-btn-secondary">Sell</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'messaging:conversations' %}" class="btn hoo-btn-secondary">Messages</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn hoo-btn-secondary">Messages</a>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Safe Exchange Reminder -->
+  <section class="home-section">
+    <div class="card home-safety-card">
+      <div class="card-body">
+        <h3 class="home-section-title mb-2">Safe Exchange Reminder</h3>
+        <p class="mb-1">• Meet in public, well-lit places (on or near Grounds).</p>
+        <p class="mb-1">• Never share banking or sensitive personal information.</p>
+        <p class="mb-0">• Trust your instincts — if something feels off, cancel the exchange.</p>
+      </div>
+    </div>
+  </section>
+{% endblock content %}

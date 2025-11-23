@@ -1,15 +1,23 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Post
+from Marketplace.models import Listing
 
-def home (request):
-	context = {
-		'posts' : Post.objects.all()
-	}
-	return render(request, 'home/home.html')
+def home(request):
+    listings = (
+        Listing.objects
+        .filter(status="available")
+        .order_by('-id')[:5]   # or '-created_at' if you have that
+    )
 
-def about (request):
-	return render(request, 'home/about.html')
+    print("HOME VIEW LISTING COUNT:", listings.count())
+
+    context = {
+        "recent_listings": listings,   # 👈 match the template variable name
+    }
+    return render(request, "home/home.html", context)
 
 
-# Create your views here.
+
+def about(request):
+    return render(request, 'home/about.html')
