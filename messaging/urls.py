@@ -20,4 +20,6 @@ urlpatterns = [
         views.notifications_unread_count,
         name="notifications-unread-count",
     ),
+  
+    
 ]

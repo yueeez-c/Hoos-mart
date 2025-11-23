@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "user.apps.UserConfig",
     "messaging.apps.MessagingConfig",
     'marketplace.apps.MarketplaceConfig',
+    "moderation.apps.ModerationConfig",
+    "reports.apps.ReportsConfig",
     "crispy_forms",
     "channels",
     'crispy_bootstrap4',
@@ -80,6 +82,7 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",#google auth
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "user.middleware.ForceProfileCompletionMiddleware"
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -102,12 +105,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-# Database (Heroku auto configures DATABASE_URL)
-if os.environ.get("DATABASE_URL"):  # running on Heroku
-    DATABASES = {
-        "default": dj_database_url.config(conn_max_age=600, ssl_require=True)
-    }
-else:  # local development uses SQLite
+if os.environ.get("DATABASE_URL"):
+    # Heroku or production environment
+    if os.environ.get("ENVIRONMENT") == "production":
+        DATABASES = {
+            "default": dj_database_url.config(conn_max_age=600, ssl_require=True)
+        }
+    else:
+        # Local development: DO NOT require SSL
+        DATABASES = {
+            "default": dj_database_url.config(conn_max_age=600, ssl_require=False)
+        }
+else:
+    # No DATABASE_URL present → fallback to SQLite
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",

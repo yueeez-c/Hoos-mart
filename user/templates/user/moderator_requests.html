@@ -1,0 +1,34 @@
+{% extends "home/base.html" %}
+{% block content %}
+
+<h2 class="mb-4">Pending Moderator Requests</h2>
+
+{% if pending %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Requested Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for p in pending %}
+            <tr>
+                <td>{{ p.user.username }}</td>
+                <td>{{ p.user.email }}</td>
+                <td>Moderator</td>
+                <td>
+                    <a href="{% url 'approve-moderator' p.id %}" class="btn btn-success btn-sm">Approve</a>
+                    <a href="{% url 'deny-moderator' p.id %}" class="btn btn-danger btn-sm">Deny</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No pending requests.</p>
+{% endif %}
+
+{% endblock %}

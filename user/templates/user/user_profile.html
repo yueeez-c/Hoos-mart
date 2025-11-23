@@ -1,0 +1,68 @@
+{% extends "home/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      
+      <!-- Profile Header -->
+      <div class="card mb-4">
+        <div class="card-body text-center">
+          <div class="d-flex flex-column align-items-center">
+            <img class="rounded-circle mb-3" 
+                 src="{{ profile.image.url }}" 
+                 alt="Profile Image"
+                 style="width: 150px; height: 150px; object-fit: cover;">
+
+            <h2 class="card-title">{{ profile.user.get_full_name|default:profile.user.username }}</h2>
+            <p class="text-muted">{{ profile.user.email }}</p>
+
+            <!-- S3 Status Badge -->
+            {% if profile.image and profile.image.url %}
+              {% if 's3.amazonaws.com' in profile.image.url %}
+                <span class="badge bg-success">🌐 Stored on AWS S3</span>
+              {% else %}
+                <span class="badge bg-secondary">📁 Stored Locally</span>
+              {% endif %}
+            {% endif %}
+
+            <p>
+              Student status:
+              {% if profile.is_verified %}
+                  <span class="text-success"><strong>Verified ✔</strong></span>
+              {% else %}
+                  <span class="text-danger"><strong>Not Verified ✖</strong></span>
+              {% endif %}
+            </p>
+            <p>
+              Moderator status:
+              {% if profile.is_moderator %}
+                  <span class="text-success"><strong>Moderator ✔</strong></span>
+            
+              {% elif profile.moderator_approval_pending %}
+                  <span class="text-warning"><strong>Pending Approval ⏳</strong></span>
+            
+              {% else %}
+                  <span class="text-muted"><strong>Not a Moderator</strong></span>
+              {% endif %}
+            </p>
+          </div>
+
+          {% if profile.info %}
+            <div class="mt-3">
+              <h6>About Me:</h6>
+              <p class="text-muted">{{ profile.info }}</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.account-img {
+  border: 3px solid #dee2e6;
+}
+</style>
+{% endblock content %}

@@ -17,6 +17,16 @@ class Profile(models.Model):
     info = models.TextField(blank=True, null=True, default='')
     is_verified = models.BooleanField(default=False)
     is_student = models.BooleanField(default=False)
+    is_moderator = models.BooleanField(default=False)
+    moderator_approval_pending = models.BooleanField(default = False)
+
+    def role_display(self):
+        if self.is_moderator:
+            return "Moderator"
+        if self.moderator_approval_pending:
+            return "Moderator (Pending Approval)"
+    
+        return "Student"
 
     def __str__(self):
         return f"{self.user.username}'s profile"

@@ -41,6 +41,14 @@
               </a>
             </li>
           {% endif %}
+
+          {% if user.is_superuser or user.profile.is_moderator %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'moderator-dashboard' %}">Moderator Dashboard</a>
+
+              </li>
+            {% endif %}
+                    
         </div>
 
         <!-- Right side -->
@@ -55,7 +63,7 @@
           {% else %}
             <a class="nav-item nav-link" href="{% url 'messaging:login_required' %}">Messages</a>
             <a class="nav-item nav-link" href="{% url 'login' %}">Log in</a>
-            <a class="nav-item nav-link" href="{% url 'account_signup' %}">Sign up</a>
+            <a class="nav-item nav-link" href="{% url 'choose_role' %}">Sign Up</a>
           {% endif %}
         </div>
       </div>
@@ -104,6 +112,7 @@
 
 <!-- Extra per-page scripts -->
 {% block extra_scripts %}{% endblock %}
+
 
 </body>
 </html>

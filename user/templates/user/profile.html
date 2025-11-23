@@ -40,6 +40,27 @@
                   <span class="text-danger"><strong>Not Verified ✖</strong></span>
               {% endif %}
             </p>
+            <p>
+              Moderator status:
+              {% if user.profile.is_moderator %}
+                  <span class="text-success"><strong>Moderator ✔</strong></span>
+            
+              {% elif user.profile.moderator_approval_pending %}
+                  <span class="text-warning"><strong>Pending Approval ⏳</strong></span>
+            
+              {% else %}
+                  <span class="text-muted"><strong>Not a Moderator</strong></span>
+            
+                  <!-- Button to request moderator access -->
+                  <form method="POST" action="{% url 'request_moderator' %}">
+                      {% csrf_token %}
+                      <button class="btn btn-warning btn-sm mt-2">
+                          Request Moderator Access
+                      </button>
+                  </form>
+              {% endif %}
+            </p>
+            
             {% if not user.profile.is_verified %}
                 <form method="POST" action="{% url 'account_email' %}">
                     {% csrf_token %}

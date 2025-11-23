@@ -9,7 +9,7 @@ from user.validators import validate_school_email
 
 class CustomSignupForm(SignupForm):
     email = forms.EmailField(required=True, label="Email")
-
+   
     def clean_email(self):
         email = self.cleaned_data["email"]
         validate_school_email(email)   # <-- apply validator manually
@@ -17,15 +17,23 @@ class CustomSignupForm(SignupForm):
 
     def save(self, request):
         user = super().save(request)
-        return user
+        profile = user.profile
 
-class StudentStatusForm(forms.ModelForm):
-    class Meta:
-        model = Profile
-        fields = ['is_student']
-        widgets = {
-            'is_student': forms.RadioSelect(choices=[(True, 'Yes'), (False, 'No')])
-        }
+        return user
+    
+
+class RoleChoiceForm(forms.Form):
+    ROLE_CHOICES = [
+    ("student", "Student"),
+    ("moderator", "Request Moderator Access"),
+]
+
+    role = forms.ChoiceField(
+        choices=ROLE_CHOICES,
+        widget=forms.RadioSelect,
+        label="Register as",
+        required=True,
+    )
 
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()

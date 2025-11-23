@@ -33,6 +33,8 @@ urlpatterns = [
     path("messaging/", include("messaging.urls")),
     path('accounts/', include('allauth.urls')),  #google auth
     path("delete-profile/", user_views.delete_profile, name="delete_profile"),
+    path("users/", include("user.urls")),
+    path("reports/", include("reports.urls")),
 ] 
 
 # Serve media files in development

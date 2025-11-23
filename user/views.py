@@ -2,9 +2,14 @@ from django.contrib.auth import logout
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from .forms import StudentStatusForm, UserUpdateForm, ProfileUpdateForm
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.urls import reverse
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import UserUpdateForm, ProfileUpdateForm, RoleChoiceForm
 from .models import Profile
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 def signup(request):
 	if request.method == 'POST':
@@ -97,4 +102,74 @@ def s3_demo(request):
     
     return render(request, 'user/s3_demo.html', context)
 
-# Create your views here.
+def request_moderator(request):
+    profile = request.user.profile
+
+    # Prevent duplicates
+    if profile.is_moderator:
+        messages.info(request, "You are already a moderator.")
+        return redirect("profile")
+
+    if profile.moderator_approval_pending:
+        messages.info(request, "Your request is already pending.")
+        return redirect("profile")
+
+    # Mark request as pending
+    profile.moderator_approval_pending = True
+    profile.save()
+
+    messages.success(request, "Your request has been submitted!")
+    return redirect("profile")
+
+def choose_role(request):
+    if request.method == "POST":
+        form = RoleChoiceForm(request.POST)
+        if form.is_valid():
+            # Save choice in session so we can use it after signup
+            request.session["desired_role"] = form.cleaned_data["role"]
+            return redirect("account_signup")  # allauth's signup view
+    else:
+        form = RoleChoiceForm()
+
+    return render(request, "user/choose_role.html", {"form": form})
+
+def is_moderator(user):
+    return user.is_superuser or user.profile.is_moderator
+
+@login_required
+@user_passes_test(is_moderator)
+def moderator_requests(request):
+    pending = Profile.objects.filter(moderator_approval_pending=True)
+
+    return render(request, "user/moderator_requests.html", {"pending": pending})
+
+@login_required
+@user_passes_test(is_moderator)
+def approve_moderator(request, profile_id):
+    profile = get_object_or_404(Profile, id=profile_id)
+    profile.is_moderator = True
+    profile.moderator_approval_pending = False
+    profile.save()
+
+    messages.success(request, f"{profile.user.username} is now a moderator.")
+    return redirect("moderator-requests")
+
+
+@login_required
+@user_passes_test(is_moderator)
+def deny_moderator(request, profile_id):
+    profile = get_object_or_404(Profile, id=profile_id)
+    profile.moderator_approval_pending = False
+    profile.save()
+
+    messages.info(request, f"{profile.user.username}'s moderator request was denied.")
+    return redirect("moderator-requests")
+
+
+def user_profile(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    profile = get_object_or_404(Profile, user=user)
+    context = {
+        'profile': profile
+    }
+    return render(request, 'user/user_profile.html', context)
