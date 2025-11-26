@@ -60,41 +60,14 @@
            class="btn btn-outline-primary mt-3">
           Message seller
         </a>
-
-        <!-- Report Listing button -->
-        <button class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#reportListingModal">
+        <a href="{% url 'report-listing' listing.id %}" class="btn btn-danger mt-3">
           ⚠ Report Listing
-        </button>
+        </a>
       {% endif %}
     </div>
   </div>
 </div>
 
 
-<div class="modal fade" id="reportListingModal" tabindex="-1" aria-labelledby="reportListingLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <form method="POST" action="{% url 'report-listing' listing.id %}">
-        {% csrf_token %}
-        <div class="modal-header">
-          <h5 class="modal-title" id="reportListingLabel">Report Listing</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-
-        <div class="modal-body">
-          <p>Please explain why you're reporting this listing:</p>
-          <textarea name="reason" class="form-control" rows="4" required></textarea>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-danger">Submit Report</button>
-        </div>
-      </form>
-
-    </div>
-  </div>
-</div>
 
 {% endblock %}

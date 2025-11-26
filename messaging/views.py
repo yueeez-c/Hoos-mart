@@ -12,13 +12,7 @@ from django.utils import timezone
 
 User = get_user_model()
 
-def login_required_view(request):
-    return render(request, "messaging/login_required.html")
 
-@login_required
-def user_list(request):
-    users = User.objects.exclude(id=request.user.id)
-    return render(request, "messaging/user_list.html", {"users": users})
 
 @login_required
 def contacts_list(request):
@@ -212,11 +206,6 @@ def message_seller_from_listing(request, listing_id):
 
     # then redirect to your chat view for this thread
     return redirect("messaging:chat", other_user_id=seller.id)
-
-@login_required
-def chat_entry(request):
-    # if someone hits /messaging/chat/ with no id, send them to the picker
-    return redirect("messaging:user_list")
 
 @login_required
 def notifications_dropdown(request):

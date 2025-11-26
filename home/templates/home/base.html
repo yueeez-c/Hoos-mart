@@ -15,6 +15,7 @@
   <title>{% block title %}Hoo-Mart{% endblock %}</title>
 </head>
 <body>
+ 
 
 <header class="site-header">
   <nav class="navbar navbar-expand-md navbar-dark hoo-navbar fixed-top">
@@ -113,6 +114,15 @@
   </div>
 </main>
 
+{% if messages %}
+  <div id="django-messages">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} fade show" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
@@ -148,7 +158,23 @@
 </script>
 {% endif %}
 
-{% block extra_scripts %}{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  setTimeout(function() {
+    const messages = document.querySelectorAll('#django-messages .alert');
+    messages.forEach(function(message) {
+      // Fade out
+      message.classList.remove('show');
+      message.classList.add('fade');
+      // Remove completely after fade animation
+      setTimeout(() => message.remove(), 500);
+    });
+  }, 3000); // 3000ms = 3 seconds
+</script>
+
+
+{% endblock %}
 
 </body>
 </html>

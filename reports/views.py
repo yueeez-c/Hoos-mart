@@ -14,28 +14,52 @@ User = get_user_model()
 def report_listing(request, listing_id):
     listing = get_object_or_404(Listing, id=listing_id)
 
+    existing_report = Report.objects.filter(
+        reporter=request.user,
+        report_type="listing",
+        listing=listing,
+        is_resolved=False
+    ).exists()
+
+    if existing_report:
+        messages.error(request, "You have already reported this listing and it is still under review.")
+        return redirect("marketplace-buy")
+
     if request.method == "POST":
-        description = request.POST.get("description", "").strip()
+        description = request.POST.get("reason", "").strip()
 
         if description:
             Report.objects.create(
                 reporter=request.user,
                 report_type="listing",
-                reported_listing=listing,
-                description=description
+                listing=listing,
+                description=description,
             )
-            messages.success(request, "Thank you — your report has been submitted.")
-            return redirect("listing-detail", listing_id=listing.id)
+            messages.success(request, f"Listing '{listing.title}' has been reported.")
+            return redirect("marketplace-buy")
 
-    return render(request, "reports/report_form.html", {
-        "object": listing,
-        "type": "listing"
+        messages.error(request, "Please enter a reason.")
+
+    return render(request, "reports/report_listing_form.html", {
+        "reported": listing,
+        "type": "listing",
     })
-
 
 # REPORT A USER
 def report_user(request, user_id):
     reported_user = get_object_or_404(User, id=user_id)
+
+    # Prevent duplicate pending reports
+    existing_report = Report.objects.filter(
+        reporter=request.user,
+        report_type="user",
+        reported_user=reported_user,
+        is_resolved=False
+    ).exists()
+
+    if existing_report:
+        messages.error(request, "You already reported this user. The report is still being reviewed.")
+        return redirect("messaging:contacts")
 
     if request.method == "POST":
         description = request.POST.get("reason", "").strip()
@@ -47,10 +71,9 @@ def report_user(request, user_id):
                 reported_user=reported_user,
                 description=description
             )
-            messages.success(request, "User reported.")
-            return redirect("user-profile", user_id=reported_user.id)
-
-    # >>> THIS MUST EXIST <<<
+            messages.success(request, f"User {reported_user.username} has been reported.")
+            return redirect("messaging:contacts")
+        
     return render(request, "reports/report_user_form.html", {
         "reported": reported_user,
         "type": "user"
@@ -60,26 +83,33 @@ def report_user(request, user_id):
 
 # REPORT A MESSAGE
 def report_message(request, message_id):
-    message = get_object_or_404(Message, id=message_id)
+    message_obj = get_object_or_404(Message, id=message_id)
+
+    existing_report = Report.objects.filter(
+        reporter=request.user,
+        report_type="message",
+        message=message_obj,
+        is_resolved=False
+    ).exists()
+
+    if existing_report:
+        messages.error(request, "You already reported this message and it is still pending review.")
+        return redirect("messaging:contacts")
 
     if request.method == "POST":
-        description = request.POST.get("description", "").strip()
+        description = request.POST.get("reason", "").strip()
 
         if description:
             Report.objects.create(
                 reporter=request.user,
                 report_type="message",
-                reported_message=message,
-                description=description
+                message=message_obj,
+                description=description,
             )
             messages.success(request, "Message reported.")
-            return redirect("messaging:conversations")
+            return redirect("messaging:contacts")
 
-    return render(request, "reports/report_user_form.html", {
-    "reported": message.sender,
-    "type": "message"
-})
-
+    return render(...)
 
 
 # MODERATOR — VIEW ALL REPORTS
@@ -103,7 +133,7 @@ def resolve_report(request, report_id):
     report.save()
 
     messages.success(request, "Report marked as resolved.")
-    return redirect("review-reports")
+    return redirect("moderator-dashboard")
 
 
 # ---------------------------
@@ -119,18 +149,18 @@ def ban_user(request, report_id):
         user.save()
         messages.success(request, "User has been banned.")
 
-    return redirect("review-reports")
+    return redirect("moderator-dashboard")
 
 
 @moderator_required
 def delete_listing(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
-    if report.reported_listing:
-        report.reported_listing.delete()
+    if report.listing:
+        report.listing.delete()
         messages.success(request, "Listing removed.")
 
-    return redirect("review-reports")
+    return redirect("moderator-dashboard")
 
 @moderator_required
 def approve_moderator(request, user_id):
@@ -140,6 +170,19 @@ def approve_moderator(request, user_id):
     user.profile.save()
     messages.success(request, f"{user.username} is now a moderator.")
     return redirect("moderator-dashboard")
+
+@moderator_required
+def deny_moderator(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    user.profile.is_moderator = False
+    user.profile.moderator_approval_pending = False
+    user.profile.save()
+    messages.success(request, f"{user.username} moderator request denied.")
+    return redirect("moderator-dashboard")
+
+@moderator_required
+def view_user_profile(request, user_id):
+    return redirect("user-profile", user_id=user_id)
 
 @moderator_required
 def moderator_dashboard(request):

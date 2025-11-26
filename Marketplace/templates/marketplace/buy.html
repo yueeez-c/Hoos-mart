@@ -2,6 +2,14 @@
 
 {% block content %}
 <div class="container mt-4">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" id="msg">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
   <h1 class="mb-3">Buy Items</h1>
 
   <!-- Search/filter bar -->
@@ -13,4 +21,10 @@
   <!-- Placeholder for items grid -->
   <p>Item cards will go here (image, title, price, seller, etc.).</p>
 </div>
+
+<script>
+    setTimeout(function() {
+        $('#msg').fadeOut('fast');
+    }, 3000);
+</script>
 {% endblock %}

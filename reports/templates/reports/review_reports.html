@@ -1,21 +1,31 @@
 {% extends "home/base.html" %}
+
 {% block content %}
-
-<div class="container mt-4">
+<div class="mt-4">
     <h1>Review Reports</h1>
-
     <hr>
-
     <h3>Reported Listings</h3>
     {% if reports %}
         {% for r in reports %}
             {% if r.report_type == 'listing' %}
             <div class="card p-3 mb-2">
-                <p><strong>Listing:</strong> {{ r.reported_listing.title }}</p>
+
+                <p><strong>Listing:</strong> {{ r.listing.title }}</p>
                 <p>{{ r.description }}</p>
 
-                <a href="{% url 'resolve-report' r.id %}" class="btn btn-primary btn-sm">Mark Resolved</a>
-                <a href="{% url 'delete-listing' r.id %}" class="btn btn-danger btn-sm">Delete Listing</a>
+                <p>
+                    <strong>Reported by:</strong>
+                    <a href="{% url 'view-user-profile' r.reporter.id %}">
+                        {{ r.reporter.username }}
+                    </a>
+                </p>
+
+                <div class="d-flex gap-2">
+                    <a href="{% url 'listing-detail' r.listing.id %}" class="btn btn-secondary btn-sm">View Listing</a>
+                    <a href="{% url 'resolve-report' r.id %}" class="btn btn-primary btn-sm">Mark Resolved</a>
+                    <a href="{% url 'delete-listing' r.id %}" class="btn btn-danger btn-sm">Delete Listing</a>
+                </div>
+
             </div>
             {% endif %}
         {% endfor %}
@@ -26,40 +36,64 @@
     <hr>
 
     <h3>Reported Messages</h3>
-    {% if reports %}
-        {% for r in reports %}
-            {% if r.report_type == 'message' %}
-            <div class="card p-3 mb-2">
-                <p><strong>Message:</strong> {{ r.reported_message.text }}</p>
-                <p>{{ r.description }}</p>
+    {% for r in reports %}
+        {% if r.report_type == 'message' %}
+        <div class="card p-3 mb-2">
 
-                <a href="{% url 'resolve-report' r.id %}" class="btn btn-primary btn-sm">Mark Resolved</a>
-            </div>
-            {% endif %}
-        {% endfor %}
-    {% else %}
-        <p>No messages reported.</p>
-    {% endif %}
+            <p><strong>Message from:</strong>
+                <a href="{% url 'view-user-profile' r.message.sender.id %}">
+                    {{ r.message.sender.username }}
+                </a>
+            </p>
+
+            <p><strong>Message Content:</strong><br>
+                {{ r.message.content }}
+            </p>
+
+            <p>{{ r.description }}</p>
+
+            <p>
+                <strong>Reported by:</strong>
+                <a href="{% url 'view-user-profile' r.reporter.id %}">
+                    {{ r.reporter.username }}
+                </a>
+            </p>
+
+            <a href="{% url 'resolve-report' r.id %}" class="btn btn-primary btn-sm mt-2">Mark Resolved</a>
+
+        </div>
+        {% endif %}
+    {% endfor %}
 
     <hr>
 
     <h3>Reported Users</h3>
-    {% if reports %}
-        {% for r in reports %}
-            {% if r.report_type == 'user' %}
-            <div class="card p-3 mb-2">
-                <p><strong>User:</strong> {{ r.reported_user.username }}</p>
-                <p>{{ r.description }}</p>
+    {% for r in reports %}
+        {% if r.report_type == 'user' %}
+        <div class="card p-3 mb-2">
 
+            <p><strong>User:</strong>
+                <a href="{% url 'view-user-profile' r.reported_user.id %}">
+                    {{ r.reported_user.username }}
+                </a>
+            </p>
+
+            <p>{{ r.description }}</p>
+
+            <p>
+                <strong>Reported by:</strong>
+                <a href="{% url 'view-user-profile' r.reporter.id %}">
+                    {{ r.reporter.username }}
+                </a>
+            </p>
+
+            <div class="d-flex gap-2">
                 <a href="{% url 'ban-user' r.id %}" class="btn btn-danger btn-sm">Ban User</a>
-                <a href="{% url 'resolve-report' r.id %}" class="btn btn-secondary btn-sm">Resolve</a>
+                <a href="{% url 'resolve-report' r.id %}" class="btn btn-primary btn-sm">Mark Resolved</a>
             </div>
-            {% endif %}
-        {% endfor %}
-    {% else %}
-        <p>No users reported.</p>
-    {% endif %}
 
+        </div>
+        {% endif %}
+    {% endfor %}
 </div>
-
 {% endblock %}
