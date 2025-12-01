@@ -30,7 +30,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "shrouded-sea-15354-891c79e28258.herokuapp.com"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "shrouded-sea-15354-891c79e28258.herokuapp.com", "shrouded-sea-15354-cd819052cb94.herokuapp.com"]
 CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", ]
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 

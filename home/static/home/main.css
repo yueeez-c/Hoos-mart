@@ -184,3 +184,150 @@ body {
     font-size: 2rem;
   }
 }
+
+/* ============================
+   Marketplace (Buy) page
+   ============================ */
+
+.marketplace-page {
+  padding-top: 2rem;
+}
+
+.marketplace-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Top filter bar */
+.marketplace-filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.75rem;
+}
+
+/* Left side: search + sort + category + buttons */
+.marketplace-filters-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.marketplace-search {
+  min-width: 260px;
+}
+
+.marketplace-sort,
+.marketplace-category {
+  min-width: 160px;
+}
+
+.marketplace-select {
+  font-size: 0.95rem;
+}
+
+/* Search + clear buttons */
+.marketplace-search-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Right side: price range */
+.marketplace-filter-group {
+  min-width: 260px;
+  max-width: 360px;
+}
+
+.marketplace-filter-group .input-group-text {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.marketplace-filter-group .form-control {
+  border-color: #d1d5db;
+}
+
+/* Listings grid & cards */
+.marketplace-grid {
+  margin-top: 0.5rem;
+}
+
+.marketplace-card {
+  border-radius: 14px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  color: inherit;
+}
+
+.marketplace-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+}
+
+.marketplace-card-img {
+  height: 180px;
+  object-fit: cover;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+
+.marketplace-card-title {
+  font-weight: 600;
+  color: #111827;
+}
+
+.marketplace-card-price {
+  font-weight: 700;
+  color: #111827;
+}
+
+.marketplace-card-meta {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.marketplace-card-description {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+/* Pills on card footer */
+.marketplace-pill-own,
+.marketplace-pill-cta {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.marketplace-pill-own {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.marketplace-pill-cta {
+  background-color: #f7903d;
+  color: #ffffff;
+}
+
+/* Responsive tweaks */
+@media (max-width: 767.98px) {
+  .marketplace-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .marketplace-filters-left {
+    width: 100%;
+  }
+
+  .marketplace-filter-group {
+    width: 100%;
+  }
+}

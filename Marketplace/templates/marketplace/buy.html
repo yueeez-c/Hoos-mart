@@ -1,4 +1,7 @@
 {% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}Marketplace | Hoo-Mart{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
@@ -10,16 +13,173 @@
             </div>
         {% endfor %}
     {% endif %}
-  <h1 class="mb-3">Buy Items</h1>
+  <h1 class="marketplace-title mb-4">Marketplace</h1>
 
-  <!-- Search/filter bar -->
-  <form method="get" class="mb-3 d-flex gap-2">
-    <input type="text" name="q" class="form-control" placeholder="Search items...">
-    <button class="btn btn-primary" type="submit">Search</button>
+
+  <!-- Filters / Search -->
+  <form method="get" class="marketplace-filters mb-4">
+    <div class="marketplace-filters-left">
+      <!-- Search -->
+      <div class="marketplace-search">
+        <input
+          type="text"
+          name="q"
+          class="form-control"
+          placeholder="Search listings..."
+          value="{{ request.GET.q }}"
+        />
+      </div>
+
+      <!-- Sort dropdown -->
+      <div class="marketplace-sort">
+        <select name="sort" class="form-select marketplace-select">
+          <option value="newest"
+            {% if sort == "newest" or not sort %}selected{% endif %}
+          >
+            Newest
+          </option>
+          <option value="price_asc"
+            {% if sort == "price_asc" %}selected{% endif %}
+          >
+            Price: Low → High
+          </option>
+          <option value="price_desc"
+            {% if sort == "price_desc" %}selected{% endif %}
+          >
+            Price: High → Low
+          </option>
+          <option value="title_az"
+            {% if sort == "title_az" %}selected{% endif %}
+          >
+            Title A→Z
+          </option>
+        </select>
+      </div>
+
+      <!-- Category -->
+      <div class="marketplace-category">
+        <select name="category" class="form-select marketplace-select">
+          <option value="">All categories</option>
+          {% for c in categories %}
+            <option value="{{ c.id }}"
+              {% if request.GET.category == c.id|stringformat:"s" %}selected{% endif %}
+            >
+              {{ c.name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Search / Clear buttons -->
+      <div class="marketplace-search-buttons">
+        <button class="btn hoo-btn-primary" type="submit">
+          Search
+        </button>
+        <a href="{% url 'marketplace-buy' %}" class="btn btn-outline-secondary marketplace-clear-btn">
+          Clear
+        </a>
+      </div>
+    </div>
+
+   <!-- Price range -->
+    <div class="marketplace-filter-group">
+      <label class="form-label fw-semibold mb-1">Price range</label>
+      <div class="d-flex gap-2 align-items-center">
+        <div class="flex-grow-1">
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input
+              type="number"
+              step="0.01"
+              name="min_price"
+              class="form-control"
+              placeholder="Min"
+              value="{{ request.GET.min_price }}"
+            >
+          </div>
+        </div>
+        <span class="text-muted">to</span>
+        <div class="flex-grow-1">
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input
+              type="number"
+              step="0.01"
+              name="max_price"
+              class="form-control"
+              placeholder="Max"
+              value="{{ request.GET.max_price }}"
+            >
+          </div>
+        </div>
+      </div>
+    </div>
   </form>
 
-  <!-- Placeholder for items grid -->
-  <p>Item cards will go here (image, title, price, seller, etc.).</p>
+  <!-- Listings grid -->
+  <div class="row g-4 marketplace-grid">
+    {% for listing in listings %}
+      <div class="col-12 col-md-6 col-lg-4">
+        <a
+          href="{% url 'listing-detail' listing.pk %}"
+          class="card marketplace-card text-decoration-none h-100"
+        >
+          {% if listing.image_url %}
+            <img
+              src="{{ listing.image_url }}"
+              alt="{{ listing.title }}"
+              class="card-img-top marketplace-card-img"
+            />
+          {% endif %}
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title marketplace-card-title mb-1">
+              {{ listing.title }}
+            </h5>
+
+            <p class="marketplace-card-price mb-2">
+              {% if listing.price == 0 %}
+                Free
+              {% else %}
+                ${{ listing.price }}
+              {% endif %}
+            </p>
+
+            <p class="marketplace-card-meta mb-1">
+              Category: {{ listing.category.name }}
+            </p>
+
+            <p class="marketplace-card-meta mb-1">
+              Status: {{ listing.get_status_display }}
+            </p>
+
+            <p class="marketplace-card-description mb-2">
+              {{ listing.short_description|default:listing.description|truncatechars:80 }}
+            </p>
+
+            <p class="marketplace-card-meta mb-3">
+              Seller: {{ listing.seller.username }}
+            </p>
+
+            <div class="mt-auto">
+              {% if user.is_authenticated and listing.seller_id == user.id %}
+                <span class="marketplace-pill-own">Your listing</span>
+              {% else %}
+                <span class="marketplace-pill-cta">View details</span>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <div class="home-empty-state">
+          <p class="mb-0">
+            No listings match these filters. Try clearing filters or searching for something else.
+          </p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
 </div>
 
 <script>
