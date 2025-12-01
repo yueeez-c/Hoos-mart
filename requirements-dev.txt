@@ -1,1 +1,41 @@
-pygame==2.1.3.dev8
+# ------------------------------
+# DEVELOPMENT-ONLY DEPENDENCIES
+# ------------------------------
+
+# Environment / Local Config
+python-dotenv==1.2.1
+ipython==8.28.0
+
+# Debugging Tools
+django-debug-toolbar==4.3.0
+
+# Linting / Formatting
+black==24.10.0
+flake8==7.1.0
+isort==5.13.2
+
+# Testing
+pytest==8.2.0
+pytest-django==4.9.0
+coverage==7.6.0
+
+# Type checking (optional but recommended for larger teams)
+mypy==1.14.0
+types-requests==2.32.0
+types-Pillow==11.0.0.0
+
+# Local Redis / Channels testing
+hiredis==2.3.2
+
+# Local DB management
+psycopg2-binary==2.9.11
+
+# HTTP Clients / Utilities
+requests==2.32.5
+
+# Dev-only tools for performance profiling
+django-extensions==3.2.3
+
+# If anyone on the team uses Jupyter locally
+notebook==7.3.1
+jupyterlab==4.3.0
