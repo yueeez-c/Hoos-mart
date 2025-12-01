@@ -30,7 +30,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='user/logout.html'), name = 'logout'),
     path('profile/', user_views.profile, name = 'profile'),
     path('s3-demo/', user_views.s3_demo, name = 's3-demo'),
-    path("marketplace/", include("marketplace.urls")),
+    path("marketplace/", include("Marketplace.urls")),
     path("messaging/", include("messaging.urls")),
     path('accounts/', include('allauth.urls')),  #google auth
     path("delete-profile/", user_views.delete_profile, name="delete_profile"),

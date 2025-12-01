@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('image', models.ImageField(upload_to='listing_images/')),
                 ('uploaded_at', models.DateTimeField(auto_now_add=True)),
-                ('listing', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='marketplace.listing')),
+                ('listing', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='Marketplace.listing')),
             ],
         ),
     ]
