@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f43f1b1b-327f-40f6-ae7d-86806911b958" name="Changes" comment="adding new dependencies">
-      <change beforePath="$PROJECT_DIR$/.idea/project-b-17.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/project-b-17.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
-    </list>
+    <list default="true" id="f43f1b1b-327f-40f6-ae7d-86806911b958" name="Changes" comment="google login template" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -149,7 +145,31 @@
       <option name="project" value="LOCAL" />
       <updated>1762149862423</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="email validation">
+      <option name="closed" value="true" />
+      <created>1764696611996</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1764696611996</updated>
+    </task>
+    <task id="LOCAL-00005" summary="email validation bug fixing">
+      <option name="closed" value="true" />
+      <created>1764697078002</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1764697078002</updated>
+    </task>
+    <task id="LOCAL-00006" summary="google login template">
+      <option name="closed" value="true" />
+      <created>1764698384740</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1764698384740</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,7 +211,10 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="bugs" />
     <MESSAGE value="adding new dependencies" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding new dependencies" />
+    <MESSAGE value="email validation" />
+    <MESSAGE value="email validation bug fixing" />
+    <MESSAGE value="google login template" />
+    <option name="LAST_COMMIT_MESSAGE" value="google login template" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

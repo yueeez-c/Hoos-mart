@@ -9,17 +9,24 @@ from django import forms
 from user.validators import validate_school_email
 
 class CustomSignupForm(SignupForm):
-    email = forms.EmailField(required=True, label="Email")
-   
-    def clean_email(self):
-        email = self.cleaned_data["email"]
-        validate_school_email(email)   # <-- apply validator manually
-        return email
 
+    email = forms.EmailField(
+        required=True,
+        label="Email",
+        help_text="Please use your @virginia.edu email."
+    )
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Force email to be required (overrides Allauth)
+        self.fields["email"].required = True
+        self.fields["email"].widget.attrs["required"] = "required"
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        validate_school_email(email)
+        return email
     def save(self, request):
         user = super().save(request)
-        profile = user.profile
-
         return user
     
 
@@ -37,7 +44,11 @@ class RoleChoiceForm(forms.Form):
     )
 
 class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
+    email = forms.EmailField(
+        required=True,
+        validators=[validate_school_email],  # same validator as signup
+        help_text='Please use your @virginia.edu email.'
+    )
 
     class Meta:
         model = User
