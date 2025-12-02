@@ -19,7 +19,6 @@ class CustomSignupForm(SignupForm):
     def save(self, request):
         user = super().save(request)
         profile = user.profile
-
         return user
     
 
@@ -37,7 +36,11 @@ class RoleChoiceForm(forms.Form):
     )
 
 class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
+    email = forms.EmailField(
+        required=True,
+        validators=[validate_school_email],  # same validator as signup
+        help_text='Please use your @virginia.edu email.'
+    )
 
     class Meta:
         model = User

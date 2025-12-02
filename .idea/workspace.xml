@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f43f1b1b-327f-40f6-ae7d-86806911b958" name="Changes" comment="adding new dependencies">
-      <change beforePath="$PROJECT_DIR$/.idea/project-b-17.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/project-b-17.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/forms.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,7 +189,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="bugs" />
     <MESSAGE value="adding new dependencies" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding new dependencies" />
+    <MESSAGE value="email validation" />
+    <option name="LAST_COMMIT_MESSAGE" value="email validation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
