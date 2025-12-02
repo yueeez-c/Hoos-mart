@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 500px;">
+    <h2 class="text-center mb-4">Sign In via Google</h2>
+
+    <p class="text-center">
+        You are about to sign in using your Google account.
+    </p>
+
+    <div class="d-flex justify-content-center mt-4">
+        <form method="post" action="{% provider_login_url 'google' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-lg">
+                Continue with Google
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
