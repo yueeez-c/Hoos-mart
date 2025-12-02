@@ -376,7 +376,7 @@ class Listing(models.Model):
 # Messaging Thread with Group Support
 class Thread(models.Model):
     participants = models.ManyToManyField(User, through="ThreadParticipant")
-    context_listing = models.ForeignKey('Marketplace.Listing', null=True, blank=True)
+    context_listing = models.ForeignKey('marketplace.Listing', null=True, blank=True)
     is_group = models.BooleanField(default=False)  # NEW: Group conversation flag
     group_name = models.CharField(max_length=100, blank=True)  # NEW: Group name
     created_at = models.DateTimeField(auto_now_add=True)
