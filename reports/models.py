@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from Marketplace.models import Listing
+from marketplace.models import Listing
 from messaging.models import Message
 from django.utils import timezone
 

@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Message, Thread, Notification, ThreadParticipant
 from django.db.models import OuterRef, Subquery, Count, Q, F, Max
-from Marketplace.models import Listing
+from marketplace.models import Listing
 from django.http import JsonResponse, HttpResponse
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST

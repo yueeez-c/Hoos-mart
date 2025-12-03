@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from .models import Report
-from Marketplace.models import Listing
+from marketplace.models import Listing
 from messaging.models import Message
 from .decorators import moderator_required
 from user.models import Profile  
