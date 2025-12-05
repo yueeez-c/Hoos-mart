@@ -354,7 +354,8 @@ class Profile(models.Model):
     scam_warnings_count = models.PositiveIntegerField(default=0)  # NEW: Warning tracking
     is_flagged = models.BooleanField(default=False)  # NEW: Flagged for suspicious activity
 
-# Marketplace Listing with Pickup Location
+
+# marketplace Listing with Pickup Location
 class Listing(models.Model):
     CATEGORY_CHOICES = [
         ("furniture", "Furniture"),
@@ -364,7 +365,7 @@ class Listing(models.Model):
         ("donation", "Donation/Free"),  # NEW: Donation category
         ("other", "Other"),
     ]
-    
+
     title = models.CharField(max_length=120)
     description = models.TextField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
@@ -372,6 +373,7 @@ class Listing(models.Model):
     pickup_location = models.CharField(max_length=200, blank=True)  # NEW: Pickup location
     seller = models.ForeignKey(User)
     created_at = models.DateTimeField(auto_now_add=True)
+
 
 # Messaging Thread with Group Support
 class Thread(models.Model):
@@ -381,6 +383,7 @@ class Thread(models.Model):
     group_name = models.CharField(max_length=100, blank=True)  # NEW: Group name
     created_at = models.DateTimeField(auto_now_add=True)
 
+
 # Thread Participant with Mute/Archive
 class ThreadParticipant(models.Model):
     thread = models.ForeignKey("Thread")
@@ -389,6 +392,7 @@ class ThreadParticipant(models.Model):
     last_seen = models.DateTimeField(null=True, blank=True)
     is_muted = models.BooleanField(default=False)  # NEW: Mute notifications
     is_archived = models.BooleanField(default=False)  # NEW: Archive conversation
+
 
 # File Upload Tracking
 class UserFile(models.Model):

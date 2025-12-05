@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('is_group', models.BooleanField(default=False, help_text='Whether this is a group conversation')),
                 ('group_name', models.CharField(blank=True, help_text='Name for group conversations', max_length=100)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('context_listing', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='message_threads', to='Marketplace.listing')),
+                ('context_listing', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='message_threads', to='marketplace.listing')),
             ],
         ),
         migrations.CreateModel(
