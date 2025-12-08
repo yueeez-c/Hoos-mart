@@ -153,13 +153,16 @@ def ban_user(request, report_id):
 
 
 @moderator_required
-def delete_listing(request, report_id):
-    report = get_object_or_404(Report, id=report_id)
+def delete_listing(request, listing_id):
+    listing = get_object_or_404(Listing, id=listing_id)
 
-    if report.listing:
-        report.listing.delete()
-        messages.success(request, "Listing removed.")
+    # DELETE associated reports FIRST
+    Report.objects.filter(listing=listing).delete()
 
+    # THEN delete listing
+    listing.delete()
+
+    messages.success(request, "Listing and all related reports have been removed.")
     return redirect("moderator-dashboard")
 
 @moderator_required

@@ -10,7 +10,7 @@
   {% if user.is_authenticated and user != other_user %}
       <a href="{% url 'report-user' other_user.id %}"
          class="btn btn-outline-danger btn-sm mb-3">
-          🚩 Report User
+          Report User
       </a>
   {% endif %}
 
@@ -60,27 +60,41 @@
     log.scrollTop = log.scrollHeight;
   };
 
+  // ✅ These are now valid JS variables (no nested script)
+  const CURRENT_USER_ID = Number("{{ request.user.id }}");
+  const OTHER_USERNAME  = "{{ other_user.username|escapejs }}";
+
   socket.addEventListener("message", (e) => {
     try {
       const data = JSON.parse(e.data || "{}");
-      const who = data.sender_id === {{ request.user.id }} ? "You" : "{{ other_user.username|escapejs }}";
+      const who = data.sender_id === CURRENT_USER_ID ? "You" : OTHER_USERNAME;
       appendLine(who, data.message || "");
-    } catch (err) { console.error("Bad WS payload:", e.data, err); }
+    } catch (err) {
+      console.error("Bad WS payload:", e.data, err);
+    }
   });
 
   const input  = document.getElementById("chat-message-input");
   const button = document.getElementById("chat-message-submit");
+
   const sendMsg = () => {
     const msg = (input.value || "").trim();
     if (!msg || socket.readyState !== WebSocket.OPEN) return;
     socket.send(JSON.stringify({ message: msg }));
     input.value = "";
   };
+
   button.addEventListener("click", sendMsg);
   input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+    if (e.key === "Enter" && !e.shiftKey) { 
+      e.preventDefault(); 
+      sendMsg(); 
+    }
   });
-  document.addEventListener("DOMContentLoaded", () => { log.scrollTop = log.scrollHeight; });
+
+  document.addEventListener("DOMContentLoaded", () => { 
+    log.scrollTop = log.scrollHeight; 
+  });
 </script>
 
 {% endblock %}

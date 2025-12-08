@@ -36,15 +36,26 @@
 
     <!-- Reported Listings -->
     <h3>Reported Listings</h3>
+
     {% if reported_listings %}
         {% for r in reported_listings %}
         <div class="card p-3 mb-2">
 
-            <p><strong>Listing:</strong> <a href = "{% url 'listing-detail' r.listing.id %}">
-                {{ r.listing.title }}
-                <a>
-            <p> <strong>Description:</strong>
-                {{ r.description }}</p>
+            {% if r.listing %}
+                <p><strong>Listing:</strong>
+                    <a href="{% url 'listing-detail' r.listing.id %}">
+                        {{ r.listing.title }}
+                    </a>
+                </p>
+            {% else %}
+                <p><strong>Listing:</strong> 
+                    <em>Listing no longer exists</em>
+                </p>
+            {% endif %}
+
+            <p><strong>Description:</strong>
+                {{ r.description }}
+            </p>
 
             <p>
                 <strong>Reported by:</strong>
@@ -54,13 +65,22 @@
             </p>
 
             <div class="d-flex gap-2">
-            
+
                 <a href="{% url 'resolve-report' r.id %}" class="btn btn-primary btn-sm">
                     Mark Resolved
                 </a>
-                <a href="{% url 'delete-listing' r.id %}" class="btn btn-danger btn-sm">
-                    Delete Listing
-                </a>
+
+                {% if r.listing %}
+                    <a href="{% url 'delete-listing' r.listing.id %}" 
+                    class="btn btn-danger btn-sm">
+                        Delete Listing
+                    </a>
+                {% else %}
+                    <button class="btn btn-danger btn-sm" disabled>
+                        Listing Deleted
+                    </button>
+                {% endif %}
+
             </div>
 
         </div>
@@ -68,6 +88,7 @@
     {% else %}
         <p>No listings reported.</p>
     {% endif %}
+
 
     <hr>
 
