@@ -110,12 +110,12 @@ if os.environ.get("DATABASE_URL"):
     # Heroku or production environment
     if os.environ.get("ENVIRONMENT") == "production":
         DATABASES = {
-            "default": dj_database_url.config(conn_max_age=600, ssl_require=True)
+            "default": dj_database_url.config(conn_max_age=60, ssl_require=True)
         }
     else:
         # Local development: DO NOT require SSL
         DATABASES = {
-            "default": dj_database_url.config(conn_max_age=600, ssl_require=False)
+            "default": dj_database_url.config(conn_max_age=60, ssl_require=False)
         }
 else:
     # No DATABASE_URL present → fallback to SQLite
@@ -186,12 +186,18 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_FILE_OVERWRITE = False
+# Add connection optimization settings
+AWS_S3_MAX_POOL_CONNECTIONS = 50
+AWS_S3_RETRIES = {
+    'max_attempts': 3,
+    'mode': 'adaptive'
+}
 
 # Media files configuration
 AWS_LOCATION = "media"   # this is REQUIRED for S3
 
 if AWS_STORAGE_BUCKET_NAME:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
 else:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -216,5 +222,23 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_USER') # Your gmail address
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS') # Your App Password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 ACCOUNT_EMAIL_REQUIRED = True
+
+# Database connection debugging and logging
+if DEBUG:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+            },
+        },
+        'loggers': {
+            'django.db.backends': {
+                'handlers': ['console'],
+                'level': 'WARNING',  # Set to DEBUG to see all SQL queries
+            },
+        },
+    }
 
 

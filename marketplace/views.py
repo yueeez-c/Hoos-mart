@@ -4,12 +4,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.db.models import Q
+from django.core.paginator import Paginator
 from .forms import ListingCreateForm, ListingSearchForm
 from .models import Listing, ListingImage
 
   
 def buy_marketplace(request):
-    qs = Listing.objects.all()
+    # Optimize queryset with select_related and prefetch_related
+    qs = Listing.objects.select_related('seller').prefetch_related('images').filter(
+        is_active=True, 
+        status='available'
+    )
 
     form = ListingSearchForm(request.GET or None)
     if form.is_valid():
@@ -32,24 +37,23 @@ def buy_marketplace(request):
             qs = qs.filter(price__lte=max_price)
 
         if sort == "price_asc":
-            qs = qs.order_by("price", "-id")
+            qs = qs.order_by("price", "-created_at")
         elif sort == "price_desc":
-            qs = qs.order_by("-price", "-id")
+            qs = qs.order_by("-price", "-created_at")
         elif sort == "title_asc":
             qs = qs.order_by("title")
         else:
-            qs = qs.order_by("-id")
+            qs = qs.order_by("-created_at")
+    else:
+        qs = qs.order_by("-created_at")
 
     return render(request, "marketplace/list.html", {"form": form, "listings": qs})
 
 def listing_list(request):
-    qs = Listing.objects.all()
-
-    # Only show available/active listings if you have such fields
-    if hasattr(Listing, "is_active"):
-        qs = qs.filter(is_active=True)
-    if hasattr(Listing, "is_sold"):
-        qs = qs.filter(is_sold=False)
+    # Optimize queryset with select_related and prefetch_related
+    qs = Listing.objects.select_related('seller').prefetch_related('images').filter(
+        is_active=True
+    )
 
     form = ListingSearchForm(request.GET or None)
     if form.is_valid():
@@ -78,15 +82,15 @@ def listing_list(request):
             qs = qs.filter(price__lte=max_price)
 
         if sort == "price_asc":
-            qs = qs.order_by("price", "-id")
+            qs = qs.order_by("price", "-created_at")
         elif sort == "price_desc":
-            qs = qs.order_by("-price", "-id")
+            qs = qs.order_by("-price", "-created_at")
         elif sort == "title_asc":
             qs = qs.order_by("title")
         else:
-            # default newest first
-            order_field = "-created_at" if hasattr(Listing, "created_at") else "-id"
-            qs = qs.order_by(order_field)
+            qs = qs.order_by("-created_at")
+    else:
+        qs = qs.order_by("-created_at")
 
     # paginate
     paginator = Paginator(qs, 12)  # 12 cards per page
@@ -100,7 +104,11 @@ def listing_list(request):
     })
 
 def listing_detail(request, pk):
-    listing = get_object_or_404(Listing.objects.prefetch_related("images"), pk=pk)
+    # Use select_related for seller and prefetch_related for images to optimize queries
+    listing = get_object_or_404(
+        Listing.objects.select_related('seller').prefetch_related("images"), 
+        pk=pk
+    )
     return render(request, "marketplace/detail.html", {"listing": listing})
 
 @login_required
@@ -129,7 +137,7 @@ def sell_marketplace(request):
 
     user_listings = Listing.objects.filter(
         seller=request.user
-    ).order_by("-created_at")
+    ).prefetch_related('images').order_by("-created_at")
 
     return render(
         request,
@@ -164,8 +172,3 @@ def delete_listing(request, pk):
     listing.delete()
     messages.success(request, "Listing deleted.")
     return redirect("marketplace-sell")
-
-
-def listing_detail(request, pk):
-    listing = get_object_or_404(Listing, pk=pk)
-    return render(request, "marketplace/detail.html", {"listing": listing})
