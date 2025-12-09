@@ -196,3 +196,6 @@ def user_profile(request, user_id):
         'profile': profile
     }
     return render(request, 'user/user_profile.html', context)
+
+def banned_user_page(request):
+    return render(request, 'user/banned_user_page.html')

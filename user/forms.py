@@ -6,7 +6,7 @@ from django.forms import ValidationError
 from django.db.models.fields.files import ImageFieldFile
 from allauth.account.forms import SignupForm
 from django import forms
-from user.validators import validate_school_email
+from user.validators import validate_school_email, validate_not_banned
 
 class CustomSignupForm(SignupForm):
 
@@ -24,6 +24,7 @@ class CustomSignupForm(SignupForm):
     def clean_email(self):
         email = self.cleaned_data.get("email")
         validate_school_email(email)
+        validate_not_banned(email)
         return email
     def save(self, request):
         user = super().save(request)
@@ -106,3 +107,4 @@ def profile_view(request, username): # For when you want to view a user's profil
     if not profile.is_image_public and request.user != profile_user:
         profile.image = None  # hide image
     return render(request, ...)
+1

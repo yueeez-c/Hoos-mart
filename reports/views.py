@@ -1,11 +1,5 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.contrib.auth import get_user_model
-from .models import Report
-from marketplace.models import Listing
-from messaging.models import Message
-from .decorators import moderator_required
-from user.models import Profile  
+from django.contrib.sessions.models import Session
+from user.models import Profile, BannedUser  
 
 User = get_user_model()
 
@@ -139,18 +133,6 @@ def resolve_report(request, report_id):
 # ---------------------------
 # MODERATOR — BAN A USER
 # ---------------------------
-#@moderator_required
-#def ban_user(request, report_id):
- #   report = get_object_or_404(Report, id=report_id)
-
-#    if report.reported_user:
- #       user = report.reported_user
-  #      user.is_active = False
-   #     user.save()
-    #    messages.success(request, "User has been banned.")
-
-    #return redirect("moderator-dashboard")
-
 @moderator_required
 def ban_user(request, report_id):
     # Step 1: Get the report
@@ -160,18 +142,33 @@ def ban_user(request, report_id):
     user = report.reported_user
 
     if user:
-        # Step 3: Deactivate user
+        # Add to BannedUser model if not already there
+        if not BannedUser.objects.filter(email=user.email).exists():
+            BannedUser.objects.create(email=user.email)
+        
+        # Deactivate user
         user.is_active = False
         user.save()
 
-        # Step 4: Remove them from all message threads
+        # Terminate all active sessions for the banned user
+        for session in Session.objects.all():
+            session_data = session.get_decoded()
+            if str(session_data.get('_auth_user_id')) == str(user.id):
+                session.delete()
+
+        # Remove them from all message threads
         from messaging.models import ThreadParticipant
         ThreadParticipant.objects.filter(user=user).delete()
 
-        # Step 5: Delete all reports about this user
-        Report.objects.filter(reported_user=user).delete()
+        # Mark the specific report as resolved
+        report.is_resolved = True
+        report.resolved_by = request.user
+        report.save()
 
-        messages.success(request, "User has been banned and removed from all contacts.")
+        # Delete all other pending reports about this user
+        Report.objects.filter(reported_user=user, is_resolved=False).exclude(id=report.id).delete()
+
+        messages.success(request, f"User {user.username} has been banned, all active sessions terminated, and related reports resolved.")
     else:
         messages.error(request, "No reported user found for this report.")
 

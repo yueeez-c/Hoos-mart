@@ -9,4 +9,5 @@ urlpatterns = [
     path("moderator/approve/<int:profile_id>/", views.approve_moderator, name="approve-moderator"),
     path("moderator/deny/<int:profile_id>/", views.deny_moderator, name="deny-moderator"),
     path("<int:user_id>/", views.user_profile, name="user-profile"),
+    path("banned/", views.banned_user_page, name="banned_user_page"),
 ]

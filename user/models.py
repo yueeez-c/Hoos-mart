@@ -71,4 +71,9 @@ class UserFile(models.Model):
             size /= 1024.0
         return f"{size:.1f} TB"
 
-# Create your models here.
+class BannedUser(models.Model):
+    email = models.EmailField(unique=True)
+    banned_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email

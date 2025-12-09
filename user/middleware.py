@@ -1,4 +1,6 @@
 from django.shortcuts import redirect
+from django.contrib.auth import logout
+from django.urls import reverse
 
 class ForceProfileCompletionMiddleware:
     def __init__(self, get_response):
@@ -7,9 +9,14 @@ class ForceProfileCompletionMiddleware:
     def __call__(self, request):
         
         if request.user.is_authenticated:
+            # Check if the user is banned (is_active = False)
+            if not request.user.is_active:
+                logout(request)
+                return redirect(reverse('banned_user_page'))
+
             profile = getattr(request.user, "profile", None)
 
-            # Check if Google signaled that setup is required
+            # If Google signaled that setup is required (this part of the original middleware remains)
             if request.session.get("force_complete_profile"):
 
                 # If the user has NOT filled out required fields

@@ -16,7 +16,7 @@ User = get_user_model()
 
 @login_required
 def contacts_list(request):
-    users = User.objects.exclude(id=request.user.id)
+    users = User.objects.exclude(id=request.user.id).filter(is_active=True)
     return render(request, "messaging/contacts.html", {"users": users})
 
 @login_required
@@ -102,6 +102,11 @@ def conversations_list(request):
 def chat_view(request, other_user_id):
     other_user = get_object_or_404(User, pk=other_user_id)
 
+    # Check if the other user is banned
+    if not other_user.is_active:
+        messages.error(request, "This user is banned and cannot be messaged.")
+        return redirect("messaging:contacts")
+
     # Optional listing context from querystring
     listing = None
     listing_id = request.GET.get("listing_id")
@@ -184,6 +189,11 @@ def message_seller_from_listing(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)
     seller = listing.seller  # adjust field name if different
     buyer = request.user
+
+    # Check if the seller is banned
+    if not seller.is_active:
+        messages.error(request, "The seller is banned and cannot be messaged.")
+        return redirect("marketplace-detail", pk=listing.pk)
 
     # 1. Get or create thread with this listing + these two people
     thread, created = Thread.objects.get_or_create(
