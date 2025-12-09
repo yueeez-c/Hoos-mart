@@ -4,8 +4,10 @@ Ensures database connections are properly managed and closed to prevent
 connection pool exhaustion.
 """
 import os
+import logging
 from django.db import connections
-from django.core.exceptions import ImproperlyConfigured
+
+logger = logging.getLogger(__name__)
 
 
 class HerokuDatabaseMiddleware:
@@ -16,27 +18,37 @@ class HerokuDatabaseMiddleware:
     
     def __init__(self, get_response):
         self.get_response = get_response
-        # Only enable in production/Heroku environment
-        self.enabled = bool(os.environ.get("DATABASE_URL")) and not os.environ.get("DEBUG", "False").lower() == "true"
+        # Only enable when DATABASE_URL is present (Heroku environment)
+        self.enabled = bool(os.environ.get("DATABASE_URL"))
+        
+        if self.enabled:
+            logger.info("HerokuDatabaseMiddleware enabled - will close connections after each request")
         
     def __call__(self, request):
-        response = self.get_response(request)
+        try:
+            response = self.get_response(request)
+        except Exception as e:
+            # Ensure connections are closed even if request fails
+            if self.enabled:
+                self._close_connections()
+            raise
         
         # Close all database connections after each request in production
         if self.enabled:
-            try:
-                connections.close_all()
-            except Exception as e:
-                # Log but don't crash the app
-                print(f"Warning: Could not close database connections: {e}")
+            self._close_connections()
         
         return response
+    
+    def _close_connections(self):
+        """Helper method to safely close all database connections"""
+        try:
+            connections.close_all()
+            logger.debug("Database connections closed successfully")
+        except Exception as e:
+            logger.warning(f"Could not close database connections: {e}")
     
     def process_exception(self, request, exception):
         """Ensure connections are closed even if an exception occurs"""
         if self.enabled:
-            try:
-                connections.close_all()
-            except Exception:
-                pass  # Ignore errors during cleanup
+            self._close_connections()
         return None
