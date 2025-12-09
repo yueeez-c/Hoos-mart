@@ -121,7 +121,7 @@
     {% for listing in listings %}
       <div class="col-12 col-md-6 col-lg-4">
         <a
-          href="{% url 'listing-detail' listing.pk %}"
+          href="{% url 'marketplace-detail' listing.pk %}"
           class="card marketplace-card text-decoration-none h-100"
         >
           {% if listing.image_url %}

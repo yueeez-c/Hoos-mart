@@ -21,7 +21,7 @@
                 </p>
 
                 <div class="d-flex gap-2">
-                    <a href="{% url 'listing-detail' r.listing.id %}" class="btn btn-secondary btn-sm">View Listing</a>
+                    <a href="{% url 'marketplace-detail' r.listing.id %}" class="btn btn-secondary btn-sm">View Listing</a>
                     <a href="{% url 'resolve-report' r.id %}" class="btn btn-primary btn-sm">Mark Resolved</a>
                     <a href="{% url 'delete-listing' r.id %}" class="btn btn-danger btn-sm">Delete Listing</a>
                 </div>
