@@ -10,13 +10,11 @@ class Report(models.Model):
         ("user", "User"),
         ("message", "Message"),
     ]
-
     reporter = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="reports_made"
     )
-
     report_type = models.CharField(max_length=20, choices=REPORT_TYPES)
 
     # What is being reported
