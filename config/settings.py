@@ -83,7 +83,8 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",#google auth
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "user.middleware.ForceProfileCompletionMiddleware"
+    "user.middleware.ForceProfileCompletionMiddleware",
+    "config.db_middleware.HerokuDatabaseMiddleware",  # Close DB connections for Heroku
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -107,16 +108,21 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 if os.environ.get("DATABASE_URL"):
-    # Heroku or production environment
-    if os.environ.get("ENVIRONMENT") == "production":
-        DATABASES = {
-            "default": dj_database_url.config(conn_max_age=60, ssl_require=True)
-        }
-    else:
-        # Local development: DO NOT require SSL
-        DATABASES = {
-            "default": dj_database_url.config(conn_max_age=60, ssl_require=False)
-        }
+    # Heroku or production environment - use more aggressive connection settings
+    database_config = dj_database_url.config(ssl_require=True)
+    
+    # Override with production-optimized settings for Heroku
+    database_config.update({
+        'CONN_MAX_AGE': 0,  # No connection pooling for Heroku to prevent connection leaks
+        'CONN_HEALTH_CHECKS': True,  # Enable connection health checks
+        'OPTIONS': {
+            'MAX_CONNS': 20,  # Limit max connections (Heroku hobby plan limit)
+            'sslmode': 'require',
+        },
+        'ATOMIC_REQUESTS': True,  # Enable atomic transactions
+    })
+    
+    DATABASES = {"default": database_config}
 else:
     # No DATABASE_URL present → fallback to SQLite
     DATABASES = {
@@ -224,21 +230,30 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 ACCOUNT_EMAIL_REQUIRED = True
 
 # Database connection debugging and logging
-if DEBUG:
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'handlers': {
-            'console': {
-                'class': 'logging.StreamHandler',
-            },
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
         },
-        'loggers': {
-            'django.db.backends': {
-                'handlers': ['console'],
-                'level': 'WARNING',  # Set to DEBUG to see all SQL queries
-            },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'WARNING',  # Set to DEBUG to see all SQL queries
         },
-    }
+        'config.db_middleware': {
+            'handlers': ['console'],
+            'level': 'INFO',  # Log database middleware actions
+        },
+    },
+}
+
+# Add production-specific database monitoring
+if os.environ.get("DATABASE_URL") and not DEBUG:
+    # Enable more detailed logging in production to track connection issues
+    LOGGING['loggers']['django.db.backends']['level'] = 'ERROR'
+    LOGGING['loggers']['config.db_middleware']['level'] = 'WARNING'
 
 
