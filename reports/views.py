@@ -1,6 +1,7 @@
 from django.contrib.sessions.models import Session
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from reports.decorators import moderator_required 
 from user.models import Profile, BannedUser  
 
 User = get_user_model()
