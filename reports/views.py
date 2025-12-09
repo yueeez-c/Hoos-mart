@@ -152,33 +152,21 @@ def resolve_report(request, report_id):
     #return redirect("moderator-dashboard")
 
 @moderator_required
-def ban_user(request, report_id):
-    report = get_object_or_404(Report, id=report_id)
+def ban_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
 
-    if report.reported_user:
-        user = report.reported_user
+    user.is_active = False
+    user.save()
 
-        # 1. Deactivate the user
-        user.is_active = False
-        user.save()
 
-        # 2. Remove user from all threads
-        from messaging.models import ThreadParticipant, Notification, Message
+    Report.objects.filter(reported_user=user).delete()
+    Report.objects.filter(reporting_user=user).delete()
 
-        ThreadParticipant.objects.filter(user=user).delete()
+    from messaging.models import ThreadParticipant
 
-        # 3. Delete notifications involving the user
-        Notification.objects.filter(user=user).delete()
+    ThreadParticipant.objects.filter(user=user).update(is_archived=True)
 
-        # 4. Optionally anonymize messages so threads still work
-        Message.objects.filter(sender=user).update(
-            sender=None, 
-            is_system=True,
-            text="[Message from banned user]"
-        )
-
-        messages.success(request, "User has been banned and removed from all conversations.")
-
+    messages.success(request, "User has been banned and removed from all contacts.")
     return redirect("moderator-dashboard")
 
 
