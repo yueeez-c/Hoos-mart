@@ -152,15 +152,13 @@ def resolve_report(request, report_id):
     #return redirect("moderator-dashboard")
 
 @moderator_required
-def ban_user(request, user_id):
-    user = get_object_or_404(User, id=user_id)
+def ban_user(request, report_id):
+    user = get_object_or_404(User, id=report_id)
 
     user.is_active = False
     user.save()
-
-
+    
     Report.objects.filter(reported_user=user).delete()
-    Report.objects.filter(reporting_user=user).delete()
 
     from messaging.models import ThreadParticipant
 
