@@ -83,7 +83,8 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",#google auth
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "user.middleware.ForceProfileCompletionMiddleware"
+    "user.middleware.ForceProfileCompletionMiddleware",
+    "config.db_middleware.HerokuDatabaseMiddleware",  # Close DB connections for Heroku
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -107,16 +108,21 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 if os.environ.get("DATABASE_URL"):
-    # Heroku or production environment
-    if os.environ.get("ENVIRONMENT") == "production":
-        DATABASES = {
-            "default": dj_database_url.config(conn_max_age=600, ssl_require=True)
-        }
-    else:
-        # Local development: DO NOT require SSL
-        DATABASES = {
-            "default": dj_database_url.config(conn_max_age=600, ssl_require=False)
-        }
+    # Heroku or production environment - use more aggressive connection settings
+    database_config = dj_database_url.config(ssl_require=True)
+    
+    # Override with production-optimized settings for Heroku
+    database_config.update({
+        'CONN_MAX_AGE': 0,  # No connection pooling for Heroku to prevent connection leaks
+        'CONN_HEALTH_CHECKS': True,  # Enable connection health checks
+        'OPTIONS': {
+            'MAX_CONNS': 20,  # Limit max connections (Heroku hobby plan limit)
+            'sslmode': 'require',
+        },
+        'ATOMIC_REQUESTS': True,  # Enable atomic transactions
+    })
+    
+    DATABASES = {"default": database_config}
 else:
     # No DATABASE_URL present → fallback to SQLite
     DATABASES = {
@@ -186,12 +192,18 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_FILE_OVERWRITE = False
+# Add connection optimization settings
+AWS_S3_MAX_POOL_CONNECTIONS = 50
+AWS_S3_RETRIES = {
+    'max_attempts': 3,
+    'mode': 'adaptive'
+}
 
 # Media files configuration
 AWS_LOCATION = "media"   # this is REQUIRED for S3
 
 if AWS_STORAGE_BUCKET_NAME:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
 else:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -216,5 +228,32 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_USER') # Your gmail address
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS') # Your App Password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 ACCOUNT_EMAIL_REQUIRED = True
+
+# Database connection debugging and logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'WARNING',  # Set to DEBUG to see all SQL queries
+        },
+        'config.db_middleware': {
+            'handlers': ['console'],
+            'level': 'INFO',  # Log database middleware actions
+        },
+    },
+}
+
+# Add production-specific database monitoring
+if os.environ.get("DATABASE_URL") and not DEBUG:
+    # Enable more detailed logging in production to track connection issues
+    LOGGING['loggers']['django.db.backends']['level'] = 'ERROR'
+    LOGGING['loggers']['config.db_middleware']['level'] = 'WARNING'
 
 

@@ -25,7 +25,7 @@
     <div class="card-deck home-listings-deck">
       {% if recent_listings %}
         {% for listing in recent_listings %}
-          	<a href="{% url 'listing-detail' listing.pk %}"
+          	<a href="{% url 'marketplace-detail' listing.pk %}"
 				class="card home-listing-card text-reset text-decoration-none d-block">
 				{% if listing.image_url %}
 					<img class="card-img-top home-listing-img" src="{{ listing.image_url }}" alt="{{ listing.title }}">
