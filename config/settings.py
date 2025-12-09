@@ -116,7 +116,6 @@ if os.environ.get("DATABASE_URL"):
         'CONN_MAX_AGE': 0,  # No connection pooling for Heroku to prevent connection leaks
         'CONN_HEALTH_CHECKS': True,  # Enable connection health checks
         'OPTIONS': {
-            'MAX_CONNS': 20,  # Limit max connections (Heroku hobby plan limit)
             'sslmode': 'require',
         },
         'ATOMIC_REQUESTS': True,  # Enable atomic transactions
