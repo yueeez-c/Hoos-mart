@@ -106,30 +106,53 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
+import dj_database_url
+import os
 
-if os.environ.get("DATABASE_URL"):
-    # Heroku or production environment - use more aggressive connection settings
-    database_config = dj_database_url.config(ssl_require=True)
-    
-    # Override with production-optimized settings for Heroku
-    database_config.update({
-        'CONN_MAX_AGE': 0,  # No connection pooling for Heroku to prevent connection leaks
-        'CONN_HEALTH_CHECKS': True,  # Enable connection health checks
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
-        'ATOMIC_REQUESTS': True,  # Enable atomic transactions
-    })
-    
-    DATABASES = {"default": database_config}
-else:
-    # No DATABASE_URL present → fallback to SQLite
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
+# Default to SQLite (Local Development)
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
+}
+
+# If DATABASE_URL is present (Heroku or local overrides), parse it
+if os.environ.get("DATABASE_URL"):
+    db_from_env = dj_database_url.config(conn_max_age=600)
+    DATABASES["default"].update(db_from_env)
+
+    # ONLY apply SSL and connection pooling if the engine is actually PostgreSQL
+    # This prevents crashing if you have a local sqlite DATABASE_URL
+    if 'postgresql' in DATABASES["default"]["ENGINE"]:
+        DATABASES["default"]["OPTIONS"] = {'sslmode': 'require'}
+        DATABASES["default"]["CONN_MAX_AGE"] = 0
+        DATABASES["default"]["CONN_HEALTH_CHECKS"] = True
+        DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
+# if os.environ.get("DATABASE_URL"):
+#     # Heroku or production environment - use more aggressive connection settings
+#     database_config = dj_database_url.config(ssl_require=True)
+#
+#     # Override with production-optimized settings for Heroku
+#     database_config.update({
+#         'CONN_MAX_AGE': 0,  # No connection pooling for Heroku to prevent connection leaks
+#         'CONN_HEALTH_CHECKS': True,  # Enable connection health checks
+#         'OPTIONS': {
+#             'sslmode': 'require',
+#         },
+#         'ATOMIC_REQUESTS': True,  # Enable atomic transactions
+#     })
+#
+#     DATABASES = {"default": database_config}
+# else:
+#     # No DATABASE_URL present → fallback to SQLite
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.sqlite3",
+#             "NAME": BASE_DIR / "db.sqlite3",
+#         }
+#     }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -199,10 +222,8 @@ AWS_S3_RETRIES = {
     'max_attempts': 3,
     'mode': 'adaptive'
 }
-
 # Media files configuration
 AWS_LOCATION = "media"   # this is REQUIRED for S3
-
 if AWS_STORAGE_BUCKET_NAME:
     DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
@@ -219,8 +240,7 @@ ACCOUNT_EMAIL_VALIDATORS = [
 ACCOUNT_FORMS = {
     "signup": "user.forms.CustomSignupForm",
 }
-
-
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*"]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
