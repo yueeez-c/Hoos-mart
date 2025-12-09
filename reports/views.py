@@ -2,7 +2,11 @@ from django.contrib.sessions.models import Session
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from reports.decorators import moderator_required 
-from user.models import Profile, BannedUser  
+from reports.models import Report
+from user.models import Profile, BannedUser 
+from marketplace.models import Listing 
+from django.shortcuts import get_object_or_404, redirect, render
+
 
 User = get_user_model()
 
@@ -181,7 +185,7 @@ def ban_user(request, report_id):
 
 @moderator_required
 def delete_listing(request, listing_id):
-    listing = get_object_or_404(Listing, id=listing_id)
+    listing = get_object_or_404(listing, id=listing_id)
 
     # DELETE associated reports FIRST
     Report.objects.filter(listing=listing).delete()
@@ -194,7 +198,7 @@ def delete_listing(request, listing_id):
 
 @moderator_required
 def approve_moderator(request, user_id):
-    user = get_object_or_404(User, id=user_id)
+    user = get_object_or_404(user, id=user_id)
     user.profile.is_moderator = True
     user.profile.moderator_approval_pending = False
     user.profile.save()
@@ -203,7 +207,7 @@ def approve_moderator(request, user_id):
 
 @moderator_required
 def deny_moderator(request, user_id):
-    user = get_object_or_404(User, id=user_id)
+    user = get_object_or_404(user, id=user_id)
     user.profile.is_moderator = False
     user.profile.moderator_approval_pending = False
     user.profile.save()
