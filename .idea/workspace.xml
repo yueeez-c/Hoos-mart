@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f43f1b1b-327f-40f6-ae7d-86806911b958" name="Changes" comment="Updated email template">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/account/email.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/account/email.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +26,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="bugs" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -54,7 +53,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
     "django.template.preview.state": "SHOW_EDITOR",
-    "git-widget-placeholder": "bugs",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/yuezhangchen/Documents/CS/CS3240/project-b-17/templates/account",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
