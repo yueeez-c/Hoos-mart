@@ -1,476 +1,407 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/k4pNZww7)
+# 🛍️ Project B-17 - UVA Marketplace Platform
 
-# Project B-17 - Sprint 4: Messaging + AWS S3 File Storage
+**A comprehensive Django web application featuring a student marketplace, real-time messaging, Google authentication, AWS S3 cloud storage, and robust moderation tools.**
 
-A Django web application with real-time messaging, Google authentication, and AWS S3 cloud file storage for profile pictures and file uploads.
-
-## 🚀 Quick Start
-
-To run this locally, please run the following in your terminal:
-
-```bash
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-cp .env.example .env
-python manage.py migrate
-python manage.py createsuperuser  # optional
-python manage.py runserver
-```
-
-## 📋 Features
-
-### Core Features
-- **Real-time Messaging** - Live chat system with channels and WebSocket support
-- **Google Authentication** - Secure login via Google OAuth
-- **AWS S3 Integration** - Cloud file storage for profile pictures and uploads
-- **Profile Management** - Enhanced user profiles with image uploads
-- **File Upload System** - Comprehensive file management with S3 storage
-- **Responsive Design** - Modern, mobile-friendly interface
-
-### NEW: Marketplace Features
-- **Pickup Location Selector** - Sellers can specify safe pickup locations for exchanges (e.g., "UVA Library", "Student Union")
-- **Donation/Free Category** - Special category for users to donate items or offer them for free
-- **Enhanced Listing Management** - Create, edit, and delete marketplace listings with multiple photos
-
-### NEW: Safety & Security
-- **Scam/Fraud Warning System** - Track and flag suspicious user activity
-  - `scam_warnings_count` - Number of warnings against a user
-  - `is_flagged` - Account flagged for suspicious activity
-  - Automatic warning banners for flagged users
-- **User Verification** - Verified badge system for trusted users
-
-### NEW: Advanced Messaging
-- **Group Conversations** - Create and participate in group chats
-  - Multi-participant support
-  - Custom group names
-  - Group-specific messaging features
-- **Mute/Archive Conversations** - Better inbox management
-  - `is_muted` - Silence notifications for specific conversations
-  - `is_archived` - Hide conversations from main inbox
-  - Quick access controls for conversation management
-
-## ☁️ AWS S3 Setup Instructions
-
-### 1. AWS Account Setup
-
-1. **Create AWS Account**: Sign up at [aws.amazon.com](https://aws.amazon.com)
-2. **Create IAM User**:
-   - Go to IAM → Users → Create User
-   - Attach policy: `AmazonS3FullAccess`
-   - Generate Access Key and Secret Key
-3. **Create S3 Bucket**:
-   - Go to S3 → Create Bucket
-   - Choose a unique bucket name (e.g., `your-project-b17-bucket`)
-   - Set region (e.g., `us-east-1`)
-   - Enable public read access for uploaded files
-
-### 2. Environment Configuration
-
-Create a `.env` file in your project root with the following:
-
-```env
-# AWS S3 Configuration
-AWS_ACCESS_KEY_ID=your_aws_access_key_here
-AWS_SECRET_ACCESS_KEY=your_aws_secret_key_here
-AWS_STORAGE_BUCKET_NAME=your-bucket-name-here
-AWS_S3_REGION_NAME=us-east-1
-AWS_S3_USE_SSL=True
-
-# Optional: Custom S3 settings
-AWS_S3_CUSTOM_DOMAIN=your-bucket-name-here.s3.amazonaws.com
-AWS_DEFAULT_ACL=public-read
-```
-
-### 3. Required Dependencies
-
-The following packages are already included in `requirements.txt`:
-
-```txt
-boto3==1.35.80
-django-storages==1.14.4
-python-dotenv==1.0.1
-```
-
-### 4. Django Settings Configuration
-
-The S3 integration is already configured in `config/settings.py`. The system automatically:
-
-- **Uses S3** when AWS credentials are provided in `.env`
-- **Falls back to local storage** when AWS credentials are missing
-- **Handles media files** for profile pictures and uploads
-- **Provides visual indicators** showing storage type (S3 vs Local)
-
-## 🖼️ S3 Profile Picture System
-
-### Features
-
-- **Profile Picture Uploads**: Users can upload profile pictures stored in S3
-- **Visual Storage Indicators**: Clear badges showing S3 vs Local storage
-- **Image Validation**: Automatic validation for file types and sizes
-- **User-Specific Paths**: Files organized by user ID for security
-
-### Usage
-
-1. **Upload Profile Picture**:
-   - Navigate to `/user/profile/`
-   - Click "Choose File" and select an image
-   - Click "Update Profile" to save
-
-2. **View S3 Demo**:
-   - Navigate to `/user/s3-demo/`
-   - See S3 configuration status
-   - Test file uploads and view examples
-
-### File Organization
-
-```
-S3 Bucket Structure:
-├── user_1/
-│   ├── profile_image.jpg
-│   └── uploaded_file.pdf
-├── user_2/
-│   ├── profile_image.png
-│   └── document.docx
-└── ...
-```
-
-## 🛠️ Development Setup
-
-### 1. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Environment Variables
-
-```bash
-# Copy example environment file
-cp .env.example .env
-
-# Edit .env with your AWS credentials
-# See "AWS S3 Setup Instructions" section above
-```
-
-### 3. Database Setup
-
-```bash
-# Run migrations
-python manage.py migrate
-
-# Create superuser (optional)
-python manage.py createsuperuser
-```
-
-### 4. Run Development Server
-
-```bash
-python manage.py runserver
-```
-
-Visit `http://127.0.0.1:8000` to access the application.
-
-## 📱 Usage Guide
-
-### Profile Management
-
-1. **Sign Up/Login**: Use Google authentication or create account
-2. **Update Profile**: Navigate to `/user/profile/`
-3. **Upload Picture**: Select image file and save
-4. **View Status**: See S3 storage badges indicating where files are stored
-
-### S3 Demonstration
-
-1. **S3 Demo Page**: Visit `/user/s3-demo/`
-2. **Configuration Status**: View current AWS S3 settings
-3. **Upload Examples**: Test different file types
-4. **Storage Indicators**: See visual badges for S3 vs Local storage
-
-### File Uploads
-
-- **Supported Formats**: Images (JPG, PNG, GIF), Documents (PDF, DOCX, TXT)
-- **Size Limits**: 10MB maximum per file
-- **Security**: Files are organized by user ID
-- **Access**: Public read access for uploaded images
-
-### NEW: Marketplace Features
-
-#### Creating Listings with Pickup Locations
-
-1. **Navigate to Marketplace**: Go to `/marketplace/sell/`
-2. **Fill Out Listing Form**:
-   - Title, description, price, category
-   - **NEW: Pickup Location** - Specify a safe meeting spot (e.g., "UVA Library Main Entrance", "Student Union Lobby")
-3. **Upload Photos**: Select multiple images for your listing
-4. **Select Category**:
-   - Furniture, Electronics, Textbooks, Clothing, Other
-   - **NEW: Donation/Free** - For items you want to give away
-
-#### Donation/Free Items
-
-- Select "Donation/Free" category when creating a listing
-- Set price to $0.00 for free items
-- Specify pickup location for safe exchange
-- Help fellow students by donating items you no longer need
-
-### NEW: Safety Features
-
-#### Scam/Fraud Warning System
-
-**For Buyers:**
-- Check user profiles before making purchases
-- Look for warning badges on seller profiles
-- Report suspicious activity to administrators
-
-**Warning Indicators:**
-- 🚩 **Flagged Account** - User has been reported for suspicious activity
-- ⚠️ **Warning Count** - Number of reports against the user
-- ✅ **Verified Badge** - Trusted, verified users
-
-**For Administrators:**
-- Flag suspicious accounts via admin panel
-- Track warning counts per user
-- Review and moderate reported users
-
-### NEW: Advanced Messaging Features
-
-#### Group Conversations
-
-1. **Create Group Chat**:
-   - Navigate to messaging section
-   - Select "Create Group" option
-   - Add participants and set group name
-2. **Manage Group**:
-   - Add/remove participants
-   - Rename group conversations
-   - View all group members
-
-#### Mute/Archive Conversations
-
-**Mute Conversations:**
-- Click the mute icon on any conversation
-- Stop receiving notifications for that thread
-- Messages still appear in your inbox
-- Un-mute anytime to resume notifications
-
-**Archive Conversations:**
-- Archive old or completed conversations
-- Remove from main inbox view
-- Access archived conversations in "Archived" section
-- Un-archive to bring back to main inbox
-
-**Inbox Management:**
-- Active conversations - Main inbox view
-- Muted conversations - Visible with mute indicator
-- Archived conversations - Hidden in separate "Archived" section
-- Search and filter across all conversation types
-
-## 🔧 Troubleshooting
-
-### S3 Connection Issues
-
-1. **Check Credentials**: Verify AWS keys in `.env` file
-2. **Bucket Permissions**: Ensure bucket allows public read access
-3. **Region Settings**: Confirm `AWS_S3_REGION_NAME` matches bucket region
-4. **Fallback Mode**: System uses local storage when S3 unavailable
-
-### Common Problems
-
-- **Import Error**: Run `pip install -r requirements.txt`
-- **Migration Issues**: Run `python manage.py migrate`
-- **Static Files**: Run `python manage.py collectstatic` for production
-- **Environment Variables**: Check `.env` file exists and has correct format
-
-### Debug Mode
-
-Check S3 status at `/user/s3-demo/` which shows:
-- ✅ S3 Connected and Active
-- ⚠️ S3 Configured but Inactive
-- ❌ S3 Not Configured (Using Local Storage)
-
-## 🚀 Production Deployment
-
-### Heroku Deployment
-
-1. **Set Environment Variables**:
-   ```bash
-   heroku config:set AWS_ACCESS_KEY_ID=your_key
-   heroku config:set AWS_SECRET_ACCESS_KEY=your_secret
-   heroku config:set AWS_STORAGE_BUCKET_NAME=your_bucket
-   ```
-
-2. **Configure Settings**: Production settings automatically detect S3 credentials
-
-3. **Collect Static Files**: Run `python manage.py collectstatic`
-
-### Security Notes
-
-- **Never commit** `.env` files to git
-- **Use IAM policies** to limit S3 permissions
-- **Enable CORS** on S3 bucket for web uploads
-- **Monitor usage** to avoid unexpected AWS charges
-
-## 🤝 Team Development
-
-### Git Workflow
-
-```bash
-# Pull latest changes
-git pull origin main
-
-# Make your changes
-git add .
-git commit -m "Description of changes"
-
-# Push to repository
-git push origin main
-```
-
-### Branch Protection
-
-- `.env` files are automatically excluded via `.gitignore`
-- Cache files (`__pycache__/`, `*.pyc`) are ignored
-- Database files (`db.sqlite3`) are excluded
-
-## 📖 API Documentation
-
-### S3 Integration Endpoints
-
-- `GET /user/profile/` - User profile with S3 upload form
-- `POST /user/profile/` - Upload profile picture to S3
-- `GET /user/s3-demo/` - S3 demonstration and status page
-
-### Model Structure
-
-```python
-# User Profile with S3 Image and Safety Features
-class Profile(models.Model):
-    user = models.OneToOneField(User)
-    image = models.ImageField(upload_to=user_directory_path)
-    info = models.TextField(default='')
-    is_student = models.BooleanField(default=True)
-    is_verified = models.BooleanField(default=False)  # NEW: Verified badge
-    scam_warnings_count = models.PositiveIntegerField(default=0)  # NEW: Warning tracking
-    is_flagged = models.BooleanField(default=False)  # NEW: Flagged for suspicious activity
-
-
-# marketplace Listing with Pickup Location
-class Listing(models.Model):
-    CATEGORY_CHOICES = [
-        ("furniture", "Furniture"),
-        ("electronics", "Electronics"),
-        ("textbooks", "Textbooks"),
-        ("clothing", "Clothing"),
-        ("donation", "Donation/Free"),  # NEW: Donation category
-        ("other", "Other"),
-    ]
-
-    title = models.CharField(max_length=120)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=8, decimal_places=2)
-    category = models.CharField(max_length=30, choices=CATEGORY_CHOICES)
-    pickup_location = models.CharField(max_length=200, blank=True)  # NEW: Pickup location
-    seller = models.ForeignKey(User)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
-# Messaging Thread with Group Support
-class Thread(models.Model):
-    participants = models.ManyToManyField(User, through="ThreadParticipant")
-    context_listing = models.ForeignKey('marketplace.Listing', null=True, blank=True)
-    is_group = models.BooleanField(default=False)  # NEW: Group conversation flag
-    group_name = models.CharField(max_length=100, blank=True)  # NEW: Group name
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
-# Thread Participant with Mute/Archive
-class ThreadParticipant(models.Model):
-    thread = models.ForeignKey("Thread")
-    user = models.ForeignKey(User)
-    unread_count = models.PositiveIntegerField(default=0)
-    last_seen = models.DateTimeField(null=True, blank=True)
-    is_muted = models.BooleanField(default=False)  # NEW: Mute notifications
-    is_archived = models.BooleanField(default=False)  # NEW: Archive conversation
-
-
-# File Upload Tracking
-class UserFile(models.Model):
-    user = models.ForeignKey(User)
-    file = models.FileField(upload_to=user_directory_path)
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-    file_size = models.PositiveIntegerField()
-```
-
-### NEW Feature Endpoints
-
-#### Marketplace
-- `GET /marketplace/` - Browse listings with donation filter
-- `POST /marketplace/sell/` - Create listing with pickup location
-- `GET /marketplace/<id>/` - View listing details including pickup location
-
-#### Safety & Moderation  
-- Admin panel endpoints for flagging users
-- User profile displays warning counts and verification status
-
-#### Messaging
-- Group conversation creation and management
-- Mute/unmute conversation endpoints
-- Archive/unarchive conversation endpoints
-- Filtered inbox views (active, archived)
-
-## 🎯 Sprint 4 Demonstration
-
-### Key Features to Show
-
-1. **S3 Configuration**: Display connection status and settings
-2. **Profile Pictures**: Upload and view with storage indicators
-3. **File Management**: Demonstrate upload system with metadata
-4. **Visual Feedback**: Show S3 vs Local storage badges
-5. **Pickup Locations**: Show safe exchange location selector
-6. **Donation Category**: Demonstrate free/donation listings
-7. **Safety Features**: Show scam warning system and user flagging
-8. **Group Messaging**: Create and manage group conversations
-9. **Mute/Archive**: Demonstrate conversation management features
-10. **Team Integration**: Seamless integration with messaging and auth
-
-### Demo Script
-
-#### Part 1: S3 & Profile Features
-1. Navigate to `/user/s3-demo/` - Show S3 status
-2. Go to `/user/profile/` - Upload profile picture
-3. View storage indicators - Demonstrate S3 vs Local badges
-
-#### Part 2: Marketplace Enhancements
-4. Go to `/marketplace/sell/` - Create new listing
-5. Add pickup location - Show "UVA Library" example
-6. Select "Donation/Free" category - Demonstrate free item posting
-7. View listings - Show pickup location display
-
-#### Part 3: Safety & Security
-8. View user profile - Show warning indicators
-9. Demonstrate flagging system - Admin panel
-10. Check verified badges - Trust indicators
-
-#### Part 4: Advanced Messaging
-11. Create group conversation - Add multiple participants
-12. Mute conversation - Disable notifications
-13. Archive old threads - Clean inbox management
-14. Un-archive and un-mute - Restore conversation
-
-#### Part 5: Integration Testing
-15. Test file uploads - Show different file types
-16. Check messaging - Verify real-time functionality
-17. Verify Google auth - Still working seamlessly
-18. Confirm all features work together harmoniously
+[![Django](https://img.shields.io/badge/Django-5.2.6-green.svg)](https://www.djangoproject.com/)
+[![Python](https://img.shields.io/badge/Python-3.13-blue.svg)](https://www.python.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Production-blue.svg)](https://www.postgresql.org/)
+[![Heroku](https://img.shields.io/badge/Deployed-Heroku-purple.svg)](https://www.heroku.com/)
 
 ---
 
-## 📞 Support
+## 📖 Table of Contents
 
-For questions about S3 setup, marketplace features, or implementation details, refer to:
-- [Django Storages Documentation](https://django-storages.readthedocs.io/)
-- [AWS S3 Documentation](https://docs.aws.amazon.com/s3/)
-- [Boto3 Documentation](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html)
-- [Django Messaging Documentation](https://docs.djangoproject.com/en/stable/)
-- Project-specific questions: Check the code comments and model docstrings
+- [Overview](#-overview)
+- [Live Demo](#-live-demo)
+- [Features](#-features)
+- [Technology Stack](#-technology-stack)
+- [Quick Start](#-quick-start)
+- [Configuration](#-configuration)
+- [Project Structure](#-project-structure)
+- [Deployment](#-deployment)
+- [Usage Guide](#-usage-guide)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing Team](#-contributing-team)
+
+---
+
+## 🌟 Overview
+
+Project B-17 is a full-featured student marketplace platform designed for the UVA community. Students can buy, sell, and donate items, communicate securely through real-time messaging, and manage their profiles with cloud-stored media. The platform includes comprehensive moderation tools, user verification, and safety features to ensure a secure trading environment.
+
+### **Live Demo**
+🔗 **Production URL:** [https://shrouded-sea-15354-cd819052cb94.herokuapp.com/](https://shrouded-sea-15354-cd819052cb94.herokuapp.com/)
+
+---
+
+## ✨ Features
+
+### 🛒 **Marketplace**
+- **Buy & Sell Items** - Full-featured marketplace with categories (Furniture, Electronics, Textbooks, Clothing, Donation/Free, Other)
+- **Multiple Image Upload** - Interactive carousel with navigation for up to multiple photos per listing
+- **Pickup Location Selector** - Safe, predefined campus locations for item exchanges
+- **Advanced Search & Filters** - Filter by category, price range, status, and seller
+- **Listing Management** - Create, edit, delete, and update listing status (Available/Sold/Pending)
+
+### 💬 **Real-Time Messaging**
+- **Live Chat System** - WebSocket-powered messaging using Django Channels
+- **Group Conversations** - Multi-user group chats with custom names
+- **Message from Listings** - Direct messaging integrated with marketplace
+- **Conversation Management** - Mute notifications, archive chats, organize inbox
+- **Unread Indicators** - Visual badges for unread message counts
+
+### 🔐 **Authentication & Security**
+- **Google OAuth** - Secure login with UVA Google accounts (@virginia.edu)
+- **Email Verification** - Required email confirmation for new accounts
+- **School Email Validation** - Restricted to verified university domains
+- **User Verification System** - Badge system for trusted users
+
+### 👤 **User Profiles**
+- **Profile Customization** - Bio, location, and cloud-stored profile pictures
+- **AWS S3 Integration** - Automatic cloud storage for all profile images
+- **Activity Tracking** - View user's listings, ratings, and history
+- **Profile Completion** - Middleware ensures complete user profiles
+
+### 🛡️ **Moderation & Safety**
+- **Report System** - Report listings and users for violations
+- **Ban System** - Admin tools to ban and manage problematic users
+- **Banned User Database** - Email-based tracking to prevent re-registration
+- **Automatic Flagging** - Multi-report users are automatically flagged
+- **Admin Dashboard** - Comprehensive moderation panel
+
+### 📁 **File Management**
+- **AWS S3 Cloud Storage** - Scalable cloud storage for all media
+- **File Validation** - Automatic type, size, and format validation
+- **Smart Organization** - User-specific file paths for security
+- **Fallback Storage** - Local storage when S3 is unavailable
+
+---
+
+## 🛠️ Technology Stack
+
+### **Backend**
+- Django 5.2.6 - Python web framework
+- Django Channels - WebSocket support
+- PostgreSQL - Production database
+- Django REST Framework - API endpoints
+- Psycopg - PostgreSQL adapter
+
+### **Frontend**
+- Bootstrap 5 - Responsive CSS framework
+- JavaScript (ES6+) - Interactive components
+- WebSockets - Real-time messaging
+
+### **Cloud Services**
+- AWS S3 - Object storage
+- Boto3 - AWS SDK
+- Django Storages - S3 integration
+
+### **Authentication**
+- Google OAuth 2.0 - via django-allauth
+- SendGrid - Email delivery
+
+### **Deployment**
+- Heroku - Cloud hosting
+- Gunicorn - WSGI server
+- WhiteNoise - Static files
+- Redis - Channel layer (production)
+
+---
+
+## 🚀 Quick Start
+
+### **Prerequisites**
+- Python 3.13+
+- Git
+- (Optional) PostgreSQL for local development
+- (Optional) AWS account for S3 storage
+
+### **Installation**
+
+```bash
+# 1. Clone repository
+git clone https://github.com/uva-cs3240-f25/project-b-17.git
+cd project-b-17
+
+# 2. Create virtual environment
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+# macOS/Linux
+source venv/bin/activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Set up environment variables (create .env file - see Configuration section)
+
+# 5. Run migrations
+python manage.py migrate
+
+# 6. Create superuser (optional)
+python manage.py createsuperuser
+
+# 7. Collect static files
+python manage.py collectstatic --no-input
+
+# 8. Run development server
+python manage.py runserver
+```
+
+Access at `http://localhost:8000`
+
+---
+
+## ⚙️ Configuration
+
+### **Environment Variables**
+
+Create a `.env` file in project root:
+
+```env
+# Django Settings
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+
+# Database (optional for local - SQLite used by default)
+DATABASE_URL=postgres://user:password@localhost:5432/dbname
+
+# AWS S3 (optional - falls back to local storage)
+AWS_ACCESS_KEY_ID=your-aws-access-key
+AWS_SECRET_ACCESS_KEY=your-aws-secret-key
+AWS_STORAGE_BUCKET_NAME=your-bucket-name
+AWS_S3_REGION_NAME=us-east-1
+
+# Google OAuth
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+# Email (SendGrid)
+EMAIL_HOST=smtp.sendgrid.net
+EMAIL_HOST_USER=apikey
+EMAIL_HOST_PASSWORD=your-sendgrid-api-key
+EMAIL_PORT=587
+DEFAULT_FROM_EMAIL=noreply@yourdomain.com
+```
+
+### **AWS S3 Setup**
+
+1. Create AWS account at [aws.amazon.com](https://aws.amazon.com)
+2. Create IAM User with `AmazonS3FullAccess` policy
+3. Create S3 Bucket in desired region
+4. Add credentials to `.env` file
+
+### **Google OAuth Setup**
+
+1. Visit [console.cloud.google.com](https://console.cloud.google.com)
+2. Create new project
+3. Enable Google+ API
+4. Create OAuth 2.0 Client ID
+5. Add authorized redirect URIs:
+   - `http://localhost:8000/accounts/google/login/callback/`
+   - `https://your-domain.herokuapp.com/accounts/google/login/callback/`
+6. Add credentials to `.env` file
+
+---
+
+## 📁 Project Structure
+
+```
+project-b-17/
+├── config/                 # Project configuration
+│   ├── settings.py        # Django settings
+│   ├── urls.py            # Root URL configuration
+│   ├── wsgi.py            # WSGI configuration
+│   ├── asgi.py            # ASGI configuration (WebSockets)
+│   ├── db_middleware.py   # Database connection middleware
+│   └── storage_backends.py # AWS S3 storage backends
+│
+├── home/                   # Homepage app
+│   ├── views.py           # Homepage views
+│   ├── templates/         # Homepage templates
+│   └── static/            # Homepage static files
+│
+├── marketplace/            # Marketplace app
+│   ├── models.py          # Listing and ListingImage models
+│   ├── views.py           # Marketplace views
+│   ├── forms.py           # Marketplace forms
+│   ├── urls.py            # Marketplace URLs
+│   ├── templates/         # Marketplace templates
+│   └── management/        # Custom management commands
+│
+├── messaging/              # Real-time messaging app
+│   ├── models.py          # Conversation and Message models
+│   ├── views.py           # Messaging views
+│   ├── consumers.py       # WebSocket consumers
+│   └── templates/         # Messaging templates
+│
+├── user/                   # User management app
+│   ├── models.py          # Profile and BannedUser models
+│   ├── views.py           # User views
+│   ├── forms.py           # User forms
+│   ├── validators.py      # Email validation
+│   ├── middleware.py      # Profile completion middleware
+│   ├── adapter.py         # Social account adapter
+│   └── templates/         # User templates
+│
+├── reports/                # Moderation and reporting app
+│   ├── models.py          # Report models
+│   ├── views.py           # Moderation views
+│   └── templates/         # Report templates
+│
+├── staticfiles/            # Collected static files
+├── media/                  # Local media files (if not using S3)
+├── requirements.txt        # Python dependencies
+├── runtime.txt             # Python version for Heroku
+├── Procfile                # Heroku process configuration
+├── manage.py               # Django management script
+└── README.md               # This file
+```
+
+---
+
+## 🚢 Deployment
+
+### **Heroku Deployment**
+
+The project auto-deploys to Heroku when pushing to the `main` branch on GitHub.
+
+**Manual deployment:**
+
+```bash
+# Login to Heroku
+heroku login
+
+# Add Heroku remote (if not already added)
+heroku git:remote -a shrouded-sea-15354
+
+# Deploy
+git push heroku main
+
+# Run migrations
+heroku run python manage.py migrate -a shrouded-sea-15354
+
+# Create superuser
+heroku run python manage.py createsuperuser -a shrouded-sea-15354
+```
+
+**Set environment variables on Heroku:**
+
+```bash
+heroku config:set SECRET_KEY=your-secret-key -a shrouded-sea-15354
+heroku config:set AWS_ACCESS_KEY_ID=your-key -a shrouded-sea-15354
+heroku config:set AWS_SECRET_ACCESS_KEY=your-secret -a shrouded-sea-15354
+heroku config:set AWS_STORAGE_BUCKET_NAME=your-bucket -a shrouded-sea-15354
+```
+
+**View logs:**
+
+```bash
+heroku logs --tail -a shrouded-sea-15354
+```
+
+---
+
+## 📚 Usage Guide
+
+### **Creating a Marketplace Listing**
+
+1. Log in with Google account
+2. Navigate to **Marketplace → Sell**
+3. Fill out listing details:
+   - Title and description
+   - Price
+   - Category (Furniture, Electronics, etc.)
+   - Pickup location (UVA Library, Student Union, etc.)
+4. Upload up to multiple images
+5. Click **Create Listing**
+
+### **Browsing & Buying**
+
+1. Navigate to **Marketplace → Buy**
+2. Use filters to narrow search:
+   - Category dropdown
+   - Price range
+   - Search by keyword
+3. Click on listing to view details
+4. Use carousel to view all images
+5. Click **Message Seller** to inquire
+
+### **Messaging**
+
+1. Click **Message Seller** from any listing
+2. Type message and send
+3. View conversations in **Messages** inbox
+4. **Mute** conversations to disable notifications
+5. **Archive** old conversations to clean inbox
+
+### **Profile Management**
+
+1. Navigate to **Profile**
+2. Upload profile picture (stored in AWS S3)
+3. Update bio and location
+4. View your active listings
+
+### **Reporting & Safety**
+
+1. Click **Report** on problematic listings
+2. Select violation type
+3. Submit with optional details
+4. Admins review reports in dashboard
+
+---
+
+## 🐛 Troubleshooting
+
+### **Common Issues**
+
+**Images not loading:**
+- Check AWS S3 credentials in `.env`
+- Verify bucket permissions
+- Check CORS configuration on S3 bucket
+
+**Database errors on Heroku:**
+- Run migrations: `heroku run python manage.py migrate -a shrouded-sea-15354`
+- Check database connection: `heroku pg:info -a shrouded-sea-15354`
+
+**"Missing table" errors:**
+- Run: `heroku run python manage.py create_banneduser_table -a shrouded-sea-15354`
+- Re-run migrations
+
+**WebSocket connection failed:**
+- Check Redis configuration
+- Verify ASGI settings
+- Review channel layer configuration
+
+**Static files not loading:**
+- Run: `python manage.py collectstatic`
+- Check WhiteNoise configuration
+
+---
+
+## 👥 Contributing Team
+
+**UVA CS 3240 - Fall 2025**
+- Team B-17
+
+---
+
+## 📄 License
+
+This project is developed for UVA CS 3240 coursework.
+
+---
+
+## 📞 Support & Documentation
+
+- **Django Documentation:** [docs.djangoproject.com](https://docs.djangoproject.com/)
+- **Django Storages:** [django-storages.readthedocs.io](https://django-storages.readthedocs.io/)
+- **AWS S3 Documentation:** [docs.aws.amazon.com/s3/](https://docs.aws.amazon.com/s3/)
+- **Heroku Documentation:** [devcenter.heroku.com](https://devcenter.heroku.com/)
+
+---
+
+**Made with ❤️ by Team B-17**
