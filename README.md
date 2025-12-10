@@ -1,4 +1,4 @@
-# 🛍️ Project B-17 - UVA Marketplace Platform
+# Project B-17 - UVA Marketplace Platform
 
 **A comprehensive Django web application featuring a student marketplace, real-time messaging, Google authentication, AWS S3 cloud storage, and robust moderation tools.**
 
@@ -21,23 +21,28 @@
 - [Deployment](#-deployment)
 - [Usage Guide](#-usage-guide)
 - [Troubleshooting](#-troubleshooting)
-- [Contributing Team](#-contributing-team)
+- [Contributing Team AND Sources](#-contributing-team)
 
 ---
 
-## 🌟 Overview
+## Overview
 
 Project B-17 is a full-featured student marketplace platform designed for the UVA community. Students can buy, sell, and donate items, communicate securely through real-time messaging, and manage their profiles with cloud-stored media. The platform includes comprehensive moderation tools, user verification, and safety features to ensure a secure trading environment.
 
 ### **Live Demo**
-🔗 **Production URL:** [https://shrouded-sea-15354-cd819052cb94.herokuapp.com/](https://shrouded-sea-15354-cd819052cb94.herokuapp.com/)
+**Production URL:** [https://shrouded-sea-15354-cd819052cb94.herokuapp.com/](https://shrouded-sea-15354-cd819052cb94.herokuapp.com/)
+
+Note: To view the moderator functions use the following seeded moderator account:
+User: deployed_admin
+Password: Moderator123
+
 
 ---
 
-## ✨ Features
+## Features
 
-### 🛒 **Marketplace**
-- **Buy & Sell Items** - Full-featured marketplace with categories (Furniture, Electronics, Textbooks, Clothing, Donation/Free, Other)
+###  **Marketplace**
+- **Buy & Sell Items: Full-featured marketplace with categories (Furniture, Electronics, Textbooks, Clothing, Donation/Free, Other)
 - **Multiple Image Upload** - Interactive carousel with navigation for up to multiple photos per listing
 - **Pickup Location Selector** - Safe, predefined campus locations for item exchanges
 - **Advanced Search & Filters** - Filter by category, price range, status, and seller
@@ -495,7 +500,7 @@ heroku logs --tail -a shrouded-sea-15354
 
 ---
 
-## �📄 License
+## License
 
 This project is developed for UVA CS 3240 coursework. All external libraries and frameworks are used in accordance with their respective licenses:
 
@@ -511,7 +516,7 @@ All proprietary code developed by Team B-17 is for educational purposes as part 
 
 ---
 
-## 📞 Support & Documentation
+## Support & Documentation
 
 ### **Official Documentation**
 - **Django Documentation:** [docs.djangoproject.com](https://docs.djangoproject.com/)
@@ -523,25 +528,18 @@ All proprietary code developed by Team B-17 is for educational purposes as part 
 - **Bootstrap Documentation:** [getbootstrap.com/docs](https://getbootstrap.com/docs/)
 - **PostgreSQL Documentation:** [postgresql.org/docs](https://www.postgresql.org/docs/)
 
-### **Community Resources**
+### **Online Resources**
 - **Stack Overflow:** [stackoverflow.com](https://stackoverflow.com/)
 - **Django Forum:** [forum.djangoproject.com](https://forum.djangoproject.com/)
 - **GitHub Issues:** Project-specific issues and discussions
 
----
+##Generative AI Resources
+- ChatGPT version 5.1
+- Microsoft Copilot
+- Google Gemini 
 
-## 🙏 Acknowledgments
 
-Special thanks to:
-- **UVA CS 3240 Teaching Staff** for guidance and support throughout the project
-- **Django Community** for excellent documentation and open-source contributions
-- **AWS** for providing cloud infrastructure services
-- **Heroku** for hosting platform and deployment tools
-- **Bootstrap Team** for UI framework
-- **All open-source contributors** whose libraries made this project possible
 
----
+**Made with by Team B-17**
 
-**Made with ❤️ by Team B-17**
-
-*University of Virginia | CS 3240 - Advanced Software Development | Fall 2025*
+*University of Virginia | CS 3240 - Advanced Software Development | Fall 2025
