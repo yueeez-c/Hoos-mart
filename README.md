@@ -219,7 +219,7 @@ DEFAULT_FROM_EMAIL=noreply@yourdomain.com
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 project-b-17/
