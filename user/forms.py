@@ -107,4 +107,3 @@ def profile_view(request, username): # For when you want to view a user's profil
     if not profile.is_image_public and request.user != profile_user:
         profile.image = None  # hide image
     return render(request, ...)
-1
