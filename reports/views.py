@@ -173,7 +173,7 @@ def ban_user(request, report_id):
 
 @moderator_required
 def delete_listing(request, listing_id):
-    listing = get_object_or_404(listing, id=listing_id)
+    listing = get_object_or_404(Listing, id=listing_id)
 
     Report.objects.filter(listing=listing).delete()
 
