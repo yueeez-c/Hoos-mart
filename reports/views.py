@@ -183,14 +183,19 @@ def delete_listing(request, listing_id):
     return redirect("moderator-dashboard")
 
 @moderator_required
-def approve_moderator(request, report_id):
-    report = get_object_or_404(Report, id=report_id)
-    user = report.reported_user
-    user.profile.is_moderator = True
-    user.profile.moderator_approval_pending = False
-    user.profile.save()
-    messages.success(request, f"{user.username} is now a moderator.")
-    return redirect("moderator-dashboard")
+def approve_moderator(request, user_id):
+    try:
+        user = get_object_or_404(User, id=user_id)
+        user.profile.is_moderator = True
+        user.profile.moderator_approval_pending = False
+        user.profile.save()
+
+        messages.success(request, f"{user.username} is now a moderator.")
+        return redirect("moderator-dashboard")
+    
+    except User.DoesNotExist:
+        messages.error(request, "User not found.")
+        return redirect("moderator-dashboard")
 
 @moderator_required
 def deny_moderator(request, report_id):
