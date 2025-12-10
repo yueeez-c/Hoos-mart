@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f43f1b1b-327f-40f6-ae7d-86806911b958" name="Changes" comment="Updated email verification config">
-      <change afterPath="$PROJECT_DIR$/templates/account/email/email_confirmation_message.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/account/email/email_confirmation_subject.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/account/email_confirm.html" afterDir="false" />
+    <list default="true" id="f43f1b1b-327f-40f6-ae7d-86806911b958" name="Changes" comment="Updated email template">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/account/email.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/account/email.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -156,7 +152,7 @@
       <workItem from="1763049345483" duration="1309000" />
       <workItem from="1763083585510" duration="5613000" />
       <workItem from="1763885122378" duration="3113000" />
-      <workItem from="1765072522653" duration="9631000" />
+      <workItem from="1765072522653" duration="10269000" />
     </task>
     <task id="LOCAL-00001" summary="bugs">
       <option name="closed" value="true" />
@@ -262,7 +258,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765325569413</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Updated email template">
+      <option name="closed" value="true" />
+      <created>1765326399865</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1765326399865</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -314,7 +318,8 @@
     <MESSAGE value="changed student status to Hoos status" />
     <MESSAGE value="Added to reminder to verify in Google login page" />
     <MESSAGE value="Updated email verification config" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated email verification config" />
+    <MESSAGE value="Updated email template" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated email template" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
