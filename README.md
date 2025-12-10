@@ -1,6 +1,6 @@
-# Project B-17 - UVA Marketplace Platform
+# Hoo-Mart: A VA Marketplace Platform made by Team B-17
 
-**A comprehensive Django web application featuring a student marketplace, real-time messaging, Google authentication, AWS S3 cloud storage, and robust moderation tools.**
+A comprehensive Django web application featuring a student marketplace, real-time messaging, Google authentication, AWS S3 cloud storage, and robust moderation tools.
 
 [![Django](https://img.shields.io/badge/Django-5.2.6-green.svg)](https://www.djangoproject.com/)
 [![Python](https://img.shields.io/badge/Python-3.13-blue.svg)](https://www.python.org/)
@@ -9,7 +9,7 @@
 
 ---
 
-## 📖 Table of Contents
+## Table of Contents
 
 - [Overview](#-overview)
 - [Live Demo](#-live-demo)
@@ -27,10 +27,10 @@
 
 ## Overview
 
-Project B-17 is a full-featured student marketplace platform designed for the UVA community. Students can buy, sell, and donate items, communicate securely through real-time messaging, and manage their profiles with cloud-stored media. The platform includes comprehensive moderation tools, user verification, and safety features to ensure a secure trading environment.
+Hoo-Mart is a full-featured student marketplace platform designed for the UVA community. Students can buy, sell, and donate items, communicate securely through real-time messaging, and manage their profiles with cloud-stored media. The platform includes comprehensive moderation tools, user verification, and safety features to ensure a secure trading environment.
 
-### **Live Demo**
-**Production URL:** [https://shrouded-sea-15354-cd819052cb94.herokuapp.com/](https://shrouded-sea-15354-cd819052cb94.herokuapp.com/)
+### Live Demo
+Production URL: [https://shrouded-sea-15354-cd819052cb94.herokuapp.com/](https://shrouded-sea-15354-cd819052cb94.herokuapp.com/)
 
 Note: To view the moderator functions use the following seeded moderator account:
 User: deployed_admin
@@ -41,71 +41,71 @@ Password: Moderator123
 
 ## Features
 
-###  **Marketplace**
-- **Buy & Sell Items: Full-featured marketplace with categories (Furniture, Electronics, Textbooks, Clothing, Donation/Free, Other)
-- **Multiple Image Upload** - Interactive carousel with navigation for up to multiple photos per listing
-- **Pickup Location Selector** - Safe, predefined campus locations for item exchanges
-- **Advanced Search & Filters** - Filter by category, price range, status, and seller
-- **Listing Management** - Create, edit, delete, and update listing status (Available/Sold/Pending)
+###  Marketplace
+- Buy & Sell Items: Full-featured marketplace with categories (Furniture, Electronics, Textbooks, Clothing, Donation/Free, Other)
+- Multiple Image Upload - Interactive carousel with navigation for up to multiple photos per listing
+- Pickup Location Selector - Safe, predefined campus locations for item exchanges
+- Advanced Search & Filters - Filter by category, price range, status, and seller
+- Listing Management - Create, edit, delete, and update listing status (Available/Sold/Pending)
 
-### 💬 **Real-Time Messaging**
-- **Live Chat System** - WebSocket-powered messaging using Django Channels
-- **Group Conversations** - Multi-user group chats with custom names
-- **Message from Listings** - Direct messaging integrated with marketplace
-- **Conversation Management** - Mute notifications, archive chats, organize inbox
-- **Unread Indicators** - Visual badges for unread message counts
+###  Real-Time Messaging
+- Live Chat System - WebSocket-powered messaging using Django Channels
+- Group Conversations - Multi-user group chats with custom names
+- Message from Listings - Direct messaging integrated with marketplace
+- Conversation Management - Mute notifications, archive chats, organize inbox
+- Unread Indicators - Visual badges for unread message counts
 
-### 🔐 **Authentication & Security**
-- **Google OAuth** - Secure login with UVA Google accounts (@virginia.edu)
-- **Email Verification** - Required email confirmation for new accounts
-- **School Email Validation** - Restricted to verified university domains
-- **User Verification System** - Badge system for trusted users
+### Authentication & Security
+- Google OAuth - Secure login with UVA Google accounts (@virginia.edu)
+- Email Verification - Required email confirmation for new accounts
+- School Email Validation - Restricted to verified university domains
+- User Verification System - Badge system for trusted users
 
-### 👤 **User Profiles**
-- **Profile Customization** - Bio, location, and cloud-stored profile pictures
-- **AWS S3 Integration** - Automatic cloud storage for all profile images
-- **Activity Tracking** - View user's listings, ratings, and history
-- **Profile Completion** - Middleware ensures complete user profiles
+### User Profiles
+- Profile Customization - Bio, location, and cloud-stored profile pictures
+- AWS S3 Integration - Automatic cloud storage for all profile images
+- Activity Tracking - View user's listings, ratings, and history
+- Profile Completion - Middleware ensures complete user profiles
 
-### 🛡️ **Moderation & Safety**
-- **Report System** - Report listings and users for violations
-- **Ban System** - Admin tools to ban and manage problematic users
-- **Banned User Database** - Email-based tracking to prevent re-registration
-- **Automatic Flagging** - Multi-report users are automatically flagged
-- **Admin Dashboard** - Comprehensive moderation panel
+### Moderation & Safety
+- Report System - Report listings and users for violations
+- Ban System - Admin tools to ban and manage problematic users
+- Banned User Database - Email-based tracking to prevent re-registration
+- Automatic Flagging - Multi-report users are automatically flagged
+- Admin Dashboard - Comprehensive moderation panel
 
-### 📁 **File Management**
-- **AWS S3 Cloud Storage** - Scalable cloud storage for all media
-- **File Validation** - Automatic type, size, and format validation
-- **Smart Organization** - User-specific file paths for security
-- **Fallback Storage** - Local storage when S3 is unavailable
+###  File Management
+- AWS S3 Cloud Storage - Scalable cloud storage for all media
+- File Validation - Automatic type, size, and format validation
+- Smart Organization - User-specific file paths for security
+- Fallback Storage - Local storage when S3 is unavailable
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
-### **Backend**
+### Backend
 - Django 5.2.6 - Python web framework
 - Django Channels - WebSocket support
 - PostgreSQL - Production database
 - Django REST Framework - API endpoints
 - Psycopg - PostgreSQL adapter
 
-### **Frontend**
+### Frontend
 - Bootstrap 5 - Responsive CSS framework
 - JavaScript (ES6+) - Interactive components
 - WebSockets - Real-time messaging
 
-### **Cloud Services**
+### Cloud Services
 - AWS S3 - Object storage
 - Boto3 - AWS SDK
 - Django Storages - S3 integration
 
-### **Authentication**
+### Authentication
 - Google OAuth 2.0 - via django-allauth
 - SendGrid - Email delivery
 
-### **Deployment**
+### Deployment
 - Heroku - Cloud hosting
 - Gunicorn - WSGI server
 - WhiteNoise - Static files
@@ -115,13 +115,13 @@ Password: Moderator123
 
 ## 🚀 Quick Start
 
-### **Prerequisites**
+### Prerequisites
 - Python 3.13+
 - Git
 - (Optional) PostgreSQL for local development
 - (Optional) AWS account for S3 storage
 
-### **Installation**
+### Installation
 
 ```bash
 # 1. Clone repository
@@ -161,7 +161,7 @@ Access at `http://localhost:8000`
 
 ## ⚙️ Configuration
 
-### **Environment Variables**
+### Environment Variables
 
 Create a `.env` file in project root:
 
@@ -192,14 +192,14 @@ EMAIL_PORT=587
 DEFAULT_FROM_EMAIL=noreply@yourdomain.com
 ```
 
-### **AWS S3 Setup**
+### AWS S3 Setup
 
 1. Create AWS account at [aws.amazon.com](https://aws.amazon.com)
 2. Create IAM User with `AmazonS3FullAccess` policy
 3. Create S3 Bucket in desired region
 4. Add credentials to `.env` file
 
-### **Google OAuth Setup**
+### Google OAuth Setup
 
 1. Visit [console.cloud.google.com](https://console.cloud.google.com)
 2. Create new project
@@ -270,11 +270,11 @@ project-b-17/
 
 ## 🚢 Deployment
 
-### **Heroku Deployment**
+### Heroku Deployment
 
 The project auto-deploys to Heroku when pushing to the `main` branch on GitHub.
 
-**Manual deployment:**
+Manual deployment:
 
 ```bash
 # Login to Heroku
@@ -293,7 +293,7 @@ heroku run python manage.py migrate -a shrouded-sea-15354
 heroku run python manage.py createsuperuser -a shrouded-sea-15354
 ```
 
-**Set environment variables on Heroku:**
+Set environment variables on Heroku:
 
 ```bash
 heroku config:set SECRET_KEY=your-secret-key -a shrouded-sea-15354
@@ -302,7 +302,7 @@ heroku config:set AWS_SECRET_ACCESS_KEY=your-secret -a shrouded-sea-15354
 heroku config:set AWS_STORAGE_BUCKET_NAME=your-bucket -a shrouded-sea-15354
 ```
 
-**View logs:**
+View logs:
 
 ```bash
 heroku logs --tail -a shrouded-sea-15354
@@ -310,49 +310,49 @@ heroku logs --tail -a shrouded-sea-15354
 
 ---
 
-## 📚 Usage Guide
+## Usage Guide
 
-### **Creating a Marketplace Listing**
+### Creating a Marketplace Listing
 
 1. Log in with Google account
-2. Navigate to **Marketplace → Sell**
+2. Navigate to Marketplace → Sell
 3. Fill out listing details:
    - Title and description
    - Price
    - Category (Furniture, Electronics, etc.)
    - Pickup location (UVA Library, Student Union, etc.)
 4. Upload up to multiple images
-5. Click **Create Listing**
+5. Click Create Listing
 
-### **Browsing & Buying**
+### Browsing & Buying
 
-1. Navigate to **Marketplace → Buy**
+1. Navigate to Marketplace → Buy
 2. Use filters to narrow search:
    - Category dropdown
    - Price range
    - Search by keyword
 3. Click on listing to view details
 4. Use carousel to view all images
-5. Click **Message Seller** to inquire
+5. Click Message Seller to inquire
 
-### **Messaging**
+### Messaging
 
-1. Click **Message Seller** from any listing
+1. Click Message Seller from any listing
 2. Type message and send
-3. View conversations in **Messages** inbox
-4. **Mute** conversations to disable notifications
-5. **Archive** old conversations to clean inbox
+3. View conversations in Messages inbox
+4. Mute conversations to disable notifications
+5. Archive old conversations to clean inbox
 
-### **Profile Management**
+### Profile Management
 
-1. Navigate to **Profile**
+1. Navigate to Profile
 2. Upload profile picture (stored in AWS S3)
 3. Update bio and location
 4. View your active listings
 
-### **Reporting & Safety**
+### Reporting & Safety
 
-1. Click **Report** on problematic listings
+1. Click Report on problematic listings
 2. Select violation type
 3. Submit with optional details
 4. Admins review reports in dashboard
@@ -361,140 +361,140 @@ heroku logs --tail -a shrouded-sea-15354
 
 ## 🐛 Troubleshooting
 
-### **Common Issues**
+### Common Issues
 
-**Images not loading:**
+Images not loading:
 - Check AWS S3 credentials in `.env`
 - Verify bucket permissions
 - Check CORS configuration on S3 bucket
 
-**Database errors on Heroku:**
+Database errors on Heroku:
 - Run migrations: `heroku run python manage.py migrate -a shrouded-sea-15354`
 - Check database connection: `heroku pg:info -a shrouded-sea-15354`
 
-**"Missing table" errors:**
+"Missing table" errors:
 - Run: `heroku run python manage.py create_banneduser_table -a shrouded-sea-15354`
 - Re-run migrations
 
-**WebSocket connection failed:**
+WebSocket connection failed:
 - Check Redis configuration
 - Verify ASGI settings
 - Review channel layer configuration
 
-**Static files not loading:**
+Static files not loading:
 - Run: `python manage.py collectstatic`
 - Check WhiteNoise configuration
 
 ---
 
-## 👥 Contributing Team
+## Contributing Team
 
-**UVA CS 3240 - Fall 2025**
+UVA CS 3240 - Fall 2025
 - Team B-17
 
 ---
 
-## � Citations & References
+## Citations & References
 
-### **Frameworks & Libraries**
+### Frameworks & Libraries
 
-1. **Django Web Framework**
+1. Django Web Framework
    - Django Software Foundation. (2025). *Django: The Web framework for perfectionists with deadlines* (Version 5.2.6) [Software]. https://www.djangoproject.com/
    - Documentation: https://docs.djangoproject.com/
 
-2. **Django Channels**
+2. Django Channels
    - Django Software Foundation. (2025). *Django Channels: WebSocket and asynchronous support for Django* [Software]. https://channels.readthedocs.io/
    - Used for real-time messaging functionality
 
-3. **Django Allauth**
+3. Django Allauth
    - Penners, R. (2025). *django-allauth: Integrated set of Django applications addressing authentication* [Software]. https://django-allauth.readthedocs.io/
    - Used for Google OAuth integration
 
-4. **Django Storages**
+4. Django Storages
    - jschneier. (2025). *django-storages: Custom storage backends for Django* [Software]. https://django-storages.readthedocs.io/
    - Used for AWS S3 integration
 
-5. **Bootstrap**
+5. Bootstrap
    - Bootstrap Team. (2025). *Bootstrap: The most popular HTML, CSS, and JS library* (Version 5.x) [Software]. https://getbootstrap.com/
    - Used for responsive UI design
 
-### **Cloud Services**
+### Cloud Services
 
-6. **Amazon Web Services (AWS)**
+6. Amazon Web Services (AWS)
    - Amazon Web Services, Inc. (2025). *Amazon S3: Object storage built to retrieve any amount of data from anywhere*. https://aws.amazon.com/s3/
    - AWS Documentation: https://docs.aws.amazon.com/
 
-7. **Boto3 (AWS SDK for Python)**
+7. Boto3 (AWS SDK for Python)
    - Amazon Web Services, Inc. (2025). *Boto3: AWS SDK for Python* [Software]. https://boto3.amazonaws.com/
    - Used for S3 integration and file management
 
-8. **Heroku**
+8. Heroku
    - Salesforce, Inc. (2025). *Heroku: Cloud Application Platform*. https://www.heroku.com/
    - Platform for production deployment
 
-### **Database**
+### Database
 
-9. **PostgreSQL**
+9. PostgreSQL
    - PostgreSQL Global Development Group. (2025). *PostgreSQL: The World's Most Advanced Open Source Relational Database*. https://www.postgresql.org/
    - Production database system
 
-10. **Psycopg**
+10. Psycopg
     - Di Gregorio, F., & Varrazzo, D. (2025). *Psycopg: PostgreSQL adapter for Python* [Software]. https://www.psycopg.org/
     - Database adapter for Django
 
-### **Python Packages**
+### Python Packages
 
-11. **Gunicorn**
+11. Gunicorn
     - Chesneau, B. (2025). *Gunicorn: Python WSGI HTTP Server for UNIX* [Software]. https://gunicorn.org/
     - Production WSGI server
 
-12. **WhiteNoise**
+12. WhiteNoise
     - Evans, D. (2025). *WhiteNoise: Radically simplified static file serving for Python web apps* [Software]. http://whitenoise.evans.io/
     - Static file serving
 
-13. **Pillow**
+13. Pillow
     - Clark, A., et al. (2025). *Pillow: Python Imaging Library* [Software]. https://python-pillow.org/
     - Image processing and validation
 
-### **Email Services**
+### Email Services
 
-14. **SendGrid**
+14. SendGrid
     - Twilio Inc. (2025). *SendGrid: Email Delivery Service*. https://sendgrid.com/
     - Transactional email delivery
 
-### **Authentication**
+### Authentication
 
-15. **Google OAuth 2.0**
+15. Google OAuth 2.0
     - Google LLC. (2025). *Google Identity Platform: OAuth 2.0 for Web Server Applications*. https://developers.google.com/identity/protocols/oauth2
     - Social authentication provider
 
-### **Additional Tools**
+### Additional Tools
 
-16. **Python-dotenv**
+16. Python-dotenv
     - Pedregosa, S. (2025). *python-dotenv: Read key-value pairs from .env file* [Software]. https://github.com/theskumar/python-dotenv
     - Environment variable management
 
-17. **Django Crispy Forms**
+17. Django Crispy Forms
     - Pons, M. (2025). *django-crispy-forms: Best way to have Django DRY forms* [Software]. https://django-crispy-forms.readthedocs.io/
     - Form rendering and styling
 
-### **Learning Resources**
+### Learning Resources
 
-18. **Django Documentation**
+18. Django Documentation
     - Django Software Foundation. (2025). *Django Documentation*. https://docs.djangoproject.com/en/stable/
     - Official Django tutorials and API reference
 
-19. **MDN Web Docs**
+19. MDN Web Docs
     - Mozilla Corporation. (2025). *MDN Web Docs: Resources for developers, by developers*. https://developer.mozilla.org/
     - HTML, CSS, and JavaScript references
 
-20. **Bootstrap Documentation**
+20. Bootstrap Documentation
     - Bootstrap Team. (2025). *Bootstrap Documentation*. https://getbootstrap.com/docs/5.3/
     - UI component implementation guides
 
-### **Course Materials**
+### Course Materials
 
-21. **UVA CS 3240 Course Materials**
+21. UVA CS 3240 Course Materials
     - University of Virginia, Department of Computer Science. (2025). *CS 3240: Advanced Software Development*
     - Course lectures, labs, and project requirements
 
@@ -504,13 +504,13 @@ heroku logs --tail -a shrouded-sea-15354
 
 This project is developed for UVA CS 3240 coursework. All external libraries and frameworks are used in accordance with their respective licenses:
 
-- **Django**: BSD 3-Clause License
-- **Bootstrap**: MIT License
-- **Django Channels**: BSD License
-- **Django Allauth**: MIT License
-- **Boto3**: Apache License 2.0
-- **PostgreSQL**: PostgreSQL License
-- **Pillow**: HPND License
+- Django: BSD 3-Clause License
+- Bootstrap: MIT License
+- Django Channels: BSD License
+- Django Allauth: MIT License
+- Boto3: Apache License 2.0
+- PostgreSQL: PostgreSQL License
+- Pillow: HPND License
 
 All proprietary code developed by Team B-17 is for educational purposes as part of UVA CS 3240.
 
@@ -518,28 +518,30 @@ All proprietary code developed by Team B-17 is for educational purposes as part 
 
 ## Support & Documentation
 
-### **Official Documentation**
-- **Django Documentation:** [docs.djangoproject.com](https://docs.djangoproject.com/)
-- **Django Channels:** [channels.readthedocs.io](https://channels.readthedocs.io/)
-- **Django Storages:** [django-storages.readthedocs.io](https://django-storages.readthedocs.io/)
-- **AWS S3 Documentation:** [docs.aws.amazon.com/s3/](https://docs.aws.amazon.com/s3/)
-- **Boto3 Documentation:** [boto3.amazonaws.com](https://boto3.amazonaws.com/)
-- **Heroku Documentation:** [devcenter.heroku.com](https://devcenter.heroku.com/)
-- **Bootstrap Documentation:** [getbootstrap.com/docs](https://getbootstrap.com/docs/)
-- **PostgreSQL Documentation:** [postgresql.org/docs](https://www.postgresql.org/docs/)
+### Official Documentation
+- Django Documentation: [docs.djangoproject.com](https://docs.djangoproject.com/)
+- Django Channels: [channels.readthedocs.io](https://channels.readthedocs.io/)
+- Django Storages: [django-storages.readthedocs.io](https://django-storages.readthedocs.io/)
+- AWS S3 Documentation: [docs.aws.amazon.com/s3/](https://docs.aws.amazon.com/s3/)
+- Boto3 Documentation: [boto3.amazonaws.com](https://boto3.amazonaws.com/)
+- Heroku Documentation: [devcenter.heroku.com](https://devcenter.heroku.com/)
+- Bootstrap Documentation: [getbootstrap.com/docs](https://getbootstrap.com/docs/)
+- PostgreSQL Documentation: [postgresql.org/docs](https://www.postgresql.org/docs/)
 
-### **Online Resources**
-- **Stack Overflow:** [stackoverflow.com](https://stackoverflow.com/)
-- **Django Forum:** [forum.djangoproject.com](https://forum.djangoproject.com/)
-- **GitHub Issues:** Project-specific issues and discussions
+### Online Resources
+- Stack Overflow: [stackoverflow.com](https://stackoverflow.com/)
+- Django Forum: [forum.djangoproject.com](https://forum.djangoproject.com/)
+- GitHub Issues: Project-specific issues and discussions
 
-##Generative AI Resources
+##Generative AI Resources:
+These resources were used to help generate code, debug, and create the README. 
 - ChatGPT version 5.1
 - Microsoft Copilot
-- Google Gemini 
+- Google Gemini
 
 
 
-**Made with by Team B-17**
 
-*University of Virginia | CS 3240 - Advanced Software Development | Fall 2025
+Made with by Team B-17
+
+University of Virginia | CS 3240 - Advanced Software Development | Fall 2025
