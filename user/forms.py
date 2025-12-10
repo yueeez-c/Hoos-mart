@@ -35,14 +35,12 @@ class RoleChoiceForm(forms.Form):
     ("student", "Student"),
     ("moderator", "Request Moderator Access"),
 ]
-
     role = forms.ChoiceField(
         choices=ROLE_CHOICES,
         widget=forms.RadioSelect,
         label="Register as",
         required=True,
     )
-
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField(
         required=True,

@@ -4,15 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f43f1b1b-327f-40f6-ae7d-86806911b958" name="Changes" comment="fixed &quot; No module named 'marketplace.apps'&quot; error">
+    <list default="true" id="f43f1b1b-327f-40f6-ae7d-86806911b958" name="Changes" comment="Updated email template">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/marketplace/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/marketplace/migrations/0002_alter_listing_options_alter_listingimage_options_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/messaging/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reports/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/migrations/0002_banneduser.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +26,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="bugs" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -50,27 +43,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;Django Server.project-b-17.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
-    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/yuezhangchen/Documents/CS/CS3240/project-b-17/templates/account&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;aDefault&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.intellij.python.django.customization.DjangoModulesConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Django Server.project-b-17.executor": "Run",
+    "Python.forms.executor": "Debug",
+    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
+    "django.template.preview.state": "SHOW_EDITOR",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/yuezhangchen/Documents/CS/CS3240/project-b-17/templates/account",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "aDefault",
+    "settings.editor.selected.configurable": "com.intellij.python.django.customization.DjangoModulesConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/templates/account" />
@@ -157,7 +151,7 @@
       <workItem from="1763049345483" duration="1309000" />
       <workItem from="1763083585510" duration="5613000" />
       <workItem from="1763885122378" duration="3113000" />
-      <workItem from="1765072522653" duration="7201000" />
+      <workItem from="1765072522653" duration="10269000" />
     </task>
     <task id="LOCAL-00001" summary="bugs">
       <option name="closed" value="true" />
@@ -231,7 +225,47 @@
       <option name="project" value="LOCAL" />
       <updated>1765322999819</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="delete duplicates">
+      <option name="closed" value="true" />
+      <created>1765324239760</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1765324239760</updated>
+    </task>
+    <task id="LOCAL-00011" summary="changed student status to Hoos status">
+      <option name="closed" value="true" />
+      <created>1765324562281</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1765324562281</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Added to reminder to verify in Google login page">
+      <option name="closed" value="true" />
+      <created>1765324783035</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1765324783035</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Updated email verification config">
+      <option name="closed" value="true" />
+      <created>1765325569413</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1765325569413</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Updated email template">
+      <option name="closed" value="true" />
+      <created>1765326399865</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1765326399865</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -258,7 +292,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/main" />
+                        <option value="bugs" />
                       </list>
                     </value>
                   </entry>
@@ -279,7 +313,12 @@
     <MESSAGE value="change to eastern time zone" />
     <MESSAGE value="rename Marketplace to marketplace" />
     <MESSAGE value="fixed &quot; No module named 'marketplace.apps'&quot; error" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed &quot; No module named 'marketplace.apps'&quot; error" />
+    <MESSAGE value="delete duplicates" />
+    <MESSAGE value="changed student status to Hoos status" />
+    <MESSAGE value="Added to reminder to verify in Google login page" />
+    <MESSAGE value="Updated email verification config" />
+    <MESSAGE value="Updated email template" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated email template" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -290,5 +329,8 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/project_b_17$forms.coverage" NAME="forms Coverage Results" MODIFIED="1765324825921" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/user" />
   </component>
 </project>
