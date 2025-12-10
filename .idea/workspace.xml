@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f43f1b1b-327f-40f6-ae7d-86806911b958" name="Changes" comment="fixed google sign in verification" />
+    <list default="true" id="f43f1b1b-327f-40f6-ae7d-86806911b958" name="Changes" comment="changed google sign in verification from none to optional" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -271,7 +271,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765340191267</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="changed google sign in verification from none to optional">
+      <option name="closed" value="true" />
+      <created>1765341196702</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1765341196702</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -362,7 +370,8 @@
     <MESSAGE value="Updated email verification config" />
     <MESSAGE value="Updated email template" />
     <MESSAGE value="fixed google sign in verification" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed google sign in verification" />
+    <MESSAGE value="changed google sign in verification from none to optional" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed google sign in verification from none to optional" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

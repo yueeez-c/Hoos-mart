@@ -210,7 +210,7 @@ else:
 # ============================================================
 # EMAIL CONFIGURATION: Local (console) vs Heroku (SMTP)
 # ============================================================
-ACCOUNT_EMAIL_VERIFICATION = 'optional'
+# ACCOUNT_EMAIL_VERIFICATION = 'optional'
 ACCOUNT_EMAIL_VALIDATORS = [
     "user.validators.validate_school_email"
 ]
