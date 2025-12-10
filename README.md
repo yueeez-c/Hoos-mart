@@ -389,19 +389,159 @@ heroku logs --tail -a shrouded-sea-15354
 
 ---
 
-## 📄 License
+## � Citations & References
 
-This project is developed for UVA CS 3240 coursework.
+### **Frameworks & Libraries**
+
+1. **Django Web Framework**
+   - Django Software Foundation. (2025). *Django: The Web framework for perfectionists with deadlines* (Version 5.2.6) [Software]. https://www.djangoproject.com/
+   - Documentation: https://docs.djangoproject.com/
+
+2. **Django Channels**
+   - Django Software Foundation. (2025). *Django Channels: WebSocket and asynchronous support for Django* [Software]. https://channels.readthedocs.io/
+   - Used for real-time messaging functionality
+
+3. **Django Allauth**
+   - Penners, R. (2025). *django-allauth: Integrated set of Django applications addressing authentication* [Software]. https://django-allauth.readthedocs.io/
+   - Used for Google OAuth integration
+
+4. **Django Storages**
+   - jschneier. (2025). *django-storages: Custom storage backends for Django* [Software]. https://django-storages.readthedocs.io/
+   - Used for AWS S3 integration
+
+5. **Bootstrap**
+   - Bootstrap Team. (2025). *Bootstrap: The most popular HTML, CSS, and JS library* (Version 5.x) [Software]. https://getbootstrap.com/
+   - Used for responsive UI design
+
+### **Cloud Services**
+
+6. **Amazon Web Services (AWS)**
+   - Amazon Web Services, Inc. (2025). *Amazon S3: Object storage built to retrieve any amount of data from anywhere*. https://aws.amazon.com/s3/
+   - AWS Documentation: https://docs.aws.amazon.com/
+
+7. **Boto3 (AWS SDK for Python)**
+   - Amazon Web Services, Inc. (2025). *Boto3: AWS SDK for Python* [Software]. https://boto3.amazonaws.com/
+   - Used for S3 integration and file management
+
+8. **Heroku**
+   - Salesforce, Inc. (2025). *Heroku: Cloud Application Platform*. https://www.heroku.com/
+   - Platform for production deployment
+
+### **Database**
+
+9. **PostgreSQL**
+   - PostgreSQL Global Development Group. (2025). *PostgreSQL: The World's Most Advanced Open Source Relational Database*. https://www.postgresql.org/
+   - Production database system
+
+10. **Psycopg**
+    - Di Gregorio, F., & Varrazzo, D. (2025). *Psycopg: PostgreSQL adapter for Python* [Software]. https://www.psycopg.org/
+    - Database adapter for Django
+
+### **Python Packages**
+
+11. **Gunicorn**
+    - Chesneau, B. (2025). *Gunicorn: Python WSGI HTTP Server for UNIX* [Software]. https://gunicorn.org/
+    - Production WSGI server
+
+12. **WhiteNoise**
+    - Evans, D. (2025). *WhiteNoise: Radically simplified static file serving for Python web apps* [Software]. http://whitenoise.evans.io/
+    - Static file serving
+
+13. **Pillow**
+    - Clark, A., et al. (2025). *Pillow: Python Imaging Library* [Software]. https://python-pillow.org/
+    - Image processing and validation
+
+### **Email Services**
+
+14. **SendGrid**
+    - Twilio Inc. (2025). *SendGrid: Email Delivery Service*. https://sendgrid.com/
+    - Transactional email delivery
+
+### **Authentication**
+
+15. **Google OAuth 2.0**
+    - Google LLC. (2025). *Google Identity Platform: OAuth 2.0 for Web Server Applications*. https://developers.google.com/identity/protocols/oauth2
+    - Social authentication provider
+
+### **Additional Tools**
+
+16. **Python-dotenv**
+    - Pedregosa, S. (2025). *python-dotenv: Read key-value pairs from .env file* [Software]. https://github.com/theskumar/python-dotenv
+    - Environment variable management
+
+17. **Django Crispy Forms**
+    - Pons, M. (2025). *django-crispy-forms: Best way to have Django DRY forms* [Software]. https://django-crispy-forms.readthedocs.io/
+    - Form rendering and styling
+
+### **Learning Resources**
+
+18. **Django Documentation**
+    - Django Software Foundation. (2025). *Django Documentation*. https://docs.djangoproject.com/en/stable/
+    - Official Django tutorials and API reference
+
+19. **MDN Web Docs**
+    - Mozilla Corporation. (2025). *MDN Web Docs: Resources for developers, by developers*. https://developer.mozilla.org/
+    - HTML, CSS, and JavaScript references
+
+20. **Bootstrap Documentation**
+    - Bootstrap Team. (2025). *Bootstrap Documentation*. https://getbootstrap.com/docs/5.3/
+    - UI component implementation guides
+
+### **Course Materials**
+
+21. **UVA CS 3240 Course Materials**
+    - University of Virginia, Department of Computer Science. (2025). *CS 3240: Advanced Software Development*
+    - Course lectures, labs, and project requirements
+
+---
+
+## �📄 License
+
+This project is developed for UVA CS 3240 coursework. All external libraries and frameworks are used in accordance with their respective licenses:
+
+- **Django**: BSD 3-Clause License
+- **Bootstrap**: MIT License
+- **Django Channels**: BSD License
+- **Django Allauth**: MIT License
+- **Boto3**: Apache License 2.0
+- **PostgreSQL**: PostgreSQL License
+- **Pillow**: HPND License
+
+All proprietary code developed by Team B-17 is for educational purposes as part of UVA CS 3240.
 
 ---
 
 ## 📞 Support & Documentation
 
+### **Official Documentation**
 - **Django Documentation:** [docs.djangoproject.com](https://docs.djangoproject.com/)
+- **Django Channels:** [channels.readthedocs.io](https://channels.readthedocs.io/)
 - **Django Storages:** [django-storages.readthedocs.io](https://django-storages.readthedocs.io/)
 - **AWS S3 Documentation:** [docs.aws.amazon.com/s3/](https://docs.aws.amazon.com/s3/)
+- **Boto3 Documentation:** [boto3.amazonaws.com](https://boto3.amazonaws.com/)
 - **Heroku Documentation:** [devcenter.heroku.com](https://devcenter.heroku.com/)
+- **Bootstrap Documentation:** [getbootstrap.com/docs](https://getbootstrap.com/docs/)
+- **PostgreSQL Documentation:** [postgresql.org/docs](https://www.postgresql.org/docs/)
+
+### **Community Resources**
+- **Stack Overflow:** [stackoverflow.com](https://stackoverflow.com/)
+- **Django Forum:** [forum.djangoproject.com](https://forum.djangoproject.com/)
+- **GitHub Issues:** Project-specific issues and discussions
+
+---
+
+## 🙏 Acknowledgments
+
+Special thanks to:
+- **UVA CS 3240 Teaching Staff** for guidance and support throughout the project
+- **Django Community** for excellent documentation and open-source contributions
+- **AWS** for providing cloud infrastructure services
+- **Heroku** for hosting platform and deployment tools
+- **Bootstrap Team** for UI framework
+- **All open-source contributors** whose libraries made this project possible
 
 ---
 
 **Made with ❤️ by Team B-17**
+
+*University of Virginia | CS 3240 - Advanced Software Development | Fall 2025*
