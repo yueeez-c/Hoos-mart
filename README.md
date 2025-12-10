@@ -1,4 +1,4 @@
-# Hoo-Mart: A VA Marketplace Platform made by Team B-17
+# Hoo-Mart: A University Marketplace Platform for UVA Students made by Team B-17
 
 A comprehensive Django web application featuring a student marketplace, real-time messaging, Google authentication, AWS S3 cloud storage, and robust moderation tools.
 
