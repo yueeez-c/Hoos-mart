@@ -149,30 +149,28 @@ def ban_user(request, report_id):
     user = report.reported_user
 
     if user:
-        # Add to BannedUser model if not already there
+        # Step 3: Add to BannedUser model if not already there
         if not BannedUser.objects.filter(email=user.email).exists():
             BannedUser.objects.create(email=user.email)
         
-        # Deactivate user
+        # Step 4: Deactivate user
         user.is_active = False
         user.save()
 
-        # Terminate all active sessions for the banned user
-        for session in Session.objects.all():
-            session_data = session.get_decoded()
-            if str(session_data.get('_auth_user_id')) == str(user.id):
-                session.delete()
+        # Step 5: Terminate all active sessions for the banned user
+        from django.contrib.sessions.models import Session
+        Session.objects.filter(session_key__in=[session.session_key for session in Session.objects.all() if session.get_decoded().get('_auth_user_id') == str(user.id)]).delete()
 
-        # Remove them from all message threads
+        # Step 6: Remove them from all message threads
         from messaging.models import ThreadParticipant
         ThreadParticipant.objects.filter(user=user).delete()
 
-        # Mark the specific report as resolved
+        # Step 7: Mark the specific report as resolved
         report.is_resolved = True
         report.resolved_by = request.user
         report.save()
 
-        # Delete all other pending reports about this user
+        # Step 8: Delete all other pending reports about this user
         Report.objects.filter(reported_user=user, is_resolved=False).exclude(id=report.id).delete()
 
         messages.success(request, f"User {user.username} has been banned, all active sessions terminated, and related reports resolved.")
