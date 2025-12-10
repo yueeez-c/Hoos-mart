@@ -32,9 +32,16 @@ Hoo-Mart is a full-featured student marketplace platform designed for the UVA co
 ### Live Demo
 Production URL: [https://shrouded-sea-15354-cd819052cb94.herokuapp.com/](https://shrouded-sea-15354-cd819052cb94.herokuapp.com/)
 
-Note: To view the moderator functions use the following seeded moderator account:
+Notes about:
+To view the moderator functions use the following seeded moderator account:
 User: deployed_admin
 Password: Moderator123
+
+You can login as a previously created user via the non-google login using the following credentials:
+User: User1
+Password: Wahoos123 
+
+You can also create your own account using googl authentication or the sign_up form
 
 
 ---
