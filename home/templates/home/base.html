@@ -11,6 +11,78 @@
 
   <!-- Your custom styles -->
   <link rel="stylesheet" href="{% static 'home/main.css' %}">
+  <style>
+    /* Styling for message container */
+    #django-messages {
+        position: fixed;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        width: auto;
+        max-width: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+  
+    #django-messages .alert {
+        background-color: #4CAF50;  
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 90%;
+        margin: 10px;
+        transition: opacity 0.5s ease-out;
+    }
+    #django-messages .alert.error {
+        background-color: #f44336;
+    }
+
+
+    #django-messages .close-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    #django-messages .close-btn:hover {
+        color: #ddd;
+    }
+
+    #django-messages .fade {
+        opacity: 0;
+    }
+
+    #django-messages .show {
+        opacity: 1;
+    }
+    /* Styling for the close button */
+  #django-messages .close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+/* Optional: Styling for hover effect on close button */
+#django-messages .close-btn:hover {
+    color: #ddd;
+}
+</style>
 
   <title>{% block title %}Hoo-Mart{% endblock %}</title>
 </head>
@@ -115,13 +187,14 @@
 </main>
 
 {% if messages %}
-  <div id="django-messages">
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }} fade show" role="alert">
-        {{ message }}
-      </div>
-    {% endfor %}
-  </div>
+<div id="django-messages">
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} fade show" role="alert">
+      {{ message }}
+      <button class="close-btn" onclick="this.parentElement.style.display='none';">x</button>
+    </div>
+  {% endfor %}
+</div>
 {% endif %}
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
