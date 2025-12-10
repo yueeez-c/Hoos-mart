@@ -92,43 +92,7 @@
 
     <hr>
 
-    <!-- Reported Messages -->
-    <!-- <h3>Reported Messages</h3>
-    {% if reported_messages %}
-        {% for r in reported_messages %}
-        <div class="card p-3 mb-2">
-
-            <p><strong>Message from:</strong>
-                <a href="{% url 'view-user-profile' r.message.sender.id %}">
-                    {{ r.message.sender.username }}
-                </a>
-            </p>
-
-            <p><strong>Message Content:</strong><br>
-                {{ r.message.content }}
-            </p>
-
-            <p>{{ r.description }}</p>
-
-            <p>
-                <strong>Reported by:</strong>
-                <a href="{% url 'view-user-profile' r.reporter.id %}">
-                    {{ r.reporter.username }}
-                </a>
-            </p>
-
-            <a href="{% url 'resolve-report' r.id %}" class="btn btn-primary btn-sm mt-2">
-                Mark Resolved
-            </a>
-
-        </div>
-        {% endfor %}
-    {% else %}
-        <p>No messages reported.</p>
-    {% endif %}
-
-    <hr> -->
-
+    
     <!-- Reported Users -->
     <h3>Reported Users</h3>
     {% if reported_users %}
