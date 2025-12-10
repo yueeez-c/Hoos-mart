@@ -187,14 +187,14 @@
 </main>
 
 {% if messages %}
-<div id="django-messages">
-  {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} fade show" role="alert">
-      {{ message }}
-      <button class="close-btn" onclick="this.parentElement.style.display='none';">x</button>
-    </div>
-  {% endfor %}
-</div>
+  <div id="django-messages">
+    {% for message in messages %}
+      <div class="custom-message-box {{ message.tags }}">
+        {{ message }}
+        <button class="close-btn" onclick="this.parentElement.style.display='none';">x</button>
+      </div>
+    {% endfor %}
+  </div>
 {% endif %}
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
