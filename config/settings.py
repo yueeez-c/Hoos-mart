@@ -130,31 +130,6 @@ if os.environ.get("DATABASE_URL"):
         DATABASES["default"]["CONN_HEALTH_CHECKS"] = True
         DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
-
-# if os.environ.get("DATABASE_URL"):
-#     # Heroku or production environment - use more aggressive connection settings
-#     database_config = dj_database_url.config(ssl_require=True)
-#
-#     # Override with production-optimized settings for Heroku
-#     database_config.update({
-#         'CONN_MAX_AGE': 0,  # No connection pooling for Heroku to prevent connection leaks
-#         'CONN_HEALTH_CHECKS': True,  # Enable connection health checks
-#         'OPTIONS': {
-#             'sslmode': 'require',
-#         },
-#         'ATOMIC_REQUESTS': True,  # Enable atomic transactions
-#     })
-#
-#     DATABASES = {"default": database_config}
-# else:
-#     # No DATABASE_URL present → fallback to SQLite
-#     DATABASES = {
-#         "default": {
-#             "ENGINE": "django.db.backends.sqlite3",
-#             "NAME": BASE_DIR / "db.sqlite3",
-#         }
-#     }
-
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
@@ -235,6 +210,7 @@ else:
 # ============================================================
 # EMAIL CONFIGURATION: Local (console) vs Heroku (SMTP)
 # ============================================================
+SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_EMAIL_VALIDATORS = [
     "user.validators.validate_school_email"
 ]
