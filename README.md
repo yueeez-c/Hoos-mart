@@ -1,4 +1,4 @@
-# Hoo-Mart: A VA Marketplace Platform made by Team B-17
+# Hoo-Mart: A University Marketplace Platform for UVA Students made by Team B-17
 
 A comprehensive Django web application featuring a student marketplace, real-time messaging, Google authentication, AWS S3 cloud storage, and robust moderation tools.
 
@@ -21,7 +21,7 @@ A comprehensive Django web application featuring a student marketplace, real-tim
 - [Deployment](#-deployment)
 - [Usage Guide](#-usage-guide)
 - [Troubleshooting](#-troubleshooting)
-- [Contributing Team AND Sources](#-contributing-team)
+- [Contributing Team](#-contributing-team)
 
 ---
 
@@ -32,9 +32,16 @@ Hoo-Mart is a full-featured student marketplace platform designed for the UVA co
 ### Live Demo
 Production URL: [https://shrouded-sea-15354-cd819052cb94.herokuapp.com/](https://shrouded-sea-15354-cd819052cb94.herokuapp.com/)
 
-Note: To view the moderator functions use the following seeded moderator account:
+Notes about:
+To view the moderator functions use the following seeded moderator account:
 User: deployed_admin
 Password: Moderator123
+
+You can login as a previously created user via the non-google login using the following credentials:
+User: User1
+Password: Wahoos123 
+
+You can also create your own account using googl authentication or the sign_up form
 
 
 ---
@@ -113,7 +120,7 @@ Password: Moderator123
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python 3.13+
@@ -159,7 +166,7 @@ Access at `http://localhost:8000`
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -212,7 +219,7 @@ DEFAULT_FROM_EMAIL=noreply@yourdomain.com
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 project-b-17/
@@ -268,7 +275,7 @@ project-b-17/
 
 ---
 
-## 🚢 Deployment
+## Deployment
 
 ### Heroku Deployment
 
@@ -359,7 +366,7 @@ heroku logs --tail -a shrouded-sea-15354
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -498,6 +505,17 @@ UVA CS 3240 - Fall 2025
     - University of Virginia, Department of Computer Science. (2025). *CS 3240: Advanced Software Development*
     - Course lectures, labs, and project requirements
 
+### Online Resources
+22. Stack Overflow: [stackoverflow.com](https://stackoverflow.com/)
+23. Django Forum: [forum.djangoproject.com](https://forum.djangoproject.com/)
+24. GitHub Issues: Project-specific issues and discussions
+
+### Generative AI Resources
+25. ChatGPT version 5.1
+26. Microsoft Copilot
+27. Google Gemini
+- These resources were used to help generate code, debug, and create the README. 
+
 ---
 
 ## License
@@ -527,19 +545,6 @@ All proprietary code developed by Team B-17 is for educational purposes as part 
 - Heroku Documentation: [devcenter.heroku.com](https://devcenter.heroku.com/)
 - Bootstrap Documentation: [getbootstrap.com/docs](https://getbootstrap.com/docs/)
 - PostgreSQL Documentation: [postgresql.org/docs](https://www.postgresql.org/docs/)
-
-### Online Resources
-- Stack Overflow: [stackoverflow.com](https://stackoverflow.com/)
-- Django Forum: [forum.djangoproject.com](https://forum.djangoproject.com/)
-- GitHub Issues: Project-specific issues and discussions
-
-##Generative AI Resources:
-These resources were used to help generate code, debug, and create the README. 
-- ChatGPT version 5.1
-- Microsoft Copilot
-- Google Gemini
-
-
 
 
 Made with by Team B-17
