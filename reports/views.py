@@ -198,14 +198,20 @@ def approve_moderator(request, user_id):
         return redirect("moderator-dashboard")
 
 @moderator_required
-def deny_moderator(request, report_id):
-    report = get_object_or_404(Report, id=report_id)
-    user = report.reported_user
-    user.profile.is_moderator = False
-    user.profile.moderator_approval_pending = False
-    user.profile.save()
-    messages.success(request, f"{user.username} moderator request denied.")
-    return redirect("moderator-dashboard")
+def deny_moderator(request, user_id):
+    try:
+        user = get_object_or_404(User, id=user_id)
+        user.profile.is_moderator = False
+        user.profile.moderator_approval_pending = False
+        user.profile.save()
+
+        messages.success(request, f"{user.username} denied moderator access.")
+        return redirect("moderator-dashboard")
+    
+    except User.DoesNotExist:
+        messages.error(request, "User not found.")
+        return redirect("moderator-dashboard")
+
 
 @moderator_required
 def view_user_profile(request, user_id):
