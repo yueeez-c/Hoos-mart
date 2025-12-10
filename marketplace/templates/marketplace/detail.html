@@ -10,26 +10,52 @@
     <!-- LEFT COLUMN: Images -->
     <div class="col-md-6">
       {% if listing.images.all %}
-        <div id="listingCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
-          <div class="carousel-inner">
-            {% for img in listing.images.all %}
-              <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                <img src="{{ img.image.url }}" class="d-block w-100 rounded" alt="{{ listing.title }}">
-              </div>
-            {% endfor %}
-          </div>
+        {% if listing.images.count > 1 %}
+          <!-- Multiple images - show carousel -->
+          <div id="listingCarousel" class="carousel slide mb-3" data-bs-ride="false">
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+              {% for img in listing.images.all %}
+                <button type="button" data-bs-target="#listingCarousel" data-bs-slide-to="{{ forloop.counter0 }}" 
+                        {% if forloop.first %}class="active" aria-current="true"{% endif %} 
+                        aria-label="Slide {{ forloop.counter }}"></button>
+              {% endfor %}
+            </div>
 
-          <button class="carousel-control-prev" type="button" data-bs-target="#listingCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#listingCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
+            <!-- Carousel images -->
+            <div class="carousel-inner">
+              {% for img in listing.images.all %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                  <img src="{{ img.image.url }}" class="d-block w-100 rounded" alt="{{ listing.title }}" style="max-height: 500px; object-fit: contain; background-color: #f8f9fa;">
+                </div>
+              {% endfor %}
+            </div>
+
+            <!-- Navigation controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#listingCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true" style="filter: invert(1);"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#listingCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true" style="filter: invert(1);"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+
+            <!-- Image counter -->
+            <div class="text-center mt-2">
+              <small class="text-muted">{{ listing.images.count }} image{{ listing.images.count|pluralize }}</small>
+            </div>
+          </div>
+        {% else %}
+          <!-- Single image - no carousel needed -->
+          <div class="mb-3">
+            <img src="{{ listing.images.first.image.url }}" class="d-block w-100 rounded" alt="{{ listing.title }}" style="max-height: 500px; object-fit: contain; background-color: #f8f9fa;">
+          </div>
+        {% endif %}
       {% else %}
-        <p class="text-muted">No images available for this listing.</p>
+        <div class="text-center p-5 bg-light rounded">
+          <p class="text-muted mb-0">No images available for this listing.</p>
+        </div>
       {% endif %}
     </div>
 
