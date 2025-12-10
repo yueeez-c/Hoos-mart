@@ -170,7 +170,7 @@ def ban_user(request, report_id):
     return redirect("moderator-dashboard")
 
 
-
+#Beginning of Moderator Views in the Moderator Dashbaord
 @moderator_required
 def delete_listing(request, listing_id):
     listing = get_object_or_404(Listing, id=listing_id)

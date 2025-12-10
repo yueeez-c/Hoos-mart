@@ -241,7 +241,7 @@ ACCOUNT_EMAIL_VALIDATORS = [
 ACCOUNT_FORMS = {
     "signup": "user.forms.CustomSignupForm",
 }
-ACCOUNT_SIGNUP_FIELDS = ["email*", "username*"]
+#ACCOUNT_SIGNUP_FIELDS = ["email*", "username*"]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
