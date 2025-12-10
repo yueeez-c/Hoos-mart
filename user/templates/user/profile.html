@@ -31,19 +31,11 @@
               
             <p class="text-muted">{{ user.email }}</p>
 
-            <!-- S3 Status Badge -->
-            {% if profile.image and profile.image.url %}
-              {% if 'amazonaws.com' in profile.image.url %}
-                <span class="badge bg-success">🌐 Stored on AWS S3</span>
-              {% else %}
-                <span class="badge bg-secondary">📁 Stored Locally</span>
-              {% endif %}
-            {% endif %}
-
+        
 {#            {% if profile.is_student %}#}
-{#              <span class="badge bg-primary">🎓 Student</span>#}
+{#              <span class="badge bg-primary"> Student</span>#}
 {#            {% else %}#}
-{#              <span class="badge bg-info">👤 General User</span>#}
+{#              <span class="badge bg-info"> General User</span>#}
 {#            {% endif %}#}
             <p>
               Hoos status:
@@ -59,7 +51,7 @@
                   <span class="text-success"><strong>Moderator ✔</strong></span>
             
               {% elif user.profile.moderator_approval_pending %}
-                  <span class="text-warning"><strong>Pending Approval ⏳</strong></span>
+                  <span class="text-warning"><strong>Pending Approval</strong></span>
             
               {% else %}
                   <span class="text-muted"><strong>Not a Moderator</strong></span>
@@ -138,17 +130,16 @@
             </div>
 
             <div class="alert alert-info">
-              <strong>📤 File Upload Info:</strong>
+              <strong>File Upload Info:</strong>
               <ul class="mb-0">
                 <li>Maximum file size: 5MB</li>
                 <li>Supported formats: JPG, PNG, GIF</li>
-                <li>Files will be stored on AWS S3 (when configured)</li>
               </ul>
             </div>
 
             <div class="text-center mt-3">
               <button class="btn btn-primary btn-lg" type="submit">
-                💾 Update Profile
+                Update Profile
               </button>
             </div>
           </form>
@@ -157,16 +148,9 @@
           <form method="POST" action="{% url 'delete_profile' %}" class="text-center mt-3">
             {% csrf_token %}
             <button class="btn btn-danger btn-lg" type="submit">
-              🗑️ Delete Profile
+              Delete Profile
             </button>
           </form>
-
-          <div class="text-center mt-3">
-            <a href="{% url 's3-demo' %}" class="btn btn-outline-info btn-lg">
-              🔍 View S3 Demo
-            </a>
-          </div>
-
         </div>
       </div>
 
