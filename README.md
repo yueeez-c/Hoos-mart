@@ -120,7 +120,7 @@ You can also create your own account using googl authentication or the sign_up f
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python 3.13+
@@ -166,7 +166,7 @@ Access at `http://localhost:8000`
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -275,7 +275,7 @@ project-b-17/
 
 ---
 
-## 🚢 Deployment
+## Deployment
 
 ### Heroku Deployment
 
@@ -366,7 +366,7 @@ heroku logs --tail -a shrouded-sea-15354
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
