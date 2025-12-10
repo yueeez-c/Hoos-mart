@@ -123,9 +123,6 @@ def review_reports(request):
     })
 
 
-# ---------------------------
-# MODERATOR — MARK RESOLVED
-# ---------------------------
 @moderator_required
 def resolve_report(request, report_id):
     report = get_object_or_404(Report, id=report_id)
@@ -137,40 +134,33 @@ def resolve_report(request, report_id):
     return redirect("moderator-dashboard")
 
 
-# ---------------------------
-# MODERATOR — BAN A USER
-# ---------------------------
 @moderator_required
 def ban_user(request, report_id):
-    # Step 1: Get the report
+
     report = get_object_or_404(Report, id=report_id)
 
-    # Step 2: Identify the user being banned
     user = report.reported_user
 
     if user:
-        # Step 3: Add to BannedUser model if not already there
+    
         if not BannedUser.objects.filter(email=user.email).exists():
             BannedUser.objects.create(email=user.email)
         
-        # Step 4: Deactivate user
         user.is_active = False
         user.save()
 
-        # Step 5: Terminate all active sessions for the banned user
+    
         from django.contrib.sessions.models import Session
         Session.objects.filter(session_key__in=[session.session_key for session in Session.objects.all() if session.get_decoded().get('_auth_user_id') == str(user.id)]).delete()
 
-        # Step 6: Remove them from all message threads
+
         from messaging.models import ThreadParticipant
         ThreadParticipant.objects.filter(user=user).delete()
 
-        # Step 7: Mark the specific report as resolved
         report.is_resolved = True
         report.resolved_by = request.user
         report.save()
 
-        # Step 8: Delete all other pending reports about this user
         Report.objects.filter(reported_user=user, is_resolved=False).exclude(id=report.id).delete()
 
         messages.success(request, f"User {user.username} has been banned, all active sessions terminated, and related reports resolved.")
@@ -185,18 +175,17 @@ def ban_user(request, report_id):
 def delete_listing(request, listing_id):
     listing = get_object_or_404(listing, id=listing_id)
 
-    # DELETE associated reports FIRST
     Report.objects.filter(listing=listing).delete()
 
-    # THEN delete listing
     listing.delete()
 
     messages.success(request, "Listing and all related reports have been removed.")
     return redirect("moderator-dashboard")
 
 @moderator_required
-def approve_moderator(request, user_id):
-    user = get_object_or_404(user, id=user_id)
+def approve_moderator(request, report_id):
+    report = get_object_or_404(Report, id=report_id)
+    user = report.reported_user
     user.profile.is_moderator = True
     user.profile.moderator_approval_pending = False
     user.profile.save()
@@ -204,8 +193,9 @@ def approve_moderator(request, user_id):
     return redirect("moderator-dashboard")
 
 @moderator_required
-def deny_moderator(request, user_id):
-    user = get_object_or_404(user, id=user_id)
+def deny_moderator(request, report_id):
+    report = get_object_or_404(Report, id=report_id)
+    user = report.reported_user
     user.profile.is_moderator = False
     user.profile.moderator_approval_pending = False
     user.profile.save()

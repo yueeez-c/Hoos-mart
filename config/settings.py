@@ -130,6 +130,7 @@ if os.environ.get("DATABASE_URL"):
         DATABASES["default"]["CONN_HEALTH_CHECKS"] = True
         DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
+
 # if os.environ.get("DATABASE_URL"):
 #     # Heroku or production environment - use more aggressive connection settings
 #     database_config = dj_database_url.config(ssl_require=True)
