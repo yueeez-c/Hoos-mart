@@ -498,6 +498,17 @@ UVA CS 3240 - Fall 2025
     - University of Virginia, Department of Computer Science. (2025). *CS 3240: Advanced Software Development*
     - Course lectures, labs, and project requirements
 
+### Online Resources
+22. Stack Overflow: [stackoverflow.com](https://stackoverflow.com/)
+23. Django Forum: [forum.djangoproject.com](https://forum.djangoproject.com/)
+24. GitHub Issues: Project-specific issues and discussions
+
+###Generative AI Resources
+**** These resources were used to help generate code, debug, and create the README. 
+25. ChatGPT version 5.1
+26. Microsoft Copilot
+27. Google Gemini
+
 ---
 
 ## License
@@ -527,19 +538,6 @@ All proprietary code developed by Team B-17 is for educational purposes as part 
 - Heroku Documentation: [devcenter.heroku.com](https://devcenter.heroku.com/)
 - Bootstrap Documentation: [getbootstrap.com/docs](https://getbootstrap.com/docs/)
 - PostgreSQL Documentation: [postgresql.org/docs](https://www.postgresql.org/docs/)
-
-### Online Resources
-- Stack Overflow: [stackoverflow.com](https://stackoverflow.com/)
-- Django Forum: [forum.djangoproject.com](https://forum.djangoproject.com/)
-- GitHub Issues: Project-specific issues and discussions
-
-##Generative AI Resources:
-These resources were used to help generate code, debug, and create the README. 
-- ChatGPT version 5.1
-- Microsoft Copilot
-- Google Gemini
-
-
 
 
 Made with by Team B-17
