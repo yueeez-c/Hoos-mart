@@ -504,10 +504,10 @@ UVA CS 3240 - Fall 2025
 24. GitHub Issues: Project-specific issues and discussions
 
 ###Generative AI Resources
-**** These resources were used to help generate code, debug, and create the README. 
 25. ChatGPT version 5.1
 26. Microsoft Copilot
 27. Google Gemini
+- These resources were used to help generate code, debug, and create the README. 
 
 ---
 
