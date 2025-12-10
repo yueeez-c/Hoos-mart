@@ -4,26 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f43f1b1b-327f-40f6-ae7d-86806911b958" name="Changes" comment="google login template">
+    <list default="true" id="f43f1b1b-327f-40f6-ae7d-86806911b958" name="Changes" comment="fixed &quot; No module named 'marketplace.apps'&quot; error">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Marketplace/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Marketplace/detail.py" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace/detail.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Marketplace/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Marketplace/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Marketplace/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Marketplace/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Marketplace/templates/marketplace/buy.html" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace/templates/marketplace/buy.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Marketplace/templates/marketplace/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace/templates/marketplace/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Marketplace/templates/marketplace/edit_listing.html" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace/templates/marketplace/edit_listing.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Marketplace/templates/marketplace/forms.html" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace/templates/marketplace/forms.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Marketplace/templates/marketplace/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace/templates/marketplace/list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Marketplace/templates/marketplace/sell.html" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace/templates/marketplace/sell.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Marketplace/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Marketplace/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/static/home/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/home/static/home/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/messaging/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/messaging/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reports/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/reports/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/marketplace/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/marketplace/migrations/0002_alter_listing_options_alter_listingimage_options_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/messaging/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reports/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/migrations/0002_banneduser.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +40,7 @@
     <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -88,7 +77,30 @@
       <recent name="$PROJECT_DIR$/media" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.forms">
+    <configuration name="forms" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="project-b-17" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/user" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/user/forms.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="project-b-17" type="Python.DjangoServer" factoryName="Django server">
       <module name="project-b-17" />
       <option name="ENV_FILES" value="" />
@@ -115,6 +127,11 @@
       <option name="customRunCommand" value="" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.forms" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -140,6 +157,7 @@
       <workItem from="1763049345483" duration="1309000" />
       <workItem from="1763083585510" duration="5613000" />
       <workItem from="1763885122378" duration="3113000" />
+      <workItem from="1765072522653" duration="7201000" />
     </task>
     <task id="LOCAL-00001" summary="bugs">
       <option name="closed" value="true" />
@@ -189,7 +207,31 @@
       <option name="project" value="LOCAL" />
       <updated>1764698384740</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="change to eastern time zone">
+      <option name="closed" value="true" />
+      <created>1764906251185</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1764906251185</updated>
+    </task>
+    <task id="LOCAL-00008" summary="rename Marketplace to marketplace">
+      <option name="closed" value="true" />
+      <created>1764906276880</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1764906276880</updated>
+    </task>
+    <task id="LOCAL-00009" summary="fixed &quot; No module named 'marketplace.apps'&quot; error">
+      <option name="closed" value="true" />
+      <created>1765322999819</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1765322999819</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -234,7 +276,10 @@
     <MESSAGE value="email validation" />
     <MESSAGE value="email validation bug fixing" />
     <MESSAGE value="google login template" />
-    <option name="LAST_COMMIT_MESSAGE" value="google login template" />
+    <MESSAGE value="change to eastern time zone" />
+    <MESSAGE value="rename Marketplace to marketplace" />
+    <MESSAGE value="fixed &quot; No module named 'marketplace.apps'&quot; error" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed &quot; No module named 'marketplace.apps'&quot; error" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

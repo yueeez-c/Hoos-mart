@@ -9,7 +9,6 @@ from django import forms
 from user.validators import validate_school_email, validate_not_banned
 
 class CustomSignupForm(SignupForm):
-
     email = forms.EmailField(
         required=True,
         label="Email",
