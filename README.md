@@ -21,7 +21,7 @@ A comprehensive Django web application featuring a student marketplace, real-tim
 - [Deployment](#-deployment)
 - [Usage Guide](#-usage-guide)
 - [Troubleshooting](#-troubleshooting)
-- [Contributing Team AND Sources](#-contributing-team)
+- [Contributing Team](#-contributing-team)
 
 ---
 
