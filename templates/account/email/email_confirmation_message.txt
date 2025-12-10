@@ -1,0 +1,10 @@
+Hello {{ user.username }}!
+
+Thanks for signing up for {{ site_name }}. To activate your student account, please click the link below:
+
+{{ activate_url }}
+
+If you didn't create this account, you can safely ignore this email.
+
+Best,
+The {{ site_name }} Team

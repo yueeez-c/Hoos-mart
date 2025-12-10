@@ -249,6 +249,7 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_USER') # Your gmail address
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS') # Your App Password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 
 # Database connection debugging and logging
 LOGGING = {
