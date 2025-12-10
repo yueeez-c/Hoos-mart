@@ -503,7 +503,7 @@ UVA CS 3240 - Fall 2025
 23. Django Forum: [forum.djangoproject.com](https://forum.djangoproject.com/)
 24. GitHub Issues: Project-specific issues and discussions
 
-###Generative AI Resources
+### Generative AI Resources
 25. ChatGPT version 5.1
 26. Microsoft Copilot
 27. Google Gemini
