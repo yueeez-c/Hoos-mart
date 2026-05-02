@@ -1,6 +1,7 @@
 import os
 import dj_database_url
 from pathlib import Path
+from dotenv import load_dotenv
 
 REDIS_URL = os.environ.get("REDIS_URL")
 if REDIS_URL:
@@ -19,6 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Load environment variables from .env file
 try:
     from dotenv import load_dotenv
+
     load_dotenv(BASE_DIR / ".env")
 except Exception:
     # Don't crash if python-dotenv is missing
@@ -39,7 +41,6 @@ ALLOWED_HOSTS = [
 ]
 CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", ]
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
 
 # Application definition
 INSTALLED_APPS = [
@@ -62,7 +63,7 @@ INSTALLED_APPS = [
     'rest_framework',
     "storages",  # for S3 integration
 
-    #google auth
+    # google auth
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -70,7 +71,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 
 ]
- 
+
 ASGI_APPLICATION = 'config.asgi.application'
 
 CHANNEL_LAYERS = {
@@ -86,7 +87,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "allauth.account.middleware.AccountMiddleware",#google auth
+    "allauth.account.middleware.AccountMiddleware",  # google auth
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "user.middleware.ForceProfileCompletionMiddleware",
@@ -165,7 +166,7 @@ LOGIN_REDIRECT_URL = 'app-home'
 
 LOGIN_URL = 'login'
 
-#google auth
+# google auth
 SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = [
@@ -177,8 +178,8 @@ LOGOUT_REDIRECT_URL = 'app-home'
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': '169512992077-35db8krbdhgnjkuugofk2uecatd4c61c.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': os.environ.get('GOOGLE_OAUTH_CLIENT_ID', ''),
+            'secret': os.environ.get('GOOGLE_OAUTH_CLIENT_SECRET', ''),
             'key': ''
         }
     }
@@ -205,7 +206,7 @@ AWS_S3_RETRIES = {
     'mode': 'adaptive'
 }
 # Media files configuration
-AWS_LOCATION = "media"   # this is REQUIRED for S3
+AWS_LOCATION = "media"  # this is REQUIRED for S3
 if AWS_STORAGE_BUCKET_NAME:
     DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
@@ -223,13 +224,13 @@ ACCOUNT_EMAIL_VALIDATORS = [
 ACCOUNT_FORMS = {
     "signup": "user.forms.CustomSignupForm",
 }
-#ACCOUNT_SIGNUP_FIELDS = ["email*", "username*"]
+# ACCOUNT_SIGNUP_FIELDS = ["email*", "username*"]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_USER') # Your gmail address
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS') # Your App Password
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')  # Your gmail address
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')  # Your App Password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
@@ -260,5 +261,3 @@ if os.environ.get("DATABASE_URL") and not DEBUG:
     # Enable more detailed logging in production to track connection issues
     LOGGING['loggers']['django.db.backends']['level'] = 'ERROR'
     LOGGING['loggers']['config.db_middleware']['level'] = 'WARNING'
-
-

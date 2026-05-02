@@ -30,3 +30,5 @@ db.sqlite3
 
 # AWS credentials
 .aws/
+setting
+.env
